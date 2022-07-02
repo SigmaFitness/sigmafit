@@ -59,28 +59,30 @@ model workout {
 }
 
 model session_schema {
-  id              String            @id @db.VarChar(36) // since UUID is 36 chars long
-  name            String
-  owner_id        String
-  owner           user              @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  workout_schema  workout_schema[]
-  superset_schema superset_schema[]
+  id               String             @id @db.VarChar(36) // since UUID is 36 chars long
+  name             String
+  owner_id         String
+  owner            user               @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  workout_schema   workout_schema[]
+  superset_schema  superset_schema[]
+  session_instance session_instance[]
 }
 
 model workout_schema {
-  id             String         @id @db.VarChar(36) // since UUID is 36 chars long
-  session_schema_id     String
-  session_schema session_schema @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
-  workout_id     String
-  workout        workout        @relation(fields: [workout_id], references: [id], onDelete: Cascade)
-  default_target Json
-  order          Int            @default(0)
+  id                        String                      @id @db.VarChar(36) // since UUID is 36 chars long
+  session_schema_id         String
+  session_schema            session_schema              @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
+  workout_id                String
+  workout                   workout                     @relation(fields: [workout_id], references: [id], onDelete: Cascade)
+  default_target            Json
+  order                     Int                         @default(0)
+  workout_instance          workout_instance[]
 }
 
 model superset_schema {
   id                      String                    @id @db.VarChar(36) // since UUID is 36 chars long
   name                    String
-  session_schema_id              String
+  session_schema_id       String
   session_schema          session_schema            @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
   order                   Int                       @default(0)
   superset_workout_schema superset_workout_schema[]
@@ -94,4 +96,35 @@ model superset_workout_schema {
   workout            workout         @relation(fields: [workout_id], references: [id], onDelete: Cascade)
   default_target     Json
   order              Int             @default(0)
+  superset_workout_instance superset_workout_instance[]
+}
+
+model session_instance {
+  id                        String                      @id @db.VarChar(36) // since UUID is 36 chars long
+  session_schema_id         String
+  session_schema            session_schema              @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
+  start_timestamp           DateTime                    @default(now())
+  end_timestamp             DateTime?
+  workout_instance          workout_instance[]
+  superset_workout_instance superset_workout_instance[]
+}
+
+model workout_instance {
+  workout_schema_id   String
+  workout_schema      workout_schema   @relation(fields: [workout_schema_id], references: [id])
+  session_instance_id String
+  session_instance    session_instance @relation(fields: [session_instance_id], references: [id])
+  sets_data                Json
+
+  @@unique([session_instance_id, workout_schema_id])
+}
+
+model superset_workout_instance {
+  superset_workout_schema_id   String
+  superset_workout_schema      superset_workout_schema   @relation(fields: [superset_workout_schema_id], references: [id])
+  session_instance_id String
+  session_instance    session_instance @relation(fields: [session_instance_id], references: [id])
+  sets_data                Json
+
+  @@unique([session_instance_id, superset_workout_schema_id])
 }

@@ -1,0 +1,284 @@
+import { prisma } from '../db';
+import { Router } from 'express'
+import { sendErrorResponse } from '../utils/sendErrorResponse';
+import { isAuthenticated } from '../utils/authMiddlewares';
+import { isValidUUID } from '../validators/isValidUUID';
+import { v4 } from 'uuid';
+import { isInstanceDataValid, isValidSessionInstanceBlock } from '../validators/sessionInstance';
+import { superset_workout_instance, superset_workout_schema, workout_instance, workout_schema, workout_type } from '@prisma/client';
+const router = Router()
+
+router.post('/start/', isAuthenticated, async (req, res) => {
+    try {
+        const sessionSchemaId = req.body.sessionSchemaId;
+        if (!await isValidUUID(sessionSchemaId)) throw { message: 'sessionSchemaId must be a valid UUID' };
+
+        // fetch sessionSchema
+        // checking permissions
+        const instance = await prisma.session_schema.findFirst({
+            where: {
+                id: sessionSchemaId,
+                owner_id: req.user.id
+            },
+        })
+
+        if (!instance) throw { status: 401, message: `You don't have permissions to make this action.` }
+
+        // you can only create a session if there is no active instance of it
+        // check if there's an active session or not
+        const isActiveSession = await prisma.session_instance.findFirst({
+            where: {
+                session_schema_id: sessionSchemaId,
+                end_timestamp: null
+            },
+            select: {
+                id: true
+            }
+        })
+        if (isActiveSession) throw { message: "Invalid action. There's already an active session for the schema." }
+
+        // create a new session
+        const newSessionInstanceData = await prisma.session_instance.create({
+            data: {
+                id: v4(),
+                session_schema_id: sessionSchemaId,
+            }
+        })
+
+        res.send({
+            error: false,
+            data: newSessionInstanceData
+        })
+    } catch (err) {
+        return sendErrorResponse(res, err)
+    }
+})
+
+
+/**
+ * Route to end the current active session
+ */
+router.post('/end/', isAuthenticated, async (req, res) => {
+    try {
+        const activeSessionInstanceId = req.body.activeSessionInstanceId;
+        if (!await isValidUUID(activeSessionInstanceId)) throw { message: 'activeSessionInstanceId must be a valid UUID' };
+
+        // if (!instance) throw { status: 401, message: `You don't have permissions to make this action.` }
+
+        // you can only create a session if there is no active instance of it
+        // check if there's an active session or not
+        const updatedDoc = await prisma.session_instance.updateMany({
+            where: {
+                id: activeSessionInstanceId,
+                end_timestamp: null,
+                session_schema: {
+                    owner_id: req.user.id
+                }
+            },
+            data: {
+                end_timestamp: new Date()
+            }
+        })
+
+        if (!updatedDoc.count) throw { message: "Invalid activeSessionInstanceId or the session is already inActive or you don't have enough permission. " }
+
+        res.send({
+            error: false,
+            message: "Session Instance has been successfully stopped."
+        })
+    } catch (err) {
+        return sendErrorResponse(res, err)
+    }
+})
+
+
+
+/**
+ * Route to get the currentState of an active sessionInstanceId
+ */
+router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
+    try {
+        const { sessionInstanceId } = req.params;
+        if (!await isValidUUID(sessionInstanceId)) throw { message: 'sessionInstanceId must be a valid UUID' };
+
+        // you can only create a session if there is no active instance of it
+        const sessionInstance = await prisma.session_instance.findFirst({
+            where: {
+                id: sessionInstanceId,
+                end_timestamp: null,
+                session_schema: {
+                    owner_id: req.user.id
+                }
+            },
+            include: {
+                session_schema: {
+                    include: {
+                        workout_schema: {},
+                        superset_schema: {
+                            include: {
+                                superset_workout_schema: {
+                                    include: {
+                                        workout: {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                workout_instance: {
+                },
+                superset_workout_instance: {
+                },
+            }
+        })
+
+        if (!sessionInstance) throw { message: "Either session is already complete or unauthorized access." }
+
+        // fetch last sessionInstance and the corresponding data
+        const lastSessionInstance = await prisma.session_instance.findFirst({
+            where: {
+                NOT: {
+                    end_timestamp: null
+                },
+                session_schema: {
+                    id: sessionInstance.session_schema_id,
+                }
+            },
+            orderBy: {
+                end_timestamp: 'desc'
+            },
+            include: {
+                workout_instance: {},
+                superset_workout_instance: {}
+            }
+        })
+
+        // fetch current sessionInstance and corresponding data
+        // const currentSessionInstance=await prisma.session_instance.findFirst({
+        //     where: {
+        //         id: sessionInstanceId,
+        //             end_timestamp: null,
+        //         session_schema: {
+        //             id: sessionInstance.session_schema_id,
+        //         }
+        //     },
+        //     orderBy: {
+        //         end_timestamp: 'desc'
+        //     },
+        //     include: {
+        //         workout_instance: {},
+        //         superset_workout_instance: {},
+        //     }
+        // })
+
+        res.send({
+            error: false,
+            sessionInstance,
+            lastSessionInstance,
+        })
+    } catch (err) {
+        return sendErrorResponse(res, err)
+    }
+})
+
+
+/**
+ * Route to add or modify block
+ */
+router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
+    try {
+        // TODO: Make a check that if the session has ended then we cannot change it? Shall we do it or not?
+        const validatedData = await isValidSessionInstanceBlock.validate(req.body);
+
+        // fetch block data
+        let blockData: (workout_schema | superset_workout_schema) & {
+            workout: {
+                category: workout_type;
+            };
+        };
+
+        if (validatedData.block_type === 'NORMAL_WORKOUT') {
+            blockData = await prisma.workout_schema.findFirst({
+                where: {
+                    id: validatedData.id,
+                    // TODO: SOME OWNER CHECK
+                },
+                include: {
+                    workout: {
+                        select: {
+                            category: true
+                        }
+                    }
+                }
+            })
+            // blockData.workout
+        } else {
+            blockData = await prisma.superset_workout_schema.findFirst({
+                where: {
+                    id: validatedData.id,
+                    // TODO: SOME OWNER CHECK
+                },
+                include: {
+                    workout: {
+                        select: {
+                            category: true
+                        }
+                    }
+                }
+            })
+
+        }
+
+        if (!blockData) throw { message: "check the workout_schema_id/superset_workout_schema_id" }
+
+        const validatedSetsData = await isInstanceDataValid(blockData.workout.category, validatedData.sets);
+        // blocks can be of supersetWorkoutInstance or workoutInstance 
+
+        let addedOrUpdatedBlock: workout_instance | superset_workout_instance;
+        if (validatedData.block_type === 'NORMAL_WORKOUT') {
+            addedOrUpdatedBlock = await prisma.workout_instance.upsert({
+                where: {
+                    session_instance_id_workout_schema_id: {
+                        session_instance_id: validatedData.session_instance_id,
+                        workout_schema_id: validatedData.id
+                    }
+                },
+                update: {
+                    sets_data: validatedData.sets,
+                },
+                create: {
+                    sets_data: validatedData.sets,
+                    session_instance_id: validatedData.session_instance_id,
+                    workout_schema_id: validatedData.id
+                }
+            })
+        } else {
+            addedOrUpdatedBlock = await prisma.superset_workout_instance.upsert({
+                where: {
+                    session_instance_id_superset_workout_schema_id: {
+                        session_instance_id: validatedData.session_instance_id,
+                        superset_workout_schema_id: validatedData.id
+                    }
+                },
+                update: {
+                    sets_data: validatedData.sets,
+                },
+                create: {
+                    sets_data: validatedData.sets,
+                    session_instance_id: validatedData.session_instance_id,
+                    superset_workout_schema_id: validatedData.id
+                }
+            })
+        }
+
+        res.send({
+            error: false,
+            addedOrUpdatedBlock
+        })
+    } catch (err) {
+        return sendErrorResponse(res, err)
+    }
+})
+
+
+export default router

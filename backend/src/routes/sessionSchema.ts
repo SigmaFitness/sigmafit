@@ -5,7 +5,8 @@ import { isAuthenticated } from '../utils/authMiddlewares';
 import * as yup from 'yup'
 import { addSessionSchemaPayloadValidator } from '../validators/sessionSchema';
 import { v4 } from 'uuid';
-import { Prisma, PrismaClient, session_schema, superset_schema, workout_schema } from '@prisma/client';
+import { session_schema } from '@prisma/client';
+import { isValidUUID } from '../validators/isValidUUID';
 
 const router = Router();
 
@@ -15,12 +16,11 @@ const router = Router();
 router.get('/details/:id', isAuthenticated, async (req, res) => {
     try {
 
-        // check if the session owner is this user
-        // prisma.
         const { id } = req.params
-        const validationResult = await yup.string().uuid().required().isValid(id)
+        const validationResult = await isValidUUID(id)
         if (!validationResult) throw { message: `Given id ${id} is not a valid UUID` }
 
+        // check if the session owner is this user is done automatically as we added owner_id
         const data = await prisma.session_schema.findFirst({
             where: {
                 id,
@@ -36,7 +36,7 @@ router.get('/details/:id', isAuthenticated, async (req, res) => {
             }
         })
 
-        if(!data) throw {message: 'Invalid Id or permissions'}
+        if (!data) throw { message: 'Invalid Id or permissions' }
 
         res.send({
             error: false,
@@ -62,15 +62,21 @@ router.post('/create/', isAuthenticated, async (req, res) => {
         const sessionSchemaId = v4();
 
         // perform check to ensure that all workout ids are correct
-        const uniqueWorkoutIds = new Set<string>()
+        const workoutIdsToSchemaBlock: { [K in string]: (typeof validatedData.workout_schema[number])[] } = {}
 
         validatedData.superset_schema.forEach(e => {
-            e.superset_workout_schema.forEach(f => uniqueWorkoutIds.add(f.workout_id))
+            e.superset_workout_schema.forEach(f => {
+                if(!workoutIdsToSchemaBlock[f.workout_id]) workoutIdsToSchemaBlock[f.workout_id]=[]
+                workoutIdsToSchemaBlock[f.workout_id].push(f)
+            })
         })
-        validatedData.workout_schema.forEach(e => uniqueWorkoutIds.add(e.workout_id))
+        validatedData.workout_schema.forEach(e => {
+            if(!workoutIdsToSchemaBlock[e.workout_id]) workoutIdsToSchemaBlock[e.workout_id]=[]
+            workoutIdsToSchemaBlock[e.workout_id].push(e)
+        })
 
-        const uniqueWorkoutIdsArr = Array.from(uniqueWorkoutIds)
-        const validIds = (await prisma.workout.findMany({
+        const uniqueWorkoutIdsArr = Object.keys(workoutIdsToSchemaBlock)
+        const validWorkouts = (await prisma.workout.findMany({
             where: {
                 // id: 
                 AND: [
@@ -92,13 +98,28 @@ router.post('/create/', isAuthenticated, async (req, res) => {
                 ]
             },
             select: {
-                id: true
+                id: true,
+                category: true
             }
-        })).flatMap(e => e.id);
+        }));
 
         uniqueWorkoutIdsArr.forEach(e => {
-            if (validIds.indexOf(e) === -1) throw { message: `Invalid Workout Id ${e}` }
+            const workout = validWorkouts.find(f => f.id === e)
+            if (!workout) throw { message: `Invalid Workout Id ${e}` }
+
+            const toAddSchemaBlocks = workoutIdsToSchemaBlock[e]
+            if (workout.category === 'WEIGHT_AND_REPS' || workout.category === 'REPS') {
+                // only integer allowed
+                toAddSchemaBlocks.forEach(block => {
+                    const res=yup.array().of(yup.number().required().integer()).isValidSync(block.default_target)
+                    if(!res) throw {message:`${JSON.stringify(block)} is invalid. ${workout.category} should have all integers as target.`}
+                })
+            }
+
+
         })
+
+
 
         // we don't need to validate the workout_id, thanks to the referential integrity
         const response = await prisma.$transaction(
@@ -193,12 +214,12 @@ router.post('/create/', isAuthenticated, async (req, res) => {
  * Route to edit the sessionSchema
  */
 router.post('/edit/', isAuthenticated, async (req, res) => {
-    try{
+    try {
         // TODO: maybe we can merge it with endpoint to create/; Since we anyhow want both modify and create to give the whole
         // data in one go!
         // But how do we remove the removed items and all?
-        throw {message: "Editing schema is disabled for now."}
-    }catch(err){
+        throw { message: "Editing schema is disabled for now." }
+    } catch (err) {
         return sendErrorResponse(res, err);
     }
 })
