@@ -10,12 +10,48 @@ datasource db {
 }
 
 model user {
-  id                      String   @id @db.VarChar(36) // since UUID is 36 chars long
+  id                      String    @id @db.VarChar(36) // since UUID is 36 chars long
   first_name              String
   last_name               String
-  email                   String   @unique
+  email                   String    @unique
   hashed_password         String
-  is_banned               Boolean  @default(false)
-  created_time            DateTime @default(now())
-  last_token_generated_at DateTime @default(now())
+  is_banned               Boolean   @default(false)
+  created_time            DateTime  @default(now())
+  last_token_generated_at DateTime  @default(now())
+  workout                 workout[]
+}
+
+enum workout_type {
+  WEIGHT_AND_REPS
+  REPS
+  DISTANCE_AND_DURATION
+  DURATION
+}
+
+enum body_part {
+  LEGS
+  SHOULDER
+  INNER_CHEST
+  OUTER_CHEST
+  ABS
+}
+
+enum intensity_levels {
+  VERY_HARD
+  HARD
+  MEDIUM
+  EASY
+  WARMUP
+}
+
+model workout {
+  id               String           @id @db.VarChar(36) // since UUID is 36 chars long
+  name             String
+  category         workout_type
+  target_body_part body_part?
+  intensity        intensity_levels?
+  owner_id         String
+  owner            user             @relation(fields: [owner_id], references: [id])
+  // is_true can be set only internally
+  is_public        Boolean          @default(false)
 }

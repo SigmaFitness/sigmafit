@@ -1,5 +1,6 @@
 import Express from 'express'
 import authRouter from './routes/auth'
+import workoutRouter from './routes/workout'
 import cookieParser from 'cookie-parser'
 import { jwtUserPayloadType } from './utils/setAuthTokenAsCookie'
 
@@ -17,6 +18,8 @@ declare global {
 }
 
 app.use('/api/auth/', authRouter)
+app.use('/api/workout/', workoutRouter)
+
 
 
 app.listen(8000, async () => {
