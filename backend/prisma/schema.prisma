@@ -1,0 +1,21 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model user {
+  id                      String   @id @db.VarChar(36) // since UUID is 36 chars long
+  first_name              String
+  last_name               String
+  email                   String   @unique
+  hashed_password         String
+  is_banned               Boolean  @default(false)
+  created_time            DateTime @default(now())
+  last_token_generated_at DateTime @default(now())
+}
