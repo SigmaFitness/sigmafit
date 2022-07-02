@@ -36,6 +36,18 @@ router.post('/signIn/', async (req, res) => {
         // setting auth cookie
         setAuthTokenAsCookie(res, user)
 
+        const currentTime=new Date();
+        await prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                last_token_generated_at: currentTime
+            }
+        })
+        
+        user.last_token_generated_at=currentTime;
+
         res.send({
             error: false,
             user: userDetailsWithoutPwd

@@ -130,6 +130,8 @@ router.post('/modify/', isAuthenticated, async (req, res) => {
  */
 router.post('/delete/', isAuthenticated, async (req, res) => {
     try {
+
+        throw {"message": "Route not supported for now. Need to check with referential integrity and all!"}
         const { id } = req.body;
         if (!id) throw { status: 400, message: 'Id is needed' }
 

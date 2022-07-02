@@ -2,18 +2,6 @@ import { body_part, intensity_levels, workout_type } from '@prisma/client';
 import * as yup from 'yup';
 
 
-// let workout_type111: {
-//     WEIGHT_AND_REPS: 'WEIGHT_AND_REPS';
-//     REPS: 'REPS';
-//     DISTANCE_AND_DURATION: 'DISTANCE_AND_DURATION';
-//     DURATION: 'DURATION';
-// } = 'WEIGHT_AND_REPS'
-
-// workout_type111
-
-
-const tmp= workout_type;
-
 /**
  * validator for add a new (private) workout
  */
