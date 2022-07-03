@@ -17,7 +17,7 @@ export const setAuthTokenAsCookie = (res: Response, user: user) => {
     const jwtPayload: jwtUserPayloadType = { id: user.id, email: user.email, fName: user.first_name, lName: user.last_name }
     const token = jwt.sign(jwtPayload, process.env.JSON_WEB_TOKEN_SECRET);
     return res.cookie('sigmaKeeper', token, {
-        secure: (process.env.IS_DEV_ENV==='1'?false:true),
+        secure: (process.env.USE_SECURE_COOKIE==='1'?false:true),
         sameSite: 'lax',
         httpOnly: true
     })

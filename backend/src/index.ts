@@ -41,6 +41,7 @@ app.use('/api/sessionInstance/', sessionInstanceRouter)
 
 
 
-app.listen(8000, async () => {
-    console.log('listening at 8000')
+const port=process.env.PORT || 8000
+app.listen(port, async () => {
+    console.log(`listening at ${port}`)
 })
