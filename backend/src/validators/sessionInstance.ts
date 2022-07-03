@@ -40,8 +40,8 @@ export const isInstanceDataValid = async (workoutType: string, data: any[]) => {
 export const isValidSessionInstanceBlock = yup.object().shape({
     id: yup.string().uuid().required(),
     session_instance_id: yup.string().uuid().required(),
-    block_type: yup.mixed().required().oneOf(['SUPERSET', 'NORMAL_WORKOUT']),
-    sets: yup.array().required().min(1)
+    block_type: yup.mixed().required().oneOf(['SUPERSET_WORKOUT', 'CLASSIC_WORKOUT']),
+    sets_data: yup.array().required().min(1)
 })
 
 /**

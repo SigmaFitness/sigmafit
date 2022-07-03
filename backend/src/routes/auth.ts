@@ -25,18 +25,18 @@ router.post('/signIn/', async (req, res) => {
             }
         })
 
-        if(!user) throw {status: 400, message: 'Invalid username or pwd'}
+        if (!user) throw { status: 400, message: 'Invalid username or pwd' }
 
         const { hashed_password, ...userDetailsWithoutPwd } = user
 
         // compare pwd
         const isValidPwd = await bcrypt.compare(data.password, hashed_password)
-        if(!isValidPwd) throw {status: 400, message: 'Invalid username or pwd'}
+        if (!isValidPwd) throw { status: 400, message: 'Invalid username or pwd' }
 
         // setting auth cookie
         setAuthTokenAsCookie(res, user)
 
-        const currentTime=new Date();
+        const currentTime = new Date();
         await prisma.user.update({
             where: {
                 id: user.id
@@ -45,8 +45,8 @@ router.post('/signIn/', async (req, res) => {
                 last_token_generated_at: currentTime
             }
         })
-        
-        user.last_token_generated_at=currentTime;
+
+        user.last_token_generated_at = currentTime;
 
         res.send({
             error: false,
@@ -99,14 +99,31 @@ router.post('/signUp/', async (req, res) => {
 
 
 /**
- * Route to check if the user is authenticated or not
+ * Route to get the currently authenticated user
  */
-router.get('/status/', isAuthenticated, (req, res) => {
+router.get('/currentUser/', isAuthenticated, (req, res) => {
     // If I'm inside this route handler
     // it means that I'm authenticated
     res.send({
         error: false,
-        status: 'AUTHENTICATED'
+        user: req.user
+    })
+})
+
+
+/**
+ * Route to get the currently authenticated user
+ */
+router.get('/logOut/', isAuthenticated, (req, res) => {
+    // If I'm inside this route handler
+    // it means that I'm authenticated
+
+    res.cookie('sigmaKeeper', null, {
+        maxAge: -1
+    })
+    res.send({
+        error: false,
+        user: 'Logged out successfully!'
     })
 })
 

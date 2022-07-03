@@ -5,10 +5,23 @@ import sessionSchemaRouter from './routes/sessionSchema'
 import sessionInstanceRouter from './routes/sessionInstance'
 import cookieParser from 'cookie-parser'
 import { jwtUserPayloadType } from './utils/setAuthTokenAsCookie'
+import cors from 'cors'
+
 
 const app = Express()
+
+app.set('trust proxy', 1);
+
 app.use(Express.json())
 app.use(cookieParser())
+
+
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL as string ?? '/',
+        credentials: true,
+    })
+)
 // TODO: Cors
 
 declare global {

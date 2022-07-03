@@ -5,7 +5,7 @@ import { isAuthenticated } from '../utils/authMiddlewares';
 import { isValidUUID } from '../validators/isValidUUID';
 import { v4 } from 'uuid';
 import { isInstanceDataValid, isValidSessionInstanceBlock } from '../validators/sessionInstance';
-import { superset_workout_instance, superset_workout_schema, workout_instance, workout_schema, workout_type } from '@prisma/client';
+import { superset_schema, superset_workout_instance, superset_workout_schema, workout_instance, workout_schema, workout_type } from '@prisma/client';
 const router = Router()
 
 router.post('/start/', isAuthenticated, async (req, res) => {
@@ -101,7 +101,6 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
         const { sessionInstanceId } = req.params;
         if (!await isValidUUID(sessionInstanceId)) throw { message: 'sessionInstanceId must be a valid UUID' };
 
-        // you can only create a session if there is no active instance of it
         const sessionInstance = await prisma.session_instance.findFirst({
             where: {
                 id: sessionInstanceId,
@@ -113,45 +112,130 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
             include: {
                 session_schema: {
                     include: {
-                        workout_schema: {},
-                        superset_schema: {
-                            include: {
-                                superset_workout_schema: {
-                                    include: {
-                                        workout: {}
-                                    }
-                                }
-                            }
-                        }
+                        superset_schema: {}
                     }
-                },
-                workout_instance: {
-                },
-                superset_workout_instance: {
-                },
+                }
             }
         })
-
         if (!sessionInstance) throw { message: "Either session is already complete or unauthorized access." }
 
-        // fetch last sessionInstance and the corresponding data
-        const lastSessionInstance = await prisma.session_instance.findFirst({
-            where: {
-                NOT: {
-                    end_timestamp: null
-                },
-                session_schema: {
-                    id: sessionInstance.session_schema_id,
-                }
-            },
-            orderBy: {
-                end_timestamp: 'desc'
-            },
-            include: {
-                workout_instance: {},
-                superset_workout_instance: {}
+        
+        const superset_schema_details: { [K in string]: superset_schema } = {}
+
+        sessionInstance.session_schema.superset_schema.forEach(e => {
+            superset_schema_details[e.id] = e
+        })
+
+
+
+
+        // fetch all workoutOuts
+
+
+        const workouts=await prisma.$queryRaw`
+    SELECT 
+        workout_schema.id,
+        workout_schema.workout_id,
+        workout_schema.default_target,
+        workout_schema.order,
+        current_workout_instance.sets_data as current_workout_instance_sets_data,
+        prev_workout_instance.sets_data as prev_workout_instance_sets_data,
+        'CLASSIC_WORKOUT' as type,
+        workout.category as workout_category,
+        workout.name,
+        NULL as superset_schema_name -- since it's classic workout no superset_schema_name
+    FROM workout_schema
+    LEFT JOIN 
+        workout_instance as current_workout_instance ON current_workout_instance.workout_schema_id = workout_schema.id
+            AND current_workout_instance.session_instance_id=${sessionInstanceId}
+    LEFT JOIN 
+        (
+            select 
+                workout_instance.sets_data,
+                workout_instance.workout_schema_id
+            from workout_instance
+            inner join session_instance ON session_instance.id  = workout_instance.session_instance_id
+            inner join 
+            (
+                SELECT session_schema_id, max(session_instance.end_timestamp) as maxi
+                FROM session_instance 
+                WHERE session_instance.end_timestamp IS NOT NULL
+                GROUP BY 
+                    session_schema_id
+            ) as tmp ON tmp.maxi = session_instance.end_timestamp
+                AND tmp.session_schema_id = session_instance.session_schema_id
+        ) as prev_workout_instance ON prev_workout_instance.workout_schema_id = workout_schema.id
+    INNER JOIN workout ON workout.id = workout_schema.workout_id
+    WHERE workout_schema.session_schema_id = ${sessionInstance.session_schema_id}
+    UNION
+    SELECT 
+        superset_workout_schema.id,
+        superset_workout_schema.workout_id,
+        superset_workout_schema.default_target,
+        superset_workout_schema.order,
+        current_superset_workout_instance.sets_data as current_superset_workout_instance_sets_data,
+        prev_superset_workout_instance.sets_data as prev_superset_workout_instance_sets_data,
+        'SUPERSET_WORKOUT' as type,
+        workout.category as workout_category,
+        workout.name,
+        superset_schema.name as superset_schema_name
+    FROM superset_workout_schema
+    INNER JOIN superset_schema ON superset_schema.id = superset_workout_schema.superset_schema_id 
+            AND superset_schema.session_schema_id = ${sessionInstance.session_schema_id}
+    LEFT JOIN 
+        superset_workout_instance as current_superset_workout_instance ON current_superset_workout_instance.superset_workout_schema_id = superset_workout_schema.id
+            AND current_superset_workout_instance.session_instance_id=${sessionInstanceId}
+    LEFT JOIN 
+        (
+            select 
+                superset_workout_instance.sets_data,
+                superset_workout_instance.superset_workout_schema_id
+            from superset_workout_instance
+            inner join session_instance ON session_instance.id  = superset_workout_instance.session_instance_id
+            inner join 
+            (
+                SELECT session_schema_id, max(session_instance.end_timestamp) as maxi
+                FROM session_instance 
+                WHERE session_instance.end_timestamp IS NOT NULL
+                GROUP BY 
+                    session_schema_id
+            ) as tmp ON tmp.maxi = session_instance.end_timestamp
+                AND tmp.session_schema_id = session_instance.session_schema_id
+        ) as prev_superset_workout_instance ON prev_superset_workout_instance.superset_workout_schema_id = superset_workout_schema.id
+    INNER JOIN workout ON workout.id = superset_workout_schema.workout_id
+
+    ORDER BY "order" -- it's applied on whole UNION`
+
+        res.send({
+            error: false,
+            superset_schema_details,
+            workouts,
+            session_instance_details: {
+                schema_name: sessionInstance.session_schema.name,
+                end_timestamp: sessionInstance.end_timestamp,
+                start_timestamp: sessionInstance.start_timestamp,
             }
         })
+        return;
+
+        // fetch last sessionInstance and the corresponding data
+        // const lastSessionInstance = await prisma.session_instance.findFirst({
+        //     where: {
+        //         NOT: {
+        //             end_timestamp: null
+        //         },
+        //         session_schema: {
+        //             id: sessionInstance.session_schema_id,
+        //         }
+        //     },
+        //     orderBy: {
+        //         end_timestamp: 'desc'
+        //     },
+        //     include: {
+        //         workout_instance: {},
+        //         superset_workout_instance: {}
+        //     }
+        // })
 
         // fetch current sessionInstance and corresponding data
         // const currentSessionInstance=await prisma.session_instance.findFirst({
@@ -171,11 +255,11 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
         //     }
         // })
 
-        res.send({
-            error: false,
-            sessionInstance,
-            lastSessionInstance,
-        })
+        // res.send({
+        //     error: false,
+        //     sessionInstance,
+        //     lastSessionInstance,
+        // })
     } catch (err) {
         return sendErrorResponse(res, err)
     }
@@ -187,6 +271,9 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
  */
 router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
     try {
+
+        console.log(await prisma.workout_instance.findMany())
+
         // TODO: Make a check that if the session has ended then we cannot change it? Shall we do it or not?
         const validatedData = await isValidSessionInstanceBlock.validate(req.body);
 
@@ -197,7 +284,7 @@ router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
             };
         };
 
-        if (validatedData.block_type === 'NORMAL_WORKOUT') {
+        if (validatedData.block_type === 'CLASSIC_WORKOUT') {
             blockData = await prisma.workout_schema.findFirst({
                 where: {
                     id: validatedData.id,
@@ -231,11 +318,11 @@ router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
 
         if (!blockData) throw { message: "check the workout_schema_id/superset_workout_schema_id" }
 
-        const validatedSetsData = await isInstanceDataValid(blockData.workout.category, validatedData.sets);
+        const validatedSetsData = await isInstanceDataValid(blockData.workout.category, validatedData.sets_data);
         // blocks can be of supersetWorkoutInstance or workoutInstance 
 
         let addedOrUpdatedBlock: workout_instance | superset_workout_instance;
-        if (validatedData.block_type === 'NORMAL_WORKOUT') {
+        if (validatedData.block_type === 'CLASSIC_WORKOUT') {
             addedOrUpdatedBlock = await prisma.workout_instance.upsert({
                 where: {
                     session_instance_id_workout_schema_id: {
@@ -244,10 +331,10 @@ router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
                     }
                 },
                 update: {
-                    sets_data: validatedData.sets,
+                    sets_data: validatedData.sets_data,
                 },
                 create: {
-                    sets_data: validatedData.sets,
+                    sets_data: validatedData.sets_data,
                     session_instance_id: validatedData.session_instance_id,
                     workout_schema_id: validatedData.id
                 }
@@ -261,10 +348,10 @@ router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
                     }
                 },
                 update: {
-                    sets_data: validatedData.sets,
+                    sets_data: validatedData.sets_data,
                 },
                 create: {
-                    sets_data: validatedData.sets,
+                    sets_data: validatedData.sets_data,
                     session_instance_id: validatedData.session_instance_id,
                     superset_workout_schema_id: validatedData.id
                 }
@@ -274,6 +361,35 @@ router.post('/addOrModifyBlock/', isAuthenticated, async (req, res) => {
         res.send({
             error: false,
             addedOrUpdatedBlock
+        })
+    } catch (err) {
+        return sendErrorResponse(res, err)
+    }
+})
+
+
+router.get('/allActive/', isAuthenticated, async (req, res) => {
+    try {
+        const activeInstances = await prisma.session_instance.findMany({
+            where: {
+                end_timestamp: null,
+                session_schema: {
+                    owner_id: req.user.id,
+                }
+            },
+            include: {
+                session_schema: {
+                    select: {
+                        owner_id: true,
+                        name: true
+                    }
+                }
+            }
+        })
+
+        res.send({
+            error: false,
+            activeInstances
         })
     } catch (err) {
         return sendErrorResponse(res, err)

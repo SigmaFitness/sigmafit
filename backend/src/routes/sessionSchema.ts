@@ -33,14 +33,17 @@ router.get('/details/:id', isAuthenticated, async (req, res) => {
                         superset_workout_schema: {}
                     }
                 }
-            }
+            },
         })
 
-        if (!data) throw { message: 'Invalid Id or permissions' }
+        if (!data) throw { message: 'Invalid Id or permissions' };
 
         res.send({
             error: false,
-            data
+            data: {
+                ...data,
+                session_name: data.name
+            }
         })
     } catch (err) {
         return sendErrorResponse(res, err)
@@ -66,12 +69,12 @@ router.post('/create/', isAuthenticated, async (req, res) => {
 
         validatedData.superset_schema.forEach(e => {
             e.superset_workout_schema.forEach(f => {
-                if(!workoutIdsToSchemaBlock[f.workout_id]) workoutIdsToSchemaBlock[f.workout_id]=[]
+                if (!workoutIdsToSchemaBlock[f.workout_id]) workoutIdsToSchemaBlock[f.workout_id] = []
                 workoutIdsToSchemaBlock[f.workout_id].push(f)
             })
         })
         validatedData.workout_schema.forEach(e => {
-            if(!workoutIdsToSchemaBlock[e.workout_id]) workoutIdsToSchemaBlock[e.workout_id]=[]
+            if (!workoutIdsToSchemaBlock[e.workout_id]) workoutIdsToSchemaBlock[e.workout_id] = []
             workoutIdsToSchemaBlock[e.workout_id].push(e)
         })
 
@@ -111,8 +114,8 @@ router.post('/create/', isAuthenticated, async (req, res) => {
             if (workout.category === 'WEIGHT_AND_REPS' || workout.category === 'REPS') {
                 // only integer allowed
                 toAddSchemaBlocks.forEach(block => {
-                    const res=yup.array().of(yup.number().required().integer()).isValidSync(block.default_target)
-                    if(!res) throw {message:`${JSON.stringify(block)} is invalid. ${workout.category} should have all integers as target.`}
+                    const res = yup.array().of(yup.number().required().integer()).isValidSync(block.default_target)
+                    if (!res) throw { message: `${JSON.stringify(block)} is invalid. ${workout.category} should have all integers as target.` }
                 })
             }
 
@@ -153,7 +156,6 @@ router.post('/create/', isAuthenticated, async (req, res) => {
                         data: {
                             id: supersetId,
                             name: supersetSchema.name,
-                            order: supersetSchema.order,
                             session_schema_id: sessionSchemaId
                         }
                     });
@@ -219,6 +221,46 @@ router.post('/edit/', isAuthenticated, async (req, res) => {
         // data in one go!
         // But how do we remove the removed items and all?
         throw { message: "Editing schema is disabled for now." }
+    } catch (err) {
+        return sendErrorResponse(res, err);
+    }
+})
+
+
+/**
+ * Route to get all sessionSchema owned by the user
+ */
+router.get('/all/', isAuthenticated, async (req, res) => {
+    try {
+        let schemas: any = await prisma.$queryRaw`SELECT session_schema.id, session_schema.name,  max(start_timestamp) as last_attempted_at
+        FROM session_schema
+        LEFT JOIN session_instance ON session_instance.session_schema_id = session_schema.id
+        WHERE session_schema.owner_id=${req.user.id}
+        GROUP BY session_schema.id, session_schema.name`
+
+        const ids = schemas.map((e: any) => e.id);
+
+        const activeIds = await prisma.session_instance.findMany({
+            where: {
+                end_timestamp: null,
+            },
+            select: {
+                id: true,
+                session_schema_id: true,
+                end_timestamp: true
+            }
+        })
+
+        schemas = schemas.map((e: any) => {
+            const found = activeIds.find(sessionInstance => {
+                return sessionInstance.session_schema_id === e.id
+            })
+
+            if (found) return { ...e, end_timestamp: found.end_timestamp }
+            return e;
+        })
+
+        res.send({ error: false, schemas })
     } catch (err) {
         return sendErrorResponse(res, err);
     }

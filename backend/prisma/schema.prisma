@@ -4,9 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider             = "mysql"
+  provider             = "postgresql"
   url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
 }
 
 model user {
@@ -84,7 +83,7 @@ model superset_schema {
   name                    String
   session_schema_id       String
   session_schema          session_schema            @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
-  order                   Int                       @default(0)
+  // order                   Int                       @default(0) 
   superset_workout_schema superset_workout_schema[]
 }
 
