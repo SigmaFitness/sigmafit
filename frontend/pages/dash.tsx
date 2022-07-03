@@ -103,7 +103,7 @@ const Dash = () => {
 
                 </div>
 
-                {sessionSchema && !sessionSchema.error && sessionSchema.schemas.length===0 ? <div className="alert my-2 alert-info">No schemas... Let's add a new one?</div> : null}
+                {sessionSchema && !sessionSchema.error && sessionSchema.schemas.length===0 ? <div className="alert my-2 alert-info">No schemas... Let&apos;s add a new one?</div> : null}
 
                 {isSessionSchemaLoading ? <div className="alert my-2 alert-info">Loading Session Schemas...</div> : null}
 

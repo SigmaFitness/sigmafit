@@ -9,7 +9,7 @@ import SessionSchemaForm from "../../components/SessionSchemaForm"
 
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now 
-const sessionSchemaEdit = () => {
+const SessionSchemaEdit = () => {
 
     const [initialValues, setInitialValues] = useState({
         session_name: '',
@@ -72,4 +72,4 @@ const sessionSchemaEdit = () => {
     )
 }
 
-export default sessionSchemaEdit
+export default SessionSchemaEdit
