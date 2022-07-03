@@ -1,25 +1,22 @@
-import { InformationCircleIcon, PlusCircleIcon, PlusIcon, XIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon, XIcon } from "@heroicons/react/solid";
 import { FieldArray, Form, Formik } from "formik";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { addNewSessionSchema, addNewWorkoutMutation, getAllWorkouts, getNewWorkoutAddFormOptions } from "../api";
+import { getAllWorkouts } from "../api";
 import { FormSingleSelectField as FormSingleSelectField } from "../components/FormSingleSelectField";
-import { MetaHead } from "../components/Head";
 import { FormInputField } from "../components/InputField";
-import { Navbar } from "../components/Navbar";
+import { MultiCreateInput } from "./MultiCreateInput";
 
 
 const workoutCategoryToValNeeded = (category: workout_category) => {
-    if (category === 'DISTANCE_AND_DURATION' || category === 'DURATION') return 'duration (in minutes)'
-    else return 'reps'
+    if (category === 'DISTANCE_AND_DURATION' || category === 'DURATION') return 'Duration (in minutes)'
+    else return 'Reps'
 }
 
 
 
-type workout_category =
+export type workout_category =
     | 'WEIGHT_AND_REPS'
     | 'REPS'
     | 'DISTANCE_AND_DURATION'
@@ -47,7 +44,8 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
     }>({});
 
     const [workoutOptions, setWorkouts] = useState<{ label: string, value: string }[]>([]);
-    const { data: workoutsInstances } = useQuery('workouts', getAllWorkouts, {
+
+    useQuery('workouts', getAllWorkouts, {
         onSettled: (data) => {
             if (data?.error) toast(data.message, { type: 'error' })
             else if (data) {
@@ -73,7 +71,7 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
 
     return (
 
-        <div className="form-container mt-16 prose">
+        <div className="form-container mt-16 prose px-4">
 
             <Formik
                 initialValues={initialValues}
@@ -105,13 +103,18 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                                             const workoutInstance = workoutIdToDataMap[workoutSchemaInstance.workout_id];
 
                                             return (
-                                                <RenderWorkoutForm
-                                                    uniqueIdPrefix={`workout_schema.${workoutIndx}`}
-                                                    workoutInstance={workoutInstance}
-                                                    key={workoutIndx}
-                                                    workoutOptions={workoutOptions}
-                                                    workoutSchemaInstance={workoutSchemaInstance}
-                                                />
+                                                <div className="border border-black mb-2 p-2 shadow-lg bg-base-200" key={workoutIndx}>
+                                                    <RenderWorkoutForm
+                                                        handleRemoveInstance={() =>
+                                                            setsArrayHelpers.remove(workoutIndx)
+                                                        }
+                                                        uniqueIdPrefix={`workout_schema.${workoutIndx}`}
+                                                        workoutInstance={workoutInstance}
+                                                        key={workoutIndx}
+                                                        workoutOptions={workoutOptions}
+                                                        workoutSchemaInstance={workoutSchemaInstance}
+                                                    />
+                                                </div>
                                             )
                                         }) : null}
 
@@ -143,13 +146,18 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                                             values.superset_schema.map((superset_schema_instance, superset_schema_indx) => {
                                                 return (
 
-                                                    <div key={'superset_schema_indx' + superset_schema_indx}>
+                                                    <div key={'superset_schema_indx' + superset_schema_indx} className='border border-black mb-2 p-2 shadow-lg bg-base-200'>
+                                                        <div className="flex items-center gap-2">
 
-                                                        <FormInputField
-                                                            fieldId={`superset_schema.${superset_schema_indx}.name`}
-                                                            fieldLabel="Superset Name"
-                                                            placeholder="BICEPS &amp; TRICEPS"
-                                                        />
+                                                            <FormInputField
+                                                                fieldId={`superset_schema.${superset_schema_indx}.name`}
+                                                                fieldLabel="Superset Name"
+                                                                placeholder="BICEPS &amp; TRICEPS"
+                                                            />
+                                                            <button type="button" className="ml-2  mt-3  btn-secondary btn btn-xs" onClick={() => setsArrayHelpers.remove(superset_schema_indx)}>
+                                                                <XIcon className="w-4" />
+                                                            </button>
+                                                        </div>
 
                                                         <FieldArray
                                                             name={`superset_schema.${superset_schema_indx}.superset_workout_schema`}
@@ -160,13 +168,18 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                                                                         const workoutInstance = workoutIdToDataMap[workoutSchemaInstance.workout_id];
 
                                                                         return (
-                                                                            <RenderWorkoutForm
-                                                                                uniqueIdPrefix={`superset_schema.${superset_schema_indx}.superset_workout_schema.${workoutIndx}`}
-                                                                                workoutInstance={workoutInstance}
-                                                                                key={workoutIndx}
-                                                                                workoutOptions={workoutOptions}
-                                                                                workoutSchemaInstance={workoutSchemaInstance}
-                                                                            />
+                                                                            <div className="pl-6 mb-2" key={workoutIndx}>
+                                                                                <RenderWorkoutForm
+                                                                                    handleRemoveInstance={() => {
+                                                                                        supersetWorkoutSchemaArrayHelpers.remove(workoutIndx)
+                                                                                    }}
+                                                                                    uniqueIdPrefix={`superset_schema.${superset_schema_indx}.superset_workout_schema.${workoutIndx}`}
+                                                                                    workoutInstance={workoutInstance}
+
+                                                                                    workoutOptions={workoutOptions}
+                                                                                    workoutSchemaInstance={workoutSchemaInstance}
+                                                                                />
+                                                                            </div>
                                                                         )
                                                                     }) : null}
 
@@ -224,17 +237,32 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
 
 
 
-const RenderWorkoutForm = ({ uniqueIdPrefix, workoutInstance, workoutOptions, workoutSchemaInstance }: { workoutInstance: any, workoutOptions: any, workoutSchemaInstance: any, uniqueIdPrefix: string }) => {
+const RenderWorkoutForm = ({ handleRemoveInstance, uniqueIdPrefix, workoutInstance, workoutOptions, workoutSchemaInstance }: {
+    handleRemoveInstance: () => void,
+    workoutInstance: any,
+    workoutOptions: any,
+    workoutSchemaInstance: any,
+    uniqueIdPrefix: string
+}) => {
 
-    const tmp = workoutInstance ? workoutCategoryToValNeeded(workoutInstance.category) : null
+    const targetEntity = workoutInstance ? workoutCategoryToValNeeded(workoutInstance.category) : null
 
     return (
-        <>
-            <FormSingleSelectField
-                fieldId={`${uniqueIdPrefix}.workout_id`}
-                fieldLabel="Workout Name"
-                options={workoutOptions}
-            />
+        <div>
+
+            <div>
+                <div className="flex items-center">
+                    <FormSingleSelectField
+                        fieldId={`${uniqueIdPrefix}.workout_id`}
+                        fieldLabel="Workout Name"
+                        options={workoutOptions}
+                    />
+                    <button className="ml-2  mt-3  btn-secondary btn btn-xs" type="button" onClick={handleRemoveInstance}>
+                        <XIcon className="w-4" />
+                    </button>
+                </div>
+
+            </div>
 
             {workoutInstance ?
 
@@ -244,14 +272,23 @@ const RenderWorkoutForm = ({ uniqueIdPrefix, workoutInstance, workoutOptions, wo
 
                         <div className="text-xs">
                             <InformationCircleIcon className="w-4 inline-block mr-1" />
-                            The selected workout is of <span className="font-semibold text-2xs px-1">{workoutInstance.category}</span> category. Please enter the default target <span className="font-semibold text-2xs px-1">{tmp}</span>.
+                            The selected workout is of <span className="font-semibold text-2xs px-1">{workoutInstance.category}</span> category. Please enter the default target <span className="font-semibold text-2xs px-1">{targetEntity}</span>.
                         </div>
                     </div>
 
 
                     {/* DEFAULT TARGETS */}
 
-                    <FieldArray
+
+                    <MultiCreateInput
+                        targetEntity={targetEntity ?? 'NONE'}
+                        fieldId={`${uniqueIdPrefix}.default_target`}
+                        isInline={false}
+                    />
+
+
+
+                    {/* <FieldArray
                         name={`${uniqueIdPrefix}.default_target`}
                         render={setsArrayHelpersDefaultTargets => (
                             <>
@@ -278,12 +315,14 @@ const RenderWorkoutForm = ({ uniqueIdPrefix, workoutInstance, workoutOptions, wo
                                         Add new set info
                                     </div>
                                 </div>
-                            </>)} />
+                            </>)} /> */}
 
                 </> : null}
 
-        </>
+        </div>
     )
 }
 
 export default SessionSchemaForm;
+
+

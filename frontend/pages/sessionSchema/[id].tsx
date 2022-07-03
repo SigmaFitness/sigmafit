@@ -57,17 +57,17 @@ const sessionSchemaEdit = () => {
 
             <Navbar />
 
-<div className="px-3 my-10">
+            <div className="px-3 my-10">
 
-            {isLoading ? <div className="alert alert-info max-w-2xl mx-auto">Loading...</div> :
-                <SessionSchemaForm
-                    heading="Edit Session Schema"
-                    initialValues={initialValues}
-                    handleSubmit={handleSubmit}
-                    waitingForServerResponse={false}
-                />}
+                {isLoading ? <div className="alert alert-info max-w-2xl mx-auto">Loading...</div> :
+                    <SessionSchemaForm
+                        heading="Edit Session Schema"
+                        initialValues={initialValues}
+                        handleSubmit={handleSubmit}
+                        waitingForServerResponse={false}
+                    />}
+            </div>
         </div>
-</div>
 
     )
 }

@@ -49,7 +49,7 @@ const SessionInstance: NextPage = () => {
     }
 
     const { isLoading: isMutationResultLoading, isError, mutateAsync } = useMutation(sessionInstanceAddOrModifyBlock, {
-        onSettled(data, error, variables, context) {
+        onSettled(data) {
             if (data?.error) {
                 toast(data.message, { type: 'error' })
             }
@@ -60,8 +60,7 @@ const SessionInstance: NextPage = () => {
         // get data from formik
         const data = values.sets_data
         // make request
-
-        if (data !== workouts[workoutIndex].current_workout_instance_sets_data) {
+        if (data.length !==0 && data !== workouts[workoutIndex].current_workout_instance_sets_data) {
             const res = await mutateAsync({
                 block_type: workouts[workoutIndex].type,
                 session_instance_id: sessionInstanceId,
@@ -149,7 +148,7 @@ const SessionInstance: NextPage = () => {
                                     </div>
 
                                     <div className='ml-4 mt-2 mb-4'>
-                                        <label htmlFor="my-drawer-4" className="drawer-button btn btn-sm btn-primary">browse workouts</label>
+                                        <label htmlFor="my-drawer-4" className="drawer-button btn btn-sm btn-secondary text-secondary-content">browse workouts</label>
                                     </div>
 
                                     <Formik
@@ -265,9 +264,8 @@ const Card = ({ name, superset_schema_name, type, default_target, workout_catego
 
                 <div className="px-4 py-2">
                     <div className='mb-3'>
-
-                    <h2 className="card-title">{name}</h2>
-                    <h3 className="">{type === 'SUPERSET_WORKOUT' ? `Superset: ${superset_schema_name}` : null}</h3>
+                        <h2 className="card-title">{name}</h2>
+                        <h3 className="">{type === 'SUPERSET_WORKOUT' ? `Superset: ${superset_schema_name}` : null}</h3>
                     </div>
 
 

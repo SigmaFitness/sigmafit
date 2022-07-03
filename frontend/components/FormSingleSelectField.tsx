@@ -32,6 +32,9 @@ export const FormSingleSelectField = ({
 				{fieldLabel}
 			</div>
 			<Select
+			components={{
+				IndicatorSeparator: null
+			}}
 				name={fieldId}
 				onChange={(option) => {
 					setFieldValue(fieldId, option?.value)
