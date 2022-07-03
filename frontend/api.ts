@@ -1,8 +1,7 @@
 import axios from "axios"
 
 
-const serverUrl = 'http://localhost:8000/api'
-
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 export type ApiResponse<T> = {
     error: true,
