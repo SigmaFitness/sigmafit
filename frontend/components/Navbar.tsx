@@ -9,7 +9,11 @@ import { Logo } from './Logo'
 
 export const Navbar = () => {
 
-    const { data, isLoading } = useQuery('currentUser', getCurrentUser)
+    const { data, isLoading } = useQuery('currentUser', getCurrentUser, {
+        retry(failureCount, error) {
+            return false
+        },
+    })
 
     return (
         <div className="navbar min-h-12 h-12">

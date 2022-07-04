@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
+const apiPrefixSlug = '/api'
 
 export type ApiResponse<T> = {
     error: true,
@@ -31,14 +31,14 @@ const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Prom
 
 
 export const signUpUserMutation = async (userData: any) => {
-    return usePost<any>(`${serverUrl}/auth/signUp/`, 'POST', userData)
+    return usePost<any>(`${apiPrefixSlug}/auth/signUp`, 'POST', userData)
 }
 
 
 
 
 export const signInUserMutation = async (userData: any) => {
-    return usePost<any>(`${serverUrl}/auth/signIn/`, 'POST', userData)
+    return usePost<any>(`${apiPrefixSlug}/auth/signIn`, 'POST', userData)
 }
 
 
@@ -46,25 +46,25 @@ export const signInUserMutation = async (userData: any) => {
 
 
 export const getAllActiveSessions = async () => {
-    return usePost<any>(`${serverUrl}/sessionInstance/allActive/`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/sessionInstance/allActive`, 'GET')
 }
 
 
 
 export const getAllSchemasOwnedByUser = async () => {
-    return usePost<any>(`${serverUrl}/sessionSchema/all`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/all`, 'GET')
 }
 
 
 
 export const startANewSessionFromSchemaId = async (sessionSchemaId: string) => {
-    return usePost<any>(`${serverUrl}/sessionInstance/start/`, 'POST', { sessionSchemaId })
+    return usePost<any>(`${apiPrefixSlug}/sessionInstance/start`, 'POST', { sessionSchemaId })
 }
 
 
 
 export const getAllWorkouts = async () => {
-    return usePost<any>(`${serverUrl}/workout/list/`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/workout/list`, 'GET')
 }
 
 
@@ -74,24 +74,24 @@ export const addNewWorkoutMutation = async (newWorkoutData: any) => {
     Object.keys(newWorkoutData).forEach(e => {
         if (newWorkoutData[e]) newObj[e] = newWorkoutData[e]
     })
-    return usePost<any>(`${serverUrl}/workout/add/`, 'POST', newObj)
+    return usePost<any>(`${apiPrefixSlug}/workout/add`, 'POST', newObj)
 }
 
 
 export const getNewWorkoutAddFormOptions = async () => {
-    return usePost<any>(`${serverUrl}/workout/formOptions/`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/workout/formOptions`, 'GET')
 }
 
 
 
 
 export const addNewSessionSchema = async (sessionSchema: any) => {
-    return usePost<any>(`${serverUrl}/sessionSchema/create/`, 'POST', sessionSchema)
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/create`, 'POST', sessionSchema)
 }
 
 
 export const getSessionSchemaDetails = async (schemaId: string) => {
-    return usePost<any>(`${serverUrl}/sessionSchema/details/${schemaId}/`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/details/${schemaId}`, 'GET')
 }
 
 
@@ -105,25 +105,25 @@ export const getSessionInstanceDetails = async (schemaInstanceId: string) => {
             start_timestamp: string,
             schema_name: string,
         }
-    }>(`${serverUrl}/sessionInstance/state/${schemaInstanceId}/`, 'GET')
+    }>(`${apiPrefixSlug}/sessionInstance/state/${schemaInstanceId}`, 'GET')
 }
 
 
 export const getCurrentUser = async () => {
-    return usePost<any>(`${serverUrl}/auth/currentUser`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/auth/currentUser`, 'GET')
 }
 
 
 export const logOutUser = async () => {
-    return usePost<any>(`${serverUrl}/auth/logOut`, 'GET')
+    return usePost<any>(`${apiPrefixSlug}/auth/logOut`, 'GET')
 }
 
 export const sessionInstanceAddOrModifyBlock = async (payload: any) => {
-    return usePost<any>(`${serverUrl}/sessionInstance/addOrModifyBlock/`, 'POST', payload)
+    return usePost<any>(`${apiPrefixSlug}/sessionInstance/addOrModifyBlock`, 'POST', payload)
 }
 
 export const endSessionInstance = async (activeSessionInstanceId: any) => {
-    return usePost<any>(`${serverUrl}/sessionInstance/end/`, 'POST', {
+    return usePost<any>(`${apiPrefixSlug}/sessionInstance/end`, 'POST', {
         activeSessionInstanceId
     })
 }
