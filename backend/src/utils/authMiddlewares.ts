@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 /**
  * Middleware function to check if the user is authenticated or not
  * 
- * We'll pass the middleware only if the user is authenticated;
+ * We'll use the middleware only if we want the authenticated users data;
  */
 export const isAuthenticated: RequestHandler = (req, res, next) => {
     try {

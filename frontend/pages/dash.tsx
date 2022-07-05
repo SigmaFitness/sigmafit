@@ -3,33 +3,32 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query"
 import { toast } from "react-toastify";
-import { getAllActiveSessions, getAllSchemasOwnedByUser as getAllSessionSchemaOwnedByUser, startANewSessionFromSchemaId } from "../api";
+import { ErrorResponse, getAllActiveSessions, getAllSchemasOwnedByUser as getAllSessionSchemaOwnedByUser, startANewSessionFromSchemaId } from "../api";
 import { Navbar } from "../components/Navbar";
+import { useWithAuth } from "../hooks/useWithAuth";
 
 
 
 
 
 const Dash = () => {
-
     const { data: activeSessions, isLoading: isActiveSessionsLoading } = useQuery('activeSessions', getAllActiveSessions, {
-        onSettled: (data) => {
-            if (data?.error) toast(data.message, { type: 'error' })
-        }
+        onSettled: (_, error: ErrorResponse | null) => {
+            if (error) toast(error.message, { type: 'error' })
+        },
+        retry: false
     });
 
 
-    const { data: sessionSchema, isLoading: isSessionSchemaLoading } = useQuery('schemas', getAllSessionSchemaOwnedByUser, {
-        onSettled: (data) => {
-            if (data?.error) toast(data.message, { type: 'error' })
-        }
+    const { data: sessionSchema, isLoading: isSessionSchemaLoading } = useQuery('getAllSessionSchemaOwnedByUser', getAllSessionSchemaOwnedByUser, {
+        onSettled: (_, error: ErrorResponse | null) => {
+            if (error) toast(error.message, { type: 'error' })
+        },
+        retry: false
     });
 
 
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation(startANewSessionFromSchemaId)
-
-
-
+    const { isLoading: waitingForMutateServerResponse, mutate } = useMutation<any,ErrorResponse, string>(startANewSessionFromSchemaId)
 
     const router = useRouter()
 
@@ -161,19 +160,20 @@ const Dash = () => {
 
                                         <button
 
-                                            disabled={e.end_timestamp === null} onClick={() => {
+                                            disabled={e.end_timestamp === null || waitingForMutateServerResponse} onClick={() => {
                                                 const res = confirm(`Are you sure you want to start a new [${e.name}] session?`)
                                                 if (res) {
                                                     // start a new session
                                                     mutate(e.id, {
                                                         onSettled(data, error, variables, context) {
-                                                            if (data?.error) {
-                                                                toast(data.message, {
+                                                            if (error) {
+                                                                toast(error.message, {
                                                                     type: 'error'
                                                                 })
                                                             } else {
                                                                 toast('Redirecting to active session dash..', {
                                                                     type: 'success',
+                                                                    autoClose: 1000,
                                                                     onClose: () => {
                                                                         router.push(`/sessionInstance/${(data as any).data.id}`)
                                                                     }
@@ -216,4 +216,4 @@ const Dash = () => {
 }
 
 
-export default Dash
+export default useWithAuth(Dash)

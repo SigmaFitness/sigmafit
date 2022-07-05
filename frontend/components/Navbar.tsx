@@ -2,18 +2,14 @@ import { MenuAlt1Icon, MenuIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
-import { getCurrentUser } from '../api'
+import { useGetCurrentUserQuery } from '../api'
 import { Logo } from './Logo'
 
 
 
 export const Navbar = () => {
 
-    const { data, isLoading } = useQuery('currentUser', getCurrentUser, {
-        retry(failureCount, error) {
-            return false
-        },
-    })
+    const { isError, isLoading } = useGetCurrentUserQuery()
 
     return (
         <div className="navbar min-h-12 h-12">
@@ -39,7 +35,7 @@ export const Navbar = () => {
                         className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52"
                     >
 
-                        {!isLoading && !data?.error ?
+                        {!isLoading && !isError ?
 
                             <>
 

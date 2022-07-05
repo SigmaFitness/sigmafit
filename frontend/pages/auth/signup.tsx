@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { signUpUserMutation } from "../../api";
+import { ErrorResponse, signUpUserMutation } from "../../api";
 import { ErrorMessageAlertBox } from "../../components/ErrorMessageAlertBox";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
@@ -24,17 +24,15 @@ const initialValues: {
 
 
 const SignUp = () => {
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation(signUpUserMutation)
+    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any, ErrorResponse>(signUpUserMutation)
     const router = useRouter()
 
     const handleSubmit = (values: any) => {
         mutate(values, {
-            onSettled(data, error, variables, context) {
-                if (data?.error) {
-                    toast(data.message, {
-                        type: 'error'
-                    })
-                } else {
+            onSettled(data, error) {
+                if (error) toast(error.message, { type: 'error' })
+
+                if (data) {
                     toast('Registered successfully.', {
                         type: 'success',
                         onClose: () => {

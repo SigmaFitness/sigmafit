@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { useMutation, useQuery } from "react-query"
 import { toast } from "react-toastify"
-import { getSessionSchemaDetails } from "../../api"
+import { ErrorResponse, getSessionSchemaDetails } from "../../api"
 import { MetaHead } from "../../components/Head"
 import { Navbar } from "../../components/Navbar"
 import SessionSchemaForm from "../../components/SessionSchemaForm"
@@ -24,16 +24,11 @@ const SessionSchemaEdit = () => {
 
 
 
-
-
-
-
-    const { isLoading } = useQuery(`getSessionSchemaDetails${id}`, () => getSessionSchemaDetails(id as string), {
+    const { isLoading } = useQuery<any, ErrorResponse>(['getSessionSchemaDetails', id], () => getSessionSchemaDetails(id as string), {
         enabled: !!id,
-        onSettled: (data) => {
-            if (data?.error) {
-                toast(data.message, { type: 'error' })
-            } else if (data) {
+        onSettled: (data, error) => {
+            if (error) toast(error.message, { type: 'error' })
+            else if (data) {
                 setInitialValues(data.data)
             }
         }

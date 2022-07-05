@@ -1,17 +1,18 @@
 import { ErrorMessage, useFormikContext } from "formik"
 import { useState } from "react"
 import CreatableSelect from 'react-select/creatable';
+import { toast } from "react-toastify";
 
 
 
 
 export const MultiCreateInput = ({ fieldId, isInline = false, targetEntity }: { targetEntity: string, fieldId: string, isInline: boolean }) => {
-    const { getFieldProps, setFieldValue } = useFormikContext()
-
+    const { getFieldProps, setFieldValue, getFieldMeta } = useFormikContext()
     const formikValue = getFieldProps(fieldId).value
 
+    const initialValue=getFieldMeta(fieldId).initialValue
     const [currentTextValue, setCurrentTextValue] = useState('')
-    const [values, setValues] = useState<any>([])
+    const [values, setValues] = useState<any>((initialValue as any[] ?? []).map((e:any) => ({label: e, value: (Math.random()*1000)})))
 
 
     const handleKeyDown: any = (event: KeyboardEvent) => {
@@ -46,7 +47,12 @@ export const MultiCreateInput = ({ fieldId, isInline = false, targetEntity }: { 
                         setFieldValue(fieldId, newValue.map(e => e.label))
                         setValues(newValue)
                     }}
-                    onInputChange={(newValue) => setCurrentTextValue(newValue)}
+                    onInputChange={(newValue) => {
+                        if(true)setCurrentTextValue(newValue) // check
+                        else{
+                            toast('Only numeric values are allowed', {type: 'error', autoClose: 100})
+                        }
+                    }}
                     onKeyDown={handleKeyDown}
                     styles={{
                         control: (base) => ({

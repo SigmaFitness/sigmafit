@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import { addNewSessionSchema } from "../../api";
+import { addNewSessionSchema, ErrorResponse } from "../../api";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import SessionSchemaForm from "../../components/SessionSchemaForm";
@@ -14,7 +14,7 @@ const AddSessionSchema = () => {
         superset_schema: []
     }
 
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation(addNewSessionSchema)
+    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any,ErrorResponse>(addNewSessionSchema)
 
 
 
@@ -24,17 +24,16 @@ const AddSessionSchema = () => {
     const handleSubmit = (values: any) => {
         mutate(values, {
             onSettled(data, error, variables, context) {
-                if (data?.error) {
-                    toast(data.message, {
+                if (error) {
+                    toast(error.message, {
                         type: 'error'
                     })
                 } else {
                     toast('Session Schema added successfully.', {
                         type: 'success',
-                        onClose: () => {
-                            router.push('/dash')
-                        }
                     })
+                    router.push('/dash')
+
                 }
             },
         })

@@ -1,18 +1,15 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { getCurrentUser } from "../api";
+import { useGetCurrentUserQuery } from "../api";
 import { Navbar } from "../components/Navbar";
 
 const Home: NextPage = () => {
 
-  const { data: user } = useQuery('getCurrentUser', getCurrentUser)
+  const { isError, isLoading, data } = useGetCurrentUserQuery()
 
   return (
     <div>
-
-
-
       {/* <div className="hero"> */}
 
       <div className="landing-hero" >
@@ -21,9 +18,9 @@ const Home: NextPage = () => {
           <div className="max-w-4xl">
             <h1 className="mb-5 text-4xl font-black">Workout tracking made easy.</h1>
             <p className="mb-5 text-xl">Track your progress at gym hassle free. And use our personalized insights to improve your fitness journey.</p>
-            {user && !user.error ?
+            {!isError && !isError ?
               <Link href={'/dash'}>
-              <button className="btn btn-primary">Go to Dashboard</button>
+              <button className="btn btn-primary">Go to Dashboard <span className="lowercase mx-1">@{(data as any).user.fName}</span> </button>
               </Link> : <Link href={'/auth/signin'}><button className="btn btn-primary">Get Started for free</button></Link>}
           </div>
 

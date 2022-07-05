@@ -1,17 +1,21 @@
 import axios from "axios"
+import { useQuery } from "react-query"
 
 
 const apiPrefixSlug = '/api'
 
-export type ApiResponse<T> = {
-    error: true,
-    message: string
-} | (
-        {
-            error: false,
-        } & T
-    )
 
+export type ErrorResponse = {
+    error: true,
+    message: string,
+    status: number
+}
+
+export type ApiResponse<T> = (
+    {
+        error: false,
+    } & T
+)
 
 const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Promise<ApiResponse<T>> => {
     try {
@@ -22,21 +26,26 @@ const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Prom
         })
         return response.data
     } catch (err: any) {
-        return {
+        throw {
             error: true,
-            message: err.response.data.message ?? err.message
+            message: err.response.data.message ?? err.message,
+            status: err.response.status
         }
     }
 }
 
-
+/**
+ * Signup the user
+ */
 export const signUpUserMutation = async (userData: any) => {
     return usePost<any>(`${apiPrefixSlug}/auth/signUp`, 'POST', userData)
 }
 
 
 
-
+/**
+ * Signin the user
+ */
 export const signInUserMutation = async (userData: any) => {
     return usePost<any>(`${apiPrefixSlug}/auth/signIn`, 'POST', userData)
 }
@@ -44,19 +53,25 @@ export const signInUserMutation = async (userData: any) => {
 
 
 
-
+/**
+ * Get all active sessions for the user
+ */
 export const getAllActiveSessions = async () => {
     return usePost<any>(`${apiPrefixSlug}/sessionInstance/allActive`, 'GET')
 }
 
 
-
+/**
+ * Get all schema owned by the user
+ */
 export const getAllSchemasOwnedByUser = async () => {
     return usePost<any>(`${apiPrefixSlug}/sessionSchema/all`, 'GET')
 }
 
 
-
+/**
+ * Start a new session from schema Id
+ */
 export const startANewSessionFromSchemaId = async (sessionSchemaId: string) => {
     return usePost<any>(`${apiPrefixSlug}/sessionInstance/start`, 'POST', { sessionSchemaId })
 }
@@ -109,9 +124,13 @@ export const getSessionInstanceDetails = async (schemaInstanceId: string) => {
 }
 
 
-export const getCurrentUser = async () => {
+const getCurrentUser = async () => {
     return usePost<any>(`${apiPrefixSlug}/auth/currentUser`, 'GET')
 }
+
+export const useGetCurrentUserQuery = () => useQuery<ApiResponse<unknown>, ErrorResponse>('getCurrentUser', getCurrentUser, {
+    retry: false
+})
 
 
 export const logOutUser = async () => {

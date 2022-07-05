@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useMutation, useQuery } from "react-query"
 import { toast } from "react-toastify"
 import { string } from "yup"
-import { addNewWorkoutMutation, getNewWorkoutAddFormOptions } from "../../api"
+import { addNewWorkoutMutation, ErrorResponse, getNewWorkoutAddFormOptions } from "../../api"
 import { FormSingleSelectField } from "../../components/FormSingleSelectField"
 import { MetaHead } from "../../components/Head"
 import { FormInputField } from "../../components/InputField"
@@ -28,30 +28,28 @@ const initialValues: {
 
 
 const AddNewWorkout = () => {
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation(addNewWorkoutMutation)
+    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any,ErrorResponse>(addNewWorkoutMutation)
     const router = useRouter()
 
 
-    const { data: formOptions, isLoading: isFormOptionsLoading } = useQuery('getNewWorkoutAddFormOptions', getNewWorkoutAddFormOptions, {
-        onSettled: (data) => {
-            if (data?.error) toast(data.message, { type: 'error' })
+    const { data: formOptions, isLoading: isFormOptionsLoading } = useQuery<any,ErrorResponse>('getNewWorkoutAddFormOptions', getNewWorkoutAddFormOptions, {
+        onSettled: (data, error) => {
+            if (error) toast(error.message, { type: 'error' })
         }
     });
 
     const handleSubmit = (values: any) => {
         mutate(values, {
             onSettled(data, error, variables, context) {
-                if (data?.error) {
-                    toast(data.message, {
+                if (error) {
+                    toast(error.message, {
                         type: 'error'
                     })
                 } else {
                     toast('Workout added successfully.', {
-                        type: 'success',
-                        onClose: () => {
-                            router.push('/workout')
-                        }
+                        type: 'success'
                     })
+                    router.push('/workout')
                 }
             },
         })

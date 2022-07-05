@@ -3,7 +3,7 @@ import { FieldArray, Form, Formik } from "formik";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { getAllWorkouts } from "../api";
+import { ErrorResponse, getAllWorkouts } from "../api";
 import { FormSingleSelectField as FormSingleSelectField } from "../components/FormSingleSelectField";
 import { FormInputField } from "../components/InputField";
 import { MultiCreateInput } from "./MultiCreateInput";
@@ -46,8 +46,8 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
     const [workoutOptions, setWorkouts] = useState<{ label: string, value: string }[]>([]);
 
     useQuery('workouts', getAllWorkouts, {
-        onSettled: (data) => {
-            if (data?.error) toast(data.message, { type: 'error' })
+        onSettled: (data, error: ErrorResponse | null) => {
+            if (error) toast(error.message, { type: 'error' })
             else if (data) {
                 const obj: any = {}
                 setWorkouts(

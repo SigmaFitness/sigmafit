@@ -2,16 +2,16 @@ import { XIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { getAllWorkouts } from "../../api";
+import { ErrorResponse, getAllWorkouts } from "../../api";
 import { Navbar } from "../../components/Navbar";
 
 
 
 const Workouts = () => {
 
-    const { data, isLoading } = useQuery('workouts', getAllWorkouts, {
-        onSettled: (data) => {
-            if (data?.error) toast(data.message, { type: 'error' })
+    const { data, isLoading } = useQuery<any,ErrorResponse>('workouts', getAllWorkouts, {
+        onSettled: (data, error) => {
+            if (error) toast(error.message, { type: 'error' })
         }
     });
 

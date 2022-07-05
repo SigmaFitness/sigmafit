@@ -9,7 +9,7 @@ import { ArrowCircleLeftIcon, ArrowCircleRightIcon, ChevronDoubleLeftIcon, Chevr
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
 import { useMutation, useQuery } from 'react-query'
-import { endSessionInstance, getSessionInstanceDetails, sessionInstanceAddOrModifyBlock } from '../../api'
+import { endSessionInstance, ErrorResponse, getSessionInstanceDetails, sessionInstanceAddOrModifyBlock } from '../../api'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 
@@ -48,10 +48,10 @@ const SessionInstance: NextPage = () => {
         setWorkoutIndex((val) => val - 1)
     }
 
-    const { isLoading: isMutationResultLoading, isError, mutateAsync } = useMutation(sessionInstanceAddOrModifyBlock, {
-        onSettled(data) {
-            if (data?.error) {
-                toast(data.message, { type: 'error' })
+    const { isLoading: isMutationResultLoading, isError, mutateAsync } = useMutation<any,ErrorResponse,any>(sessionInstanceAddOrModifyBlock, {
+        onSettled(data,error) {
+            if (error) {
+                toast(error.message, { type: 'error' })
             }
         },
     })
@@ -60,15 +60,13 @@ const SessionInstance: NextPage = () => {
         // get data from formik
         const data = values.sets_data
         // make request
-        if (data.length !==0 && data !== workouts[workoutIndex].current_workout_instance_sets_data) {
+        if (data.length !== 0 && data !== workouts[workoutIndex].current_workout_instance_sets_data) {
             const res = await mutateAsync({
                 block_type: workouts[workoutIndex].type,
                 session_instance_id: sessionInstanceId,
                 id: workouts[workoutIndex].id,
                 sets_data: data
             })
-
-            console.log(res)
 
             if (res.error) return;
         }
@@ -103,11 +101,11 @@ const SessionInstance: NextPage = () => {
     }, [])
 
 
-    const { data } = useQuery('getSessionInstanceDetails', () => getSessionInstanceDetails(sessionInstanceId as string), {
+    const { data } = useQuery(['getSessionInstanceDetails', sessionInstanceId], () => getSessionInstanceDetails(sessionInstanceId as string), {
         enabled: !!sessionInstanceId,
-        onSettled(data, error) {
-            if (data?.error) {
-                toast(data.message, { type: 'error' })
+        onSettled: (data, error: ErrorResponse | null) => {
+            if (error) {
+                toast(error.message, { type: 'error' })
             } else if (data) {
                 const intervalId = setInterval(() => {
                     setTimeSinceVal(timeSince(new Date(data.session_instance_details.start_timestamp)))
@@ -147,8 +145,14 @@ const SessionInstance: NextPage = () => {
                                         <div className='inline-block font-bold'>{timeSinceVal}</div>
                                     </div>
 
+                                    <div className='ml-4'>
+                                        <div className='inline-block mr-2'>Current workout: </div>
+                                        <div className='inline-block font-bold'>{workoutIndex+1}/{workouts.length}</div>
+                                    </div>
+
+
                                     <div className='ml-4 mt-2 mb-4'>
-                                        <label htmlFor="my-drawer-4" className="drawer-button btn btn-sm btn-secondary text-secondary-content">browse workouts</label>
+                                        <label htmlFor="my-drawer-4" className="drawer-button btn btn-sm btn-secondary text-secondary-content">browse all workouts</label>
                                     </div>
 
                                     <Formik
