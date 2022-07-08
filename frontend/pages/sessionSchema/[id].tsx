@@ -13,8 +13,7 @@ const SessionSchemaEdit = () => {
 
     const [initialValues, setInitialValues] = useState({
         session_name: '',
-        workout_schema: [],
-        superset_schema: []
+        schema_blocks: []
     })
 
 

@@ -41,7 +41,7 @@ router.get('/details/:id', isAuthenticated, async (req, res) => {
         res.send({
             error: false,
             data: {
-                ...data,
+                schema_blocks: [...data.workout_schema.map(e => ({...e, type: 'workout_schema_block'})), ...data.superset_schema.map(e => ({...e, type: 'superset_schema_block'}))],
                 session_name: data.name
             }
         })
@@ -60,23 +60,25 @@ router.post('/create/', isAuthenticated, async (req, res) => {
 
         const validatedData = await addSessionSchemaPayloadValidator.validate(data)
 
-        if ((Number(!data.superset_schema || data.superset_schema.length == 0)) + (Number(!data.workout_schema || data.workout_schema.length == 0)) == 2) throw { message: 'session must\'ve at least one workout or superset workout' }
-
         const sessionSchemaId = v4();
-
         // perform check to ensure that all workout ids are correct
-        const workoutIdsToSchemaBlock: { [K in string]: (typeof validatedData.workout_schema[number])[] } = {}
+        const workoutIdsToSchemaBlock: { [K in string]: any[] } = {}
 
-        validatedData.superset_schema.forEach(e => {
-            e.superset_workout_schema.forEach(f => {
-                if (!workoutIdsToSchemaBlock[f.workout_id]) workoutIdsToSchemaBlock[f.workout_id] = []
-                workoutIdsToSchemaBlock[f.workout_id].push(f)
-            })
+
+        validatedData.schema_blocks.forEach(currSchemaBlock => {
+            if (currSchemaBlock.type === 'workout_schema_block') {
+                // workout block
+                if (!workoutIdsToSchemaBlock[currSchemaBlock.workout_id]) workoutIdsToSchemaBlock[currSchemaBlock.workout_id] = []
+                workoutIdsToSchemaBlock[currSchemaBlock.workout_id].push(currSchemaBlock)
+            } else {
+                // superset block
+                currSchemaBlock.superset_workout_schema.map((workout: any) => {
+                    if (!workoutIdsToSchemaBlock[workout.workout_id]) workoutIdsToSchemaBlock[workout.workout_id] = []
+                    workoutIdsToSchemaBlock[workout.workout_id].push(workout)
+                })
+            }
         })
-        validatedData.workout_schema.forEach(e => {
-            if (!workoutIdsToSchemaBlock[e.workout_id]) workoutIdsToSchemaBlock[e.workout_id] = []
-            workoutIdsToSchemaBlock[e.workout_id].push(e)
-        })
+
 
         const uniqueWorkoutIdsArr = Object.keys(workoutIdsToSchemaBlock)
         const validWorkouts = (await prisma.workout.findMany({
@@ -124,18 +126,16 @@ router.post('/create/', isAuthenticated, async (req, res) => {
 
 
 
-        // we don't need to validate the workout_id, thanks to the referential integrity
+        // we don't need to validate the workout_id, thanks to the referential integrity (but we don't have it in prod for perf reasons)
         const response = await prisma.$transaction(
             async (prisma) => {
 
                 const returnData: {
                     session_schema: session_schema,
-                    superset_schema: any[],
-                    workout_schema: any[]
+                    blocks: any[],
                 } = {
                     session_schema: null,
-                    superset_schema: [],
-                    workout_schema: []
+                    blocks: []
                 }
                 returnData.session_schema = await prisma.session_schema.create({
                     data: {
@@ -145,10 +145,8 @@ router.post('/create/', isAuthenticated, async (req, res) => {
                     }
                 });
 
-                returnData.superset_schema = []
-
                 // handle superset
-                for (let supersetSchema of validatedData.superset_schema) {
+                const handleSuperset = async (supersetSchema: any) => {
                     const supersetId = v4();
                     let supersetSchemaRet: any = {};
                     // create superset
@@ -178,11 +176,14 @@ router.post('/create/', isAuthenticated, async (req, res) => {
                         }))
                     }
 
-                    returnData.superset_schema.push(supersetSchemaRet)
+                    returnData.blocks.push({
+                        ...supersetSchemaRet,
+                        type: 'superset_schema_block'
+                    })
                 }
 
                 // add workout
-                for (let workout of validatedData.workout_schema) {
+                const handleWorkout = async (workout: any) => {
                     const doc = await prisma.workout_schema.create({
                         data: {
                             default_target: workout.default_target,
@@ -192,7 +193,18 @@ router.post('/create/', isAuthenticated, async (req, res) => {
                             workout_id: workout.workout_id
                         }
                     })
-                    returnData.workout_schema.push(doc)
+                    returnData.blocks.push({
+                        ...doc,
+                        type: 'workout_schema_block'
+                    })
+                }
+
+                for(const block of validatedData.schema_blocks){
+                    if(block.type==='workout_schema_block'){
+                        await handleWorkout(block)
+                    }else{
+                        await handleSuperset(block)
+                    }
                 }
 
                 return returnData
@@ -201,8 +213,6 @@ router.post('/create/', isAuthenticated, async (req, res) => {
         )
 
         // create the schema
-
-
         res.send({
             error: false,
             data: response

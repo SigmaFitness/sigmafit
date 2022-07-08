@@ -27,6 +27,8 @@ const Workouts = () => {
                 <Link href="/workout/new/">
                     <button className="btn btn-primary">Add a new workout</button>
                 </Link>
+
+                {isLoading && <div className="my-4 alert alert-info">Loading workouts...</div>}
                 {data && !data?.error ? <RenderWorkouts
                     canDelete={true}
                     workouts={data.myWorkouts}

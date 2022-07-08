@@ -14,7 +14,7 @@ const AddSessionSchema = () => {
         superset_schema: []
     }
 
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any,ErrorResponse>(addNewSessionSchema)
+    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any, ErrorResponse>(addNewSessionSchema)
 
 
 
@@ -22,6 +22,7 @@ const AddSessionSchema = () => {
 
 
     const handleSubmit = (values: any) => {
+
         mutate(values, {
             onSettled(data, error, variables, context) {
                 if (error) {
@@ -48,7 +49,10 @@ const AddSessionSchema = () => {
             <Navbar />
             <SessionSchemaForm
                 heading="Build New Session Schema"
-                initialValues={initialValues}
+                initialValues={{
+                    schema_blocks: [],
+                    session_name: ''
+                }}
                 handleSubmit={handleSubmit}
                 waitingForServerResponse={waitingForServerResponse}
             />

@@ -38,6 +38,10 @@ app.use('/api/sessionSchema/', sessionSchemaRouter)
 app.use('/api/sessionInstance/', sessionInstanceRouter)
 
 
+app.all('*', (req, res) => res.status(400).send({
+    error: true,
+    message: `Invalid attempt to ${req.method} ${req.path}`
+}))
 
 
 
