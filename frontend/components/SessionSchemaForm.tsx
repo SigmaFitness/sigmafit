@@ -157,14 +157,14 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                                         <div className='text-sm items-center gap-3 flex'>
 
                                             <div onClick={() => {
-                                                const newWorkout: workout_schema_block = { id: Math.random()*1000, workout_id: '', default_target: [], type: 'workout_schema_block' }
+                                                const newWorkout: workout_schema_block = { id: Math.random() * 1000, workout_id: '', default_target: [], type: 'workout_schema_block' }
                                                 setsArrayHelpers.push(newWorkout)
                                             }} className="btn btn-sm">Add another workout</div>
 
 
 
                                             <div onClick={() => {
-                                                const newSupersetWorkout: superset_schema_block = { id: Math.random()*1000, name: '', superset_workout_schema: [], type: 'superset_schema_block' }
+                                                const newSupersetWorkout: superset_schema_block = { id: Math.random() * 1000, name: '', superset_workout_schema: [], type: 'superset_schema_block' }
 
                                                 setsArrayHelpers.push(newSupersetWorkout)
                                             }} className="btn btn-sm">Add superset</div>
@@ -243,7 +243,7 @@ const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance, workou
                             <ReactSortable list={superset_schema_instance.superset_workout_schema} setList={(newList) => {
                                 setFieldValue(`${fieldPrefix}.superset_workout_schema`, newList)
                             }}
-                            handle='.move-handle2'
+                                handle='.move-handle2'
                             >
 
                                 {superset_schema_instance.superset_workout_schema && superset_schema_instance.superset_workout_schema.map((workoutSchemaInstance: any, workoutId: number) => {
@@ -252,7 +252,7 @@ const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance, workou
                                     return (
                                         <div className="" key={workoutId}>
                                             <RenderWorkoutForm
-                                            moveHandleClassName='move-handle2'
+                                                moveHandleClassName='move-handle2'
                                                 containerStyles="pt-0 ml-6 px-2 border bg-blue-300 border-black mb-2"
                                                 handleRemoveInstance={() => {
                                                     supersetWorkoutSchemaArrayHelpers.remove(workoutId)
@@ -283,7 +283,7 @@ const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance, workou
 
 
 
-const RenderWorkoutForm = ({ handleRemoveInstance,moveHandleClassName, uniqueIdPrefix, workoutInstance, workoutOptions, containerStyles }: {
+const RenderWorkoutForm = ({ handleRemoveInstance, moveHandleClassName, uniqueIdPrefix, workoutInstance, workoutOptions, containerStyles }: {
     handleRemoveInstance: () => void,
     workoutInstance: {
         id: string;
@@ -301,7 +301,7 @@ const RenderWorkoutForm = ({ handleRemoveInstance,moveHandleClassName, uniqueIdP
     return (
 
         <div className={"flex flex-col justify-start items-center pt-0 " + containerStyles}>
-            <div className={"cursor-move h-full w-full flex justify-center "+moveHandleClassName}>
+            <div className={"cursor-move h-full w-full flex justify-center " + moveHandleClassName}>
                 <MoveGrabberIcon className='w-4 text-gray-500' />
             </div>
             <div className="flex-grow  w-full">
