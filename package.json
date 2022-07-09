@@ -2,5 +2,8 @@
     "private": true,
     "workspaces": [
         "apps/*"
+    ],
+    "nohoist": [
+        "**/apps/**"
     ]
 }

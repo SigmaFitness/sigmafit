@@ -1,6 +1,5 @@
-import * as yup from 'yup'
-
+import * as yup from "yup";
 
 export const isValidUUID = (id: string) => {
-    return yup.string().uuid().required().isValid(id)
-}
+  return yup.string().uuid().required().isValid(id);
+};

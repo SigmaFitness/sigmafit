@@ -8,7 +8,9 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "prettier": "prettier --write .",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -25,16 +27,19 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@sigmafit/commons": "1.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/uuid": "^8.3.4",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
     "nodemon": "^2.0.16",
+    "prettier": "2.7.1",
     "prisma": "^3.15.2",
     "ts-node": "^10.8.1",
-    "typescript": "^4.7.4",
-    "@sigmafit/commons": "1.0.0"
+    "typescript": "^4.7.4"
   }
 }
