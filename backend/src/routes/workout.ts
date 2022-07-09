@@ -35,7 +35,6 @@ router.get('/list/', isAuthenticated, async (req, res) => {
         })
 
         res.send({
-            error: false,
             publicWorkouts,
             myWorkouts
         })
@@ -67,8 +66,7 @@ router.post('/add/', isAuthenticated, async (req, res) => {
         })
 
         res.send({
-            error: false,
-            data: workout
+            workout
         })
 
     } catch (err) {
@@ -115,8 +113,7 @@ router.post('/modify/', isAuthenticated, async (req, res) => {
         })
 
         res.send({
-            error: false,
-            data: workout
+            workout
         })
 
     } catch (err) {
@@ -131,7 +128,7 @@ router.post('/modify/', isAuthenticated, async (req, res) => {
 router.post('/delete/', isAuthenticated, async (req, res) => {
     try {
 
-        throw {"message": "Route not supported for now. Need to check with referential integrity and all!"}
+        throw { "message": "Route not supported for now. Need to check with referential integrity and all!" }
         const { id } = req.body;
         if (!id) throw { status: 400, message: 'Id is needed' }
 
@@ -160,7 +157,6 @@ router.post('/delete/', isAuthenticated, async (req, res) => {
  */
 router.get('/formOptions/', isAuthenticated, (req, res) => {
     res.send({
-        error: false,
         category: Object.keys(workout_type),
         target_body_part: Object.keys(body_part),
         intensity: Object.keys(intensity_levels),

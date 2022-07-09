@@ -1,0 +1,14 @@
+{
+  "name": "commons",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

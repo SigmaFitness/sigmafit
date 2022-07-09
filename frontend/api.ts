@@ -11,13 +11,7 @@ export type ErrorResponse = {
     status: number
 }
 
-export type ApiResponse<T> = (
-    {
-        error: false,
-    } & T
-)
-
-const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Promise<ApiResponse<T>> => {
+const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Promise<T> => {
     try {
         const response = await axios(url, {
             data,
@@ -128,7 +122,7 @@ const getCurrentUser = async () => {
     return usePost<any>(`${apiPrefixSlug}/auth/currentUser`, 'GET')
 }
 
-export const useGetCurrentUserQuery = () => useQuery<ApiResponse<unknown>, ErrorResponse>('getCurrentUser', getCurrentUser, {
+export const useGetCurrentUserQuery = () => useQuery<any, ErrorResponse>('getCurrentUser', getCurrentUser, {
     retry: false
 })
 

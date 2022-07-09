@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { addNewSessionSchema, ErrorResponse } from "../../api";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
-import SessionSchemaForm from "../../components/SessionSchemaForm";
+import SessionSchemaForm from "../../components/Forms/SessionSchemaForm";
 
 
 const AddSessionSchema = () => {

@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import { ErrorResponse, getSessionSchemaDetails } from "../../api"
 import { MetaHead } from "../../components/Head"
 import { Navbar } from "../../components/Navbar"
-import SessionSchemaForm from "../../components/SessionSchemaForm"
+import SessionSchemaForm from "../../components/Forms/SessionSchemaForm"
 
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now 

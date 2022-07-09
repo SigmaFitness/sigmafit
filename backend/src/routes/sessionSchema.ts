@@ -39,11 +39,8 @@ router.get('/details/:id', isAuthenticated, async (req, res) => {
         if (!data) throw { message: 'Invalid Id or permissions' };
 
         res.send({
-            error: false,
-            data: {
-                schema_blocks: [...data.workout_schema.map(e => ({...e, type: 'workout_schema_block'})), ...data.superset_schema.map(e => ({...e, type: 'superset_schema_block'}))],
-                session_name: data.name
-            }
+            schema_blocks: [...data.workout_schema.map(e => ({...e, type: 'workout_schema_block'})), ...data.superset_schema.map(e => ({...e, type: 'superset_schema_block'}))],
+            session_name: data.name
         })
     } catch (err) {
         return sendErrorResponse(res, err)
@@ -214,7 +211,6 @@ router.post('/create/', isAuthenticated, async (req, res) => {
 
         // create the schema
         res.send({
-            error: false,
             data: response
         })
     } catch (err) {
@@ -270,7 +266,7 @@ router.get('/all/', isAuthenticated, async (req, res) => {
             return e;
         })
 
-        res.send({ error: false, schemas })
+        res.send({ schemas })
     } catch (err) {
         return sendErrorResponse(res, err);
     }

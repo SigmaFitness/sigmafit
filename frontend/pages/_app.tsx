@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
-      <ToastContainer />
+      <ToastContainer autoClose={1000} />
     </QueryClientProvider>
 
   </>

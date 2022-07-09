@@ -46,8 +46,7 @@ router.post('/start/', isAuthenticated, async (req, res) => {
         })
 
         res.send({
-            error: false,
-            data: newSessionInstanceData
+            newSessionInstanceData
         })
     } catch (err) {
         return sendErrorResponse(res, err)
@@ -83,7 +82,6 @@ router.post('/end/', isAuthenticated, async (req, res) => {
         if (!updatedDoc.count) throw { message: "Invalid activeSessionInstanceId or the session is already inActive or you don't have enough permission. " }
 
         res.send({
-            error: false,
             message: "Session Instance has been successfully stopped."
         })
     } catch (err) {
@@ -207,7 +205,6 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
     ORDER BY "order" DESC -- it's applied on whole UNION`
 
         res.send({
-            error: false,
             superset_schema_details,
             workouts,
             session_instance_details: {
@@ -216,50 +213,6 @@ router.get('/state/:sessionInstanceId', isAuthenticated, async (req, res) => {
                 start_timestamp: sessionInstance.start_timestamp,
             }
         })
-        return;
-
-        // fetch last sessionInstance and the corresponding data
-        // const lastSessionInstance = await prisma.session_instance.findFirst({
-        //     where: {
-        //         NOT: {
-        //             end_timestamp: null
-        //         },
-        //         session_schema: {
-        //             id: sessionInstance.session_schema_id,
-        //         }
-        //     },
-        //     orderBy: {
-        //         end_timestamp: 'desc'
-        //     },
-        //     include: {
-        //         workout_instance: {},
-        //         superset_workout_instance: {}
-        //     }
-        // })
-
-        // fetch current sessionInstance and corresponding data
-        // const currentSessionInstance=await prisma.session_instance.findFirst({
-        //     where: {
-        //         id: sessionInstanceId,
-        //             end_timestamp: null,
-        //         session_schema: {
-        //             id: sessionInstance.session_schema_id,
-        //         }
-        //     },
-        //     orderBy: {
-        //         end_timestamp: 'desc'
-        //     },
-        //     include: {
-        //         workout_instance: {},
-        //         superset_workout_instance: {},
-        //     }
-        // })
-
-        // res.send({
-        //     error: false,
-        //     sessionInstance,
-        //     lastSessionInstance,
-        // })
     } catch (err) {
         return sendErrorResponse(res, err)
     }
@@ -388,7 +341,6 @@ router.get('/allActive/', isAuthenticated, async (req, res) => {
         })
 
         res.send({
-            error: false,
             activeInstances
         })
     } catch (err) {

@@ -49,7 +49,6 @@ router.post('/signIn/', async (req, res) => {
         user.last_token_generated_at = currentTime;
 
         res.send({
-            error: false,
             user: userDetailsWithoutPwd
         })
     } catch (err) {
@@ -87,7 +86,6 @@ router.post('/signUp/', async (req, res) => {
         setAuthTokenAsCookie(res, user)
 
         res.send({
-            error: false,
             user: userDetailsWithoutPwd
         })
 
@@ -105,7 +103,6 @@ router.get('/currentUser/', isAuthenticated, (req, res) => {
     // If I'm inside this route handler
     // it means that I'm authenticated
     res.send({
-        error: false,
         user: req.user
     })
 })
