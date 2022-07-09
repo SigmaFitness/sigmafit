@@ -1,0 +1,1 @@
+import { workout } from "../prismaGenTypes"
