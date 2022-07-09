@@ -20,3 +20,5 @@ export type SessionSchemaCreateRequest = {
     schema_blocks: (create_session_schema__superset_schema | create_session_schema__workout_schema)[]
 }
 
+export {}
+

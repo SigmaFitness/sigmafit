@@ -57,3 +57,5 @@ export type SessionInstanceAllActiveResponse = (session_instance & {
 export type SessionInstanceEndResponse = {
     message: string
 }
+
+export {}

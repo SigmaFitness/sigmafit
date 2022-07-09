@@ -6,3 +6,6 @@ export type SessionInstanceAddOrModifyBlockRequest = {
     session_instance_id: string
     sets_data: SessionInstanceState_SetData[]
 }
+
+
+export {}

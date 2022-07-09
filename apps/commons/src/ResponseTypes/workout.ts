@@ -21,3 +21,7 @@ export type WorkoutFormOptionsResponse = {
     target_body_part: (keyof typeof body_part)[],
     intensity: (keyof typeof intensity_levels)[],
 }
+
+
+export {}
+
