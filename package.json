@@ -4,6 +4,7 @@
         "apps/*"
     ],
     "nohoist": [
-        "**/apps/**"
+        "apps",
+        "apps/**"
     ]
 }
