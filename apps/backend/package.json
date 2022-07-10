@@ -9,8 +9,10 @@
     "dev": "nodemon src/index.ts",
     "prettier": "prettier --write .",
     "build": "tsc --build",
+    "generate:prisma": "prisma generate",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
