@@ -1,20 +1,27 @@
 import { XIcon } from "@heroicons/react/solid";
 import { WorkoutListResponse } from "@sigmafit/commons";
 import Link from "next/link";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { ErrorResponse, getAllWorkouts } from "../../api";
+import { CreateNewWorkoutModal } from "../../components/CreateNewWorkoutModal";
 import { Navbar } from "../../components/Navbar";
 
 
 
 const Workouts = () => {
 
-    const { data, isLoading } = useQuery<WorkoutListResponse,ErrorResponse>('workouts', getAllWorkouts, {
+    const { data, isLoading } = useQuery<WorkoutListResponse, ErrorResponse>('getAllWorkouts', getAllWorkouts, {
         onSettled: (data, error) => {
             if (error) toast(error.message, { type: 'error' })
         }
     });
+
+    const [newWorkoutModalState, setNewWorkoutModalState] = useState<{
+        state: boolean;
+        initialValue: string;
+    }>({ state: false, initialValue: '' })
 
     return (
         <div>
@@ -25,9 +32,7 @@ const Workouts = () => {
             <div className="my-10 prose max-w-2xl mx-auto px-2">
 
                 <h2>My workouts</h2>
-                <Link href="/workout/new/">
-                    <button className="btn btn-primary">Add a new workout</button>
-                </Link>
+                <button className="btn btn-primary" onClick={() => setNewWorkoutModalState(e => ({ ...e, state: true }))}>Add a new workout</button>
 
                 {isLoading && <div className="my-4 alert alert-info">Loading workouts...</div>}
                 {data ? <RenderWorkouts
@@ -45,6 +50,12 @@ const Workouts = () => {
                     workouts={data.publicWorkouts}
                 /> : null}
             </div>
+
+            <CreateNewWorkoutModal
+                isModalOpen={newWorkoutModalState}
+                setIsModalOpen={setNewWorkoutModalState}
+
+            />
         </div>
     )
 }
@@ -53,7 +64,7 @@ const Workouts = () => {
 const RenderWorkouts = ({ workouts, canDelete }: { workouts: any, canDelete: boolean }) => {
     return (
         <>
-            {workouts.length? workouts.map((workout: any, index: number) => {
+            {workouts.length ? workouts.map((workout: any, index: number) => {
                 return (
 
 
@@ -90,7 +101,7 @@ const RenderWorkouts = ({ workouts, canDelete }: { workouts: any, canDelete: boo
 
 
                 )
-            }): <div className="alert alert-info my-2">No workouts found</div>}
+            }) : <div className="alert alert-info my-2">No workouts found</div>}
 
         </>
     )

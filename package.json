@@ -10,6 +10,7 @@
     "scripts": {
         "build": "yarn --cwd apps/commons build && (yarn --cwd apps/backend build & yarn --cwd apps/frontend build)",
         "lint": "yarn --cwd apps/commons lint && yarn --cwd apps/frontend lint && yarn --cwd apps/backend lint",
-        "clean": "rm -rf apps/commons/dist/ lint && rm -rf apps/backend/dist/ lint && rm -rf apps/frontend/.next/"
+        "clean": "rm -rf apps/commons/dist/ lint && rm -rf apps/backend/dist/ lint && rm -rf apps/frontend/.next/",
+        "dev": "(yarn workspace @sigmafit/commons watch  & yarn workspace @sigmafit/backend dev & yarn workspace @sigmafit/frontend dev)"
     }
 }

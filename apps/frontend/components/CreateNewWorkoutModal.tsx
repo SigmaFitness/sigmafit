@@ -51,6 +51,9 @@ export const CreateNewWorkoutModal: React.FC<{
 
             toast('Workout added successfully!', { type: 'success' })
             setIsModalOpen((e) => ({ ...e, state: false }))
+        },
+        onError: (err) => {
+            toast(err.message, { type: 'error' })
         }
     })
 
@@ -75,8 +78,6 @@ export const CreateNewWorkoutModal: React.FC<{
                         setIsOpen={(newVal: boolean) => setIsModalOpen((e) => ({ ...e, state: newVal }))}
                     >
 
-
-
                         <div className="mt-16">
 
                             <Formik
@@ -90,8 +91,8 @@ export const CreateNewWorkoutModal: React.FC<{
                                     </div>
 
 
-                                    <div className="alert alert-sm text-sm alert-warning my-2">
-                                        Please ensure that there isn&apos;t an existing workout.
+                                    <div className="alert alert-sm text-xs alert-warning my-2">
+                                        We already have 100+ registered workouts, with detailed description, quick tips etc. Please ensure that there isn&apos;t an existing workout you're trying to add.
                                     </div>
 
 
@@ -124,10 +125,9 @@ export const CreateNewWorkoutModal: React.FC<{
 
                                     <div className="flex items-center justify-between">
                                         <button
-
                                             className="btn"
                                             type="submit"
-                                        // disabled={waitingForServerResponse}
+                                            disabled={waitingForServerResponse}
                                         >
                                             Submit
 

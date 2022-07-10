@@ -94,11 +94,11 @@ const Dash = () => {
 
 
                 {/* Show sessions */}
-                <h2>Your Session Schema</h2>
+                <h2>Workout Routines</h2>
 
                 <div className="flex justify-end">
                     <Link href='sessionSchema/new'>
-                        <div className="btn btn-primary btn-sm">Create new session schema</div>
+                        <div className="btn btn-primary btn-sm">Create a customized workout routine</div>
                     </Link>
 
                 </div>
