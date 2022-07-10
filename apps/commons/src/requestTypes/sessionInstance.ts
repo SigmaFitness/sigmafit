@@ -7,5 +7,3 @@ export type SessionInstanceAddOrModifyBlockRequest = {
     sets_data: SessionInstanceState_SetData[]
 }
 
-
-export {}

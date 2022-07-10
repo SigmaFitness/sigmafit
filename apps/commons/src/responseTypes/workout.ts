@@ -22,6 +22,3 @@ export type WorkoutFormOptionsResponse = {
     intensity: (keyof typeof intensity_levels)[],
 }
 
-
-export {}
-

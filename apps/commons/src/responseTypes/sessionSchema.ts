@@ -29,5 +29,3 @@ export type SessionSchemaAllResponse = {
     last_attempted_at: Date;
     end_timestamp: Date | null
 }[]
-
-export {}

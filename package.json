@@ -4,8 +4,8 @@
         "apps/*"
     ],
     "nohoist": [
-        "apps",
-        "apps/**"
+        "**/apps",
+        "**/apps/**"
     ],
     "scripts": {
         "build:frontend": "yarn --cwd apps/frontend build",
