@@ -147,39 +147,11 @@ router.post("/modify/", isAuthenticated, async (req, res) => {
 });
 
 /**
- * Route to delete a workout added by user
+ * Route to delete a workout is removed.
+ * 
+ * Any workout added cannot be removed. It ensures that any shared schema workouts are always safe!
  */
-router.post("/delete/", isAuthenticated, async (req, res) => {
-  try {
-    throw {
-      message:
-        "Route not supported for now. Need to check with referential integrity and all!",
-    };
-    const { id } = req.body;
-    if (!id) throw { status: 400, message: "Id is needed" };
 
-    const { count } = await prisma.workout.deleteMany({
-      where: {
-        id,
-        owner_id: req.user.id,
-      },
-    });
-    if (count > 1)
-      throw {
-        status: 400,
-        message: "Logic Error. The developers needs to be fired!",
-      };
-    else if (count == 0)
-      throw { status: 400, message: "Invalid workout id or permission" };
-
-    const response: WorkoutDeleteResponse = {
-      message: "Workout Deleted successfully.",
-    };
-    res.send(response);
-  } catch (err) {
-    return sendErrorResponse(res, err);
-  }
-});
 
 /**
  * Route to send all the form options to add a new form

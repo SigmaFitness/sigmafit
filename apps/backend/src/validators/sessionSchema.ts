@@ -38,3 +38,19 @@ export const addSessionSchemaPayloadValidator = yup.object().shape({
       }) as any
     ),
 });
+
+
+
+export const submitSessionSchemaForReviewPayloadValidator = yup.object().shape({
+  schema_id: yup.string().uuid().required(),
+});
+
+export const voteSessionSchemaPayloadValidator = yup.object().shape({
+  schema_id: yup.string().uuid().required(),
+  state: yup.bool().required(),
+});
+
+
+export const topSessionSchemaPayloadValidator = yup.object().shape({
+  cursor_id: yup.string().nullable().uuid(),
+});

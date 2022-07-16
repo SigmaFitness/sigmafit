@@ -4,21 +4,22 @@ generator client {
 }
 
 datasource db {
-  provider             = "postgresql"
-  url                  = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model user {
-  id                      String           @id @db.VarChar(36) // since UUID is 36 chars long
-  first_name              String
-  last_name               String
-  email                   String           @unique
-  hashed_password         String
-  is_banned               Boolean          @default(false)
-  created_time            DateTime         @default(now())
-  last_token_generated_at DateTime         @default(now())
-  workout                 workout[]
-  session_schema          session_schema[]
+  id                          String                        @id @db.VarChar(36) // since UUID is 36 chars long
+  first_name                  String
+  last_name                   String
+  email                       String                        @unique
+  hashed_password             String
+  is_banned                   Boolean                       @default(false)
+  created_time                DateTime                      @default(now())
+  last_token_generated_at     DateTime                      @default(now())
+  workout                     workout[]
+  session_schema              session_schema[]
+  session_schema_vote_by_user session_schema_vote_by_user[]
 }
 
 enum workout_type {
@@ -57,25 +58,48 @@ model workout {
   superset_workout_schema superset_workout_schema[]
 }
 
+enum schema_state {
+  PRIVATE
+  PUBLIC
+  REVIEW
+}
+
 model session_schema {
-  id               String             @id @db.VarChar(36) // since UUID is 36 chars long
-  name             String
-  owner_id         String
-  owner            user               @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  workout_schema   workout_schema[]
-  superset_schema  superset_schema[]
-  session_instance session_instance[]
+  id                             String                        @id @db.VarChar(36) // since UUID is 36 chars long
+  name                           String
+  owner_id                       String
+  owner                          user                          @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  workout_schema                 workout_schema[]
+  superset_schema                superset_schema[]
+  session_instance               session_instance[]
+  state                          schema_state                  @default(PRIVATE)
+  votes_count                    Int                           @default(0)
+  session_schema_vote_by_user    session_schema_vote_by_user[]
+  number_of_workouts             Int
+  number_of_superset_workouts    Int
+  number_of_workouts_in_superset Int
+}
+
+model session_schema_vote_by_user {
+  user_id String
+  user    user   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  session_schema_id String
+  session_schema    session_schema @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
+
+  voted_at DateTime
+  @@id([user_id, session_schema_id])
 }
 
 model workout_schema {
-  id                        String                      @id @db.VarChar(36) // since UUID is 36 chars long
-  session_schema_id         String
-  session_schema            session_schema              @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
-  workout_id                String
-  workout                   workout                     @relation(fields: [workout_id], references: [id], onDelete: Cascade)
-  default_target            Json
-  order                     Int                         @default(0)
-  workout_instance          workout_instance[]
+  id                String             @id @db.VarChar(36) // since UUID is 36 chars long
+  session_schema_id String
+  session_schema    session_schema     @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
+  workout_id        String
+  workout           workout            @relation(fields: [workout_id], references: [id], onDelete: Cascade)
+  default_target    Json
+  order             Int                @default(0)
+  workout_instance  workout_instance[]
 }
 
 model superset_schema {
@@ -83,18 +107,18 @@ model superset_schema {
   name                    String
   session_schema_id       String
   session_schema          session_schema            @relation(fields: [session_schema_id], references: [id], onDelete: Cascade)
-  // order                   Int                       @default(0) 
+  order                   Int
   superset_workout_schema superset_workout_schema[]
 }
 
 model superset_workout_schema {
-  id                 String          @id @db.VarChar(36) // since UUID is 36 chars long
-  superset_schema_id String
-  superset_schema    superset_schema @relation(fields: [superset_schema_id], references: [id], onDelete: Cascade)
-  workout_id         String
-  workout            workout         @relation(fields: [workout_id], references: [id], onDelete: Cascade)
-  default_target     Json
-  order              Int             @default(0)
+  id                        String                      @id @db.VarChar(36) // since UUID is 36 chars long
+  superset_schema_id        String
+  superset_schema           superset_schema             @relation(fields: [superset_schema_id], references: [id], onDelete: Cascade)
+  workout_id                String
+  workout                   workout                     @relation(fields: [workout_id], references: [id], onDelete: Cascade)
+  default_target            Json
+  order                     Int                         @default(0)
   superset_workout_instance superset_workout_instance[]
 }
 
@@ -113,17 +137,17 @@ model workout_instance {
   workout_schema      workout_schema   @relation(fields: [workout_schema_id], references: [id])
   session_instance_id String
   session_instance    session_instance @relation(fields: [session_instance_id], references: [id])
-  sets_data                Json
+  sets_data           Json
 
   @@unique([session_instance_id, workout_schema_id])
 }
 
 model superset_workout_instance {
-  superset_workout_schema_id   String
-  superset_workout_schema      superset_workout_schema   @relation(fields: [superset_workout_schema_id], references: [id])
-  session_instance_id String
-  session_instance    session_instance @relation(fields: [session_instance_id], references: [id])
-  sets_data                Json
+  superset_workout_schema_id String
+  superset_workout_schema    superset_workout_schema @relation(fields: [superset_workout_schema_id], references: [id])
+  session_instance_id        String
+  session_instance           session_instance        @relation(fields: [session_instance_id], references: [id])
+  sets_data                  Json
 
   @@unique([session_instance_id, superset_workout_schema_id])
 }

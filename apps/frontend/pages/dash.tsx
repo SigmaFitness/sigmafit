@@ -1,4 +1,4 @@
-import { InformationCircleIcon, PencilAltIcon } from "@heroicons/react/solid";
+import { EyeIcon, InformationCircleIcon, PencilAltIcon } from "@heroicons/react/solid";
 import { SessionInstanceAllActiveResponse, SessionInstanceStartResponse, SessionSchemaAllResponse } from "@sigmafit/commons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const Dash = () => {
     });
 
 
-    const { isLoading: waitingForMutateServerResponse, mutate } = useMutation<SessionInstanceStartResponse,ErrorResponse, string>(startANewSessionFromSchemaId)
+    const { isLoading: waitingForMutateServerResponse, mutate } = useMutation<SessionInstanceStartResponse, ErrorResponse, string>(startANewSessionFromSchemaId)
 
     const router = useRouter()
 
@@ -85,7 +85,7 @@ const Dash = () => {
 
                     {isActiveSessionsLoading ? <div className="alert my-2 alert-info">Loading Active sessions...</div> : null}
 
-                    {activeSessions && activeSessions.length===0 ? <div className="alert my-2 alert-info">No Active sessions... 😢</div> : null}
+                    {activeSessions && activeSessions.length === 0 ? <div className="alert my-2 alert-info">No Active sessions... 😢</div> : null}
 
                 </div>
 
@@ -96,19 +96,23 @@ const Dash = () => {
                 {/* Show sessions */}
                 <h2>Workout Routines</h2>
 
-                <div className="flex justify-end">
+                <div className="flex justify-between">
+                    <Link href='sessionSchema/top'>
+                        <div className="btn btn-primary btn-sm">Explore top routines</div>
+                    </Link>
+
                     <Link href='sessionSchema/new'>
-                        <div className="btn btn-primary btn-sm">Create a customized workout routine</div>
+                        <div className="btn btn-primary btn-sm">Create a customized one</div>
                     </Link>
 
                 </div>
 
-                {sessionSchema && sessionSchema.length===0 ? <div className="alert my-2 alert-info">No schemas... Let&apos;s add a new one?</div> : null}
+                {sessionSchema && sessionSchema.length === 0 ? <div className="alert my-2 alert-info">No schemas... Let&apos;s add a new one?</div> : null}
 
                 {isSessionSchemaLoading ? <div className="alert my-2 alert-info">Loading Session Schemas...</div> : null}
 
 
-                {sessionSchema? <>
+                {sessionSchema ? <>
 
                     {/* <div className="alert my-2 alert-warning py-2 text-xs">
                         <div>
@@ -147,13 +151,13 @@ const Dash = () => {
 
                                     <div className="flex justify-between mt-2">
                                         <Link
-                                            href={`/sessionSchema/${e.id}`}
+                                            href={`/sessionSchema/${e.id}/view`}
                                         >
                                             <div
                                                 className="sm:absolute  btn sm:top-1 sm:right-1 btn-xs cursor-pointer select-none ">
 
-                                                <PencilAltIcon className="w-4 mr-1" />
-                                                Edit
+                                                <EyeIcon className="w-4 mr-1" />
+                                                View
                                             </div>
                                         </Link>
 
@@ -171,7 +175,7 @@ const Dash = () => {
                                                                 toast(error.message, {
                                                                     type: 'error'
                                                                 })
-                                                            } else if(data) {
+                                                            } else if (data) {
                                                                 toast('Redirecting to active session dash..', {
                                                                     type: 'success',
                                                                     autoClose: 1000,

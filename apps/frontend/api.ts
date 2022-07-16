@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import {WorkoutListResponse} from '@sigmafit/commons'
+import { SessionSchemaVoteRequest, SessionSchema_SubmitForReview_Request, SessionSchema_Top_Request, WorkoutListResponse } from '@sigmafit/commons'
 
 const apiPrefixSlug = '/api'
 
@@ -144,4 +144,19 @@ export const endSessionInstance = async (activeSessionInstanceId: any) => {
     })
 }
 
+
+
+export const changeStateOfSessionSchema = async (payload: SessionSchema_SubmitForReview_Request) => {
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/submit_for_review`, 'POST', payload)
+}
+
+
+export const getTopSessionSchema = async (pageState: SessionSchema_Top_Request) => {
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/top`, 'POST', pageState)
+}
+
+
+export const voteASessionSchema = async (payload: SessionSchemaVoteRequest) => {
+    return usePost<any>(`${apiPrefixSlug}/sessionSchema/vote/`, 'POST', payload)
+}
 

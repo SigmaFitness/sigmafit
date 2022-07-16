@@ -21,6 +21,24 @@ export const isAuthenticated: RequestHandler = (req, res, next) => {
   }
 };
 
+
+/**
+ * Middleware function to check if the user is authenticated or not. (but doesn't throw error)
+ *
+ * We'll use the middleware only if we want the authenticated users data;
+ */
+ export const isAuthenticatedWithoutErr: RequestHandler = (req, res, next) => {
+  try {
+    const token = req.cookies["sigmaKeeper"];
+    const res: any = jwt.verify(token, process.env.JSON_WEB_TOKEN_SECRET);
+    req.user = res;
+  } catch (err) {
+  }
+  next();
+
+};
+
+
 export const isNotAuthenticated: RequestHandler = (req, res, next) => {
   // TODO
   next();

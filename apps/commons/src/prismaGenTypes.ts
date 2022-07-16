@@ -4,6 +4,10 @@
 **/
 
 
+namespace Prisma {
+  export type JsonValue= any
+}
+
 
 
 
@@ -40,10 +44,25 @@ export type workout = {
  * Model session_schema
  * 
  */
-export type session_schema = {
+ export type session_schema = {
   id: string
   name: string
   owner_id: string
+  state: schema_state
+  votes_count: number
+  number_of_workouts: number
+  number_of_superset_workouts: number
+  number_of_workouts_in_superset: number
+}
+
+/**
+ * Model session_schema_vote_by_user
+ * 
+ */
+export type session_schema_vote_by_user = {
+  user_id: string
+  session_schema_id: string
+  voted_at: Date
 }
 
 /**
@@ -54,7 +73,7 @@ export type workout_schema = {
   id: string
   session_schema_id: string
   workout_id: string
-  default_target: any
+  default_target: Prisma.JsonValue
   order: number
 }
 
@@ -76,7 +95,7 @@ export type superset_workout_schema = {
   id: string
   superset_schema_id: string
   workout_id: string
-  default_target: any
+  default_target: Prisma.JsonValue
   order: number
 }
 
@@ -98,7 +117,7 @@ export type session_instance = {
 export type workout_instance = {
   workout_schema_id: string
   session_instance_id: string
-  sets_data: any
+  sets_data: Prisma.JsonValue
 }
 
 /**
@@ -108,7 +127,7 @@ export type workout_instance = {
 export type superset_workout_instance = {
   superset_workout_schema_id: string
   session_instance_id: string
-  sets_data: any
+  sets_data: Prisma.JsonValue
 }
 
 
@@ -149,3 +168,13 @@ export let intensity_levels: {
 };
 
 export type intensity_levels = (typeof intensity_levels)[keyof typeof intensity_levels]
+
+
+
+export let schema_state: {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC',
+  REVIEW: 'REVIEW'
+};
+
+export type schema_state = (typeof schema_state)[keyof typeof schema_state]

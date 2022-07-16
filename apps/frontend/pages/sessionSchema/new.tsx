@@ -9,16 +9,7 @@ import { SessionSchemaCreateRequest } from "@sigmafit/commons";
 
 
 const AddSessionSchema = () => {
-    const initialValues = {
-        session_name: '',
-        workout_schema: [],
-        superset_schema: []
-    }
-
     const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<any, ErrorResponse, SessionSchemaCreateRequest>(addNewSessionSchema)
-
-
-
     const router = useRouter()
 
 
@@ -51,9 +42,7 @@ const AddSessionSchema = () => {
                         type: 'success',
                     })
                     router.push('/dash')
-
                     // TODO: refetch all sessions
-
                 }
             },
         })
@@ -63,8 +52,6 @@ const AddSessionSchema = () => {
 
         <div>
             <MetaHead />
-
-
             <Navbar />
             <SessionSchemaForm
                 heading="Build New Session Schema"
@@ -75,7 +62,6 @@ const AddSessionSchema = () => {
                 handleSubmit={handleSubmit}
                 waitingForServerResponse={waitingForServerResponse}
             />
-
         </div>
     )
 }

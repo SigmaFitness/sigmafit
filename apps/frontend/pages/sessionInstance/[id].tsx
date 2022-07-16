@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { SessionInstanceAddOrModifyBlockRequest, SessionInstanceAddOrModifyBlockResponse, SessionInstanceStateResponse, SessionInstanceState_SetData } from '@sigmafit/commons'
 import { workout_category } from '../../components/Forms/SessionSchemaForm'
+import { DescriptionText } from '../sessionSchema/[id]/view'
 
 const timeSince = (startDate: Date) => {
 
@@ -380,7 +381,7 @@ const Card = ({ session_block_instance }: {
                             render={setsArrayHelpers => (
                                 <div className='grid grid-cols-6 text-sm items-center justify-center'>
 
-                                    <div className='hidden sm:block col-span-2 border-b-2 border-dashed'>
+                                    {/* <div className='hidden sm:block col-span-2 border-b-2 border-dashed'>
                                         <div className="tooltip tooltip-bottom tooltip-info" data-tip="weight / reps">
                                             <div className=''>
                                                 <div className="font-bold gap-2">
@@ -389,7 +390,7 @@ const Card = ({ session_block_instance }: {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="hidden sm:block col-span-4"></div>
+                                    <div className="hidden sm:block col-span-4"></div> */}
 
 
                                     {/* PRINT THE FIRST ONE */}
@@ -407,24 +408,38 @@ const Card = ({ session_block_instance }: {
 
 
                                                 <div key={'last_session' + setIndx} className='col-span-6 sm:col-span-2 mt-2'>
-                                                    <>
-                                                        <div className='inline-block sm:hidden mx-1 font-bold'>
-                                                            Last session:
-                                                        </div>
-                                                        {lastSessionSetInfo ?
+                                                    {/* <div className='inline-block mx-1 font-bold'>
+                                                        Last session:
+                                                    </div> */}
+                                                    <DescriptionText
+                                                        type='gap-2'
+                                                        name='Last session:'
+                                                        value={
                                                             <>
+                                                                {lastSessionSetInfo ?
+                                                                    <>
 
-                                                                <RenderDataByWorkoutCategory
-                                                                    workoutCategory={workout_category}
-                                                                    lastSessionSetInfo={lastSessionSetInfo}
-                                                                />
+                                                                        <RenderDataByWorkoutCategory
+                                                                            workoutCategory={workout_category}
+                                                                            lastSessionSetInfo={lastSessionSetInfo}
+                                                                        />
 
+                                                                    </>
+                                                                    : "No data"}
                                                             </>
-                                                            : "No data"}
-                                                    </>
+
+                                                        }
+                                                    />
                                                 </div>
 
 
+                                                <div key={'last_session' + setIndx} className='col-span-6 mt-2'>
+                                                    <DescriptionText
+                                                        type='gap-2'
+                                                        name='Target:'
+                                                        value={default_target[setIndx] ?? 'None'}
+                                                    />
+                                                </div>
 
 
 
@@ -435,7 +450,7 @@ const Card = ({ session_block_instance }: {
 
                                                         return (
                                                             <>
-                                                                <div className='col-span-6 sm:col-span-4 mt-2 flex flex-row flex-grow gap-2 items-center justify-center'>
+                                                                <div className='col-span-6 mt-2 flex flex-row flex-grow gap-2 items-center justify-center'>
                                                                     <RenderFields
                                                                         idPrefix={`sets_data.${setIndx}.values[0]`}
                                                                         workoutCategory={workout_category}
@@ -451,12 +466,12 @@ const Card = ({ session_block_instance }: {
                                                                                 valueIndx ? <>
 
                                                                                     {/* DROP SET BEGIN */}
-                                                                                    <div key={'last_session__values' + setIndx + valueIndx} className='col-start-1 sm:col-start-3 col-span-1 mr-1 ml-2'>
+                                                                                    <div key={'last_session__values' + setIndx + valueIndx} className='col-start-1  col-span-1 mr-1 ml-2'>
                                                                                         <Image src={require('../../public/assets/arrow.svg')} />
                                                                                     </div>
 
 
-                                                                                    <div key={'last_session__values11' + setIndx + valueIndx} className='col-start-2 col-span-5 sm:col-start-4 sm:col-span-3 mt-2 flex flex-row flex-grow gap-2 items-center'>
+                                                                                    <div key={'last_session__values11' + setIndx + valueIndx} className='col-start-2 col-span-5  mt-2 flex flex-row flex-grow gap-2 items-center'>
 
                                                                                         <RenderFields
                                                                                             idPrefix={`sets_data.${setIndx}.values.${valueIndx}`}

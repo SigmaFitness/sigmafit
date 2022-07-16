@@ -1,25 +1,34 @@
 import { prisma } from "../db";
 import { Router } from "express";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { isAuthenticated } from "../utils/authMiddlewares";
+import { isAuthenticated, isAuthenticatedWithoutErr } from "../utils/authMiddlewares";
 import * as yup from "yup";
-import { addSessionSchemaPayloadValidator } from "../validators/sessionSchema";
+import { addSessionSchemaPayloadValidator, submitSessionSchemaForReviewPayloadValidator, topSessionSchemaPayloadValidator, voteSessionSchemaPayloadValidator } from "../validators/sessionSchema";
 import { v4 } from "uuid";
-import { session_schema } from "@prisma/client";
 import { isValidUUID } from "../validators/isValidUUID";
 import {
+  create_session_schema__superset_schema,
+  create_session_schema__workout_schema,
   SessionSchemaAllResponse,
   SessionSchemaCreateRequest,
   SessionSchemaCreateResponse,
   SessionSchemaDetailsResponse,
+  SessionSchemaVoteRequest,
+  SessionSchemaVoteResponse,
+  SessionSchema_SubmitForReview_Request,
+  SessionSchema_SubmitForReview_Response,
+  SessionSchema_Top_Request,
+  SessionSchema_Top_Response,
 } from "@sigmafit/commons";
 
 const router = Router();
 
 /**
  * Route to get the complete details of the sessionSchema
+ * 
+ * The user can see the public schema data or can get the details of schema owned by him/her
  */
-router.get("/details/:id", isAuthenticated, async (req, res) => {
+router.get("/details/:id", isAuthenticatedWithoutErr, async (req, res) => {
   try {
     const { id } = req.params;
     const validationResult = await isValidUUID(id);
@@ -30,23 +39,54 @@ router.get("/details/:id", isAuthenticated, async (req, res) => {
     const data = await prisma.session_schema.findFirst({
       where: {
         id,
-        owner_id: req.user.id,
+        OR: [
+          {
+            owner_id: req.user?.id,
+          },
+          {
+            state: 'PUBLIC'
+          }
+        ]
       },
       include: {
-        workout_schema: {},
+        workout_schema: {
+          include: {
+            workout: {
+              select: {
+                name: true
+              }
+            }
+          }
+        },
         superset_schema: {
           include: {
-            superset_workout_schema: {},
+            superset_workout_schema: {
+              include: {
+                workout: {
+                  select: {
+                    name: true
+                  }
+                }
+              },
+            },
           },
         },
-      },
+      }
     });
 
     if (!data) throw { message: "Invalid Id or permissions" };
 
     const resp: SessionSchemaDetailsResponse = {
-      schema_blocks: [...data.workout_schema, ...data.superset_schema],
+      schema_blocks: [...data.workout_schema, ...data.superset_schema].sort((a, b) => (a.order - b.order)),
       session_name: data.name,
+      state: data.state,
+      number_of_superset_workouts: data.number_of_superset_workouts,
+      number_of_workouts: data.number_of_workouts,
+      number_of_workouts_in_superset: data.number_of_workouts_in_superset,
+      votes_count: data.votes_count,
+      id: data.id,
+      // response_type: (data.is_public? 'public': 'owned')
+
     };
 
     res.send(resp);
@@ -54,6 +94,13 @@ router.get("/details/:id", isAuthenticated, async (req, res) => {
     return sendErrorResponse(res, err);
   }
 });
+
+/**
+ * Public route to get the schema details to be used for cloning
+ */
+router.get('/clone/:id', async (req, res) => {
+
+})
 
 /**
  * Route to create a new sessionSchema
@@ -67,7 +114,8 @@ router.post("/create/", isAuthenticated, async (req, res) => {
 
     const sessionSchemaId = v4();
     // perform check to ensure that all workout ids are correct
-    const workoutIdsToSchemaBlock: { [K in string]: any[] } = {};
+    const workoutIdsToSchemaBlock: Record<string, create_session_schema__workout_schema[]> = {};
+    let number_of_superset_workouts = 0, number_of_workouts = 0, number_of_workouts_in_superset = 0
 
     validatedData.schema_blocks.forEach((currSchemaBlock) => {
       if ("workout_id" in currSchemaBlock) {
@@ -77,7 +125,10 @@ router.post("/create/", isAuthenticated, async (req, res) => {
         workoutIdsToSchemaBlock[currSchemaBlock.workout_id].push(
           currSchemaBlock
         );
+        number_of_workouts++;
       } else {
+        number_of_superset_workouts++;
+        number_of_workouts_in_superset += currSchemaBlock.superset_workout_schema.length
         // superset block
         currSchemaBlock.superset_workout_schema.map((workout: any) => {
           if (!workoutIdsToSchemaBlock[workout.workout_id])
@@ -90,7 +141,6 @@ router.post("/create/", isAuthenticated, async (req, res) => {
     const uniqueWorkoutIdsArr = Object.keys(workoutIdsToSchemaBlock);
     const validWorkouts = await prisma.workout.findMany({
       where: {
-        // id:
         AND: [
           {
             id: {
@@ -132,13 +182,15 @@ router.post("/create/", isAuthenticated, async (req, res) => {
             .isValidSync(block.default_target);
           if (!res)
             throw {
-              message: `${JSON.stringify(block)} is invalid. ${
-                workout.category
-              } should have all integers as target.`,
+              message: `${JSON.stringify(block)} is invalid. ${workout.category
+                } should have all integers as target.`,
             };
         });
       }
     });
+
+
+
 
     // create the schema
     // we don't need to validate the workout_id, thanks to the referential integrity (but we don't have it in prod (using planetscale) for perf reasons)
@@ -153,11 +205,14 @@ router.post("/create/", isAuthenticated, async (req, res) => {
             id: sessionSchemaId,
             name: validatedData.session_name,
             owner_id: req.user.id,
+            number_of_superset_workouts,
+            number_of_workouts,
+            number_of_workouts_in_superset
           },
         });
 
         // handle superset
-        const handleSuperset = async (supersetSchema: any) => {
+        const handleSuperset = async (supersetSchema: create_session_schema__superset_schema) => {
           const supersetId = v4();
           let supersetSchemaRet: any = {};
           // create superset
@@ -166,6 +221,7 @@ router.post("/create/", isAuthenticated, async (req, res) => {
               id: supersetId,
               name: supersetSchema.name,
               session_schema_id: sessionSchemaId,
+              order: Number(supersetSchema.order)
             },
           });
 
@@ -181,7 +237,7 @@ router.post("/create/", isAuthenticated, async (req, res) => {
                 data: {
                   default_target: workout.default_target,
                   id: v4(),
-                  order: workout.order,
+                  order: Number(workout.order),
                   superset_schema_id: supersetId,
                   workout_id: workout.workout_id,
                 },
@@ -193,13 +249,13 @@ router.post("/create/", isAuthenticated, async (req, res) => {
         };
 
         // add workout
-        const handleWorkout = async (workout: any) => {
+        const handleWorkout = async (workout: create_session_schema__workout_schema) => {
           const doc = await prisma.workout_schema.create({
             data: {
               default_target: workout.default_target,
               id: v4(),
               session_schema_id: sessionSchemaId,
-              order: workout.order,
+              order: Number(workout.order),
               workout_id: workout.workout_id,
             },
           });
@@ -219,6 +275,86 @@ router.post("/create/", isAuthenticated, async (req, res) => {
     );
 
     res.send(response);
+  } catch (err) {
+    return sendErrorResponse(res, err);
+  }
+});
+
+
+/**
+ * Route to submit the sessionSchema for review
+ */
+router.post("/submit_for_review/", isAuthenticated, async (req, res) => {
+  try {
+    const validatedData: SessionSchema_SubmitForReview_Request = submitSessionSchemaForReviewPayloadValidator.validateSync(req.body)
+
+    const response = await prisma.session_schema.updateMany({
+      where: {
+        id: validatedData.schema_id,
+        owner_id: req.user.id,
+        state: 'PRIVATE'
+      },
+      data: {
+        state: 'REVIEW'
+      }
+    })
+
+    if (response.count !== 1) throw { message: `It turns out there are ${response.count} docs. It should've been 1!` }
+
+    const responsePayload: SessionSchema_SubmitForReview_Response = {
+      message: `schema successfully submitted for review`
+    }
+    res.send(responsePayload)
+  } catch (err) {
+    return sendErrorResponse(res, err);
+  }
+});
+
+
+/**
+ * Route to vote a sessionSchema
+ */
+router.post("/vote/", isAuthenticated, async (req, res) => {
+  try {
+    const validatedData: SessionSchemaVoteRequest = voteSessionSchemaPayloadValidator.validateSync(req.body)
+
+    let voteDetails: SessionSchemaVoteResponse = null;
+    if (validatedData.state) {
+      // the user wants to vote
+      voteDetails = await prisma.session_schema_vote_by_user.create({
+        data: {
+          user_id: req.user.id,
+          session_schema_id: validatedData.schema_id,
+          voted_at: new Date()
+        },
+      })
+
+    } else {
+      // delete it
+      await prisma.session_schema_vote_by_user.delete({
+        where: {
+          user_id_session_schema_id: {
+            user_id: req.user.id,
+            session_schema_id: validatedData.schema_id
+          },
+        },
+      })
+    }
+
+    await prisma.session_schema.update({
+      where: {
+        id: validatedData.schema_id
+      },
+      data: {
+        votes_count: {
+          increment: (voteDetails === null ? -1 : 1)
+        }
+      }
+    })
+
+    res.send({
+      voteDetails
+    })
   } catch (err) {
     return sendErrorResponse(res, err);
   }
@@ -274,6 +410,65 @@ router.get("/all/", isAuthenticated, async (req, res) => {
       if (found) return { ...e, end_timestamp: found.end_timestamp };
       return e;
     });
+    res.send(response);
+  } catch (err) {
+    return sendErrorResponse(res, err);
+  }
+});
+
+
+/**
+ * Route to get top sessionSchema which are public
+ */
+router.post("/top/", isAuthenticated, async (req, res) => {
+  try {
+    const validatedData:SessionSchema_Top_Request=topSessionSchemaPayloadValidator.validateSync(req.body)
+
+    const limit = 5;
+    const topSessionSchemas = await prisma.session_schema.findMany({
+      take: (limit + 1), 
+      where: {
+        state: 'PUBLIC',
+      },
+      ...(validatedData.cursor_id ? {
+        cursor: {
+          id: validatedData.cursor_id
+        },
+        // Don't skip any
+      } : {}),
+      select: {
+        id: true,
+        number_of_superset_workouts: true,
+        number_of_workouts: true,
+        number_of_workouts_in_superset: true,
+        name: true,
+        votes_count: true,
+        session_schema_vote_by_user: {
+          where: {
+            user_id: req.user.id
+          },
+        },
+        owner: {
+          select: {
+            first_name: true,
+          }
+        }
+      },
+      orderBy: [
+        {
+          votes_count: 'desc'
+        },
+        {
+          id: 'asc'
+        },
+      ]
+    })
+
+    const response: SessionSchema_Top_Response = {
+      results: (topSessionSchemas.length === limit + 1 ? topSessionSchemas.slice(0, -1) : topSessionSchemas),
+      next_cursor: (topSessionSchemas.length === limit + 1 ? topSessionSchemas[topSessionSchemas.length - 1].id : null),
+    }
+
     res.send(response);
   } catch (err) {
     return sendErrorResponse(res, err);

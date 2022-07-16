@@ -26,7 +26,7 @@ const Workouts = () => {
     return (
         <div>
 
-
+            <div className="alert alert-error rounded-none alert-sm text-center w-full flex justify-center">Route Deprecated</div>
             <Navbar />
 
             <div className="my-10 prose max-w-2xl mx-auto px-2">
