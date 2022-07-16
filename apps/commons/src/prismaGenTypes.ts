@@ -4,9 +4,6 @@
 **/
 
 
-namespace Prisma {
-  export type JsonValue= any
-}
 
 
 
@@ -73,7 +70,7 @@ export type workout_schema = {
   id: string
   session_schema_id: string
   workout_id: string
-  default_target: Prisma.JsonValue
+  default_target: any
   order: number
 }
 
@@ -95,7 +92,7 @@ export type superset_workout_schema = {
   id: string
   superset_schema_id: string
   workout_id: string
-  default_target: Prisma.JsonValue
+  default_target: any
   order: number
 }
 
@@ -117,7 +114,7 @@ export type session_instance = {
 export type workout_instance = {
   workout_schema_id: string
   session_instance_id: string
-  sets_data: Prisma.JsonValue
+  sets_data: any
 }
 
 /**
@@ -127,7 +124,7 @@ export type workout_instance = {
 export type superset_workout_instance = {
   superset_workout_schema_id: string
   session_instance_id: string
-  sets_data: Prisma.JsonValue
+  sets_data: any
 }
 
 

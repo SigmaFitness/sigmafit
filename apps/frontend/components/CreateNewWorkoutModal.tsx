@@ -92,7 +92,7 @@ export const CreateNewWorkoutModal: React.FC<{
 
 
                                     <div className="alert alert-sm text-xs alert-warning my-2">
-                                        We already have 100+ registered workouts, with detailed description, quick tips etc. Please ensure that there isn&apos;t an existing workout you're trying to add.
+                                        We already have 100+ registered workouts, with detailed description, quick tips etc. Please ensure that there isn&apos;t an existing workout you&apos;re trying to add.
                                     </div>
 
 

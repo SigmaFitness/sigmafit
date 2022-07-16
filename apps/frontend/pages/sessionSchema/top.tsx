@@ -77,7 +77,7 @@ const TopSessionSchema = () => {
                                                         state: !isVoted
                                                     })
                                                 }}>
-                                                <ThumbUpIcon className="w-5 " /> <span>Like</span>
+                                                <ThumbUpIcon className="w-5 " /> <span>{isVoted? 'Liked':'Like'}</span>
                                             </button>
                                             <div className="btn-outline btn btn-sm space-x-2 " onClick={() => {
                                                 toast('Link successfully copied to clipboard', { type: 'info' })
