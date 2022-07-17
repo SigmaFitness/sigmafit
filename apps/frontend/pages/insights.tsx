@@ -14,6 +14,7 @@ import {
     TimeSeriesScale,
     ArcElement,
     RadialLinearScale,
+    LineController,
 } from 'chart.js'
 import { Chart } from "react-chartjs-2";
 import { addHours } from 'date-fns'
@@ -43,7 +44,8 @@ ChartJS.register(
     BarElement,
     TimeSeriesScale,
     ArcElement,
-    RadialLinearScale
+    RadialLinearScale,
+    LineController
 )
 
 

@@ -1,5 +1,5 @@
 import { Insights_TimeSpent_Response } from "@sigmafit/commons";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, BarElement, TimeSeriesScale, ArcElement, RadialLinearScale } from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale, BarElement, TimeSeriesScale, ArcElement, RadialLinearScale, LineController } from "chart.js";
 import { Chart } from "react-chartjs-2";
 
 import { useQuery } from "react-query";
@@ -17,6 +17,7 @@ ChartJS.register(
     Tooltip,
     Legend,
     TimeScale,
+    LineController
 )
 
 
