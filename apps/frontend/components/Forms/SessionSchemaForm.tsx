@@ -1,13 +1,12 @@
 import { create_session_schema__superset_schema, create_session_schema__workout_schema, WorkoutListResponse } from "@sigmafit/commons";
 import { PrismaGenTypes } from "@sigmafit/commons";
-import { superset_workout_schema } from "@sigmafit/commons/dist/prismaGenTypes";
 import { FieldArray, Form, Formik } from "formik";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { ReactSortable } from "react-sortablejs";
 import { toast } from "react-toastify";
 import { ErrorResponse, getAllWorkouts } from "../../api";
-import { CreateNewWorkoutModal } from "../CreateNewWorkoutModal";
+import { CreateNewOrEditWorkoutModal, defaultInitialValues_WorkoutForm } from "../CreateNewOrEditWorkoutModal";
 import { FormInputField } from "../InputField";
 import { RenderSupersetBlockForm } from "./RenderSupersetBlockForm";
 import { RenderWorkoutForm } from "./RenderWorkoutForm";
@@ -78,9 +77,14 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
         }
     });
 
-    const [isCreateNewWorkoutModalOpen, setIsCreateNewWorkoutModalOpenAndPassInitValue] = useState({state: false, initialValue: ''})
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [initialWorkoutNameTypedValue, setInitialWorkoutNameTypedValue] = useState('')
 
 
+    const setIsCreateNewWorkoutModalOpenAndPassInitValue = ({state, initialValue }: {state: boolean, initialValue: string}) => {
+        setInitialWorkoutNameTypedValue(initialValue)
+        setIsModalOpen(state)
+    }
 
     return (
 
@@ -194,10 +198,14 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                 )}
             />
 
-            {isCreateNewWorkoutModalOpen ?
-                <CreateNewWorkoutModal
-                    isModalOpen={isCreateNewWorkoutModalOpen}
-                    setIsModalOpen={setIsCreateNewWorkoutModalOpenAndPassInitValue}
+            {isModalOpen ?
+                <CreateNewOrEditWorkoutModal
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    initialValues={{
+                        ...defaultInitialValues_WorkoutForm,
+                        name: initialWorkoutNameTypedValue,
+                    }}
                 />
                 : null
             }

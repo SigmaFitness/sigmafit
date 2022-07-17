@@ -51,13 +51,13 @@ export const Navbar = () => {
                                         Top Workout Routines
                                     </Link>
                                 </li>
-                                {/* <li className={route==='/workout'?'bg-base-300':''}>
-                                // TODO: Enable it when you've added support for workout notes; and don't allow change the name or anything once created
-                                // the user can delete it only if the workout isn't public (i.e. the workout isn't part of any public schema) and it isn't getting used by any workout (owned by user)
+                                <li className={route==='/workout'?'bg-base-300':''}>
+                                {/* // TODO: Enable it when you've added support for workout notes; and don't allow change the name or anything once created
+                                // the user can delete it only if the workout isn't public (i.e. the workout isn't part of any public schema) and it isn't getting used by any workout (owned by user) */}
                                     <Link href='/workout'>
                                         Manage Workouts 
                                     </Link>
-                                </li> */}
+                                </li>
                                 <li className={route === '/profile' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/profile'>
                                         Profile

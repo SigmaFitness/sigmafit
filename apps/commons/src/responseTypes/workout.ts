@@ -8,7 +8,10 @@ export type WorkoutListResponse = {
 }
 
 
-export type WorkoutAddResponse = workout
+export type Workout_AddOrModify_Response = {
+    workout: workout,
+    mode: 'CREATE' | 'EDIT'
+}
 
 
 export type WorkoutDeleteResponse = {
@@ -22,3 +25,8 @@ export type WorkoutFormOptionsResponse = {
     intensity: (keyof typeof intensity_levels)[],
 }
 
+
+export type Workout_Delete_Response = {
+    message: string,
+    deleted_workout_id: string
+}

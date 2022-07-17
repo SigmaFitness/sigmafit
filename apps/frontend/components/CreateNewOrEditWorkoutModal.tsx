@@ -1,55 +1,54 @@
-import { WorkoutAddResponse, WorkoutFormOptionsResponse, WorkoutListResponse } from "@sigmafit/commons";
+import { WorkoutFormOptionsResponse, WorkoutListResponse, Workout_AddOrModify_Request, Workout_AddOrModify_Response, } from "@sigmafit/commons";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { addNewWorkoutMutation, ErrorResponse, getNewWorkoutAddFormOptions } from "../api";
+import { addNewOrModifyWorkoutMutation, ErrorResponse, getNewWorkoutAddFormOptions } from "../api";
+import { FormikTextAreaField } from "./FormikTextAreaField";
 import { FormSingleSelectFormikField } from "./FormSingleSelectField";
 import { FormInputField } from "./InputField";
 import { SigmaModal } from "./SigmaModal";
 
 
 
-const initialValues: {
-    name: string,
-    category: string,
-    intensity: string,
-    target_body_part: string
-} = {
+export const defaultInitialValues_WorkoutForm = {
     name: "",
     category: "",
     intensity: "",
-    target_body_part: ""
+    target_body_part: "",
+    notes: '',
+    workout_image_url: ''
 }
 
 
 
-export const CreateNewWorkoutModal: React.FC<{
-    isModalOpen: {
-        state: boolean;
-        initialValue: string;
-    },
-    setIsModalOpen: React.Dispatch<React.SetStateAction<{ state: boolean, initialValue: string }>>,
-}> = ({ isModalOpen, setIsModalOpen }) => {
+export const CreateNewOrEditWorkoutModal: React.FC<{
+    isModalOpen: boolean,
+    initialValues?: typeof defaultInitialValues_WorkoutForm
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    existingWorkoutId?: string,
+}> = ({ isModalOpen, setIsModalOpen, initialValues = defaultInitialValues_WorkoutForm, existingWorkoutId }) => {
 
     const queryClient = useQueryClient()
 
+    const isEditMode = (existingWorkoutId && existingWorkoutId !== '')
 
-    const { isLoading: waitingForServerResponse, mutate, error, data } = useMutation<WorkoutAddResponse, ErrorResponse>(addNewWorkoutMutation, {
+    // To be used only for create mode
+    const { isLoading: addWorkoutWaitingForServerResponse, mutate, } = useMutation<Workout_AddOrModify_Response, ErrorResponse, Workout_AddOrModify_Request>(addNewOrModifyWorkoutMutation, {
         onSuccess: (data) => {
             const prevWorkouts = queryClient.getQueryData<WorkoutListResponse>('getAllWorkouts');
 
-            queryClient.setQueryData('getAllWorkouts', {
-                ...prevWorkouts, myWorkouts: [
-                    ...(prevWorkouts?.myWorkouts ?? []), {
-                        ...data
-                    }
+            if (prevWorkouts) {
+                const newWorkouts = {
+                    ...prevWorkouts,
+                    myWorkouts: isEditMode? prevWorkouts.myWorkouts.filter(e => e.id!==data.workout.id) : [...prevWorkouts.myWorkouts, data]
+                }
+                queryClient.setQueryData('getAllWorkouts', newWorkouts)
+            }
 
-                ]
-            })
 
-            toast('Workout added successfully!', { type: 'success' })
-            setIsModalOpen((e) => ({ ...e, state: false }))
+            toast(`Workout ${isEditMode ? 'edited' : 'added'} successfully!`, { type: 'success' })
+            setIsModalOpen(false)
         },
         onError: (err) => {
             toast(err.message, { type: 'error' })
@@ -57,14 +56,17 @@ export const CreateNewWorkoutModal: React.FC<{
     })
 
 
-    const { data: formOptions, isLoading: isFormOptionsLoading } = useQuery<WorkoutFormOptionsResponse, ErrorResponse>('getNewWorkoutAddFormOptions', getNewWorkoutAddFormOptions, {
+    const { data: formOptions } = useQuery<WorkoutFormOptionsResponse, ErrorResponse>('getNewWorkoutAddFormOptions', getNewWorkoutAddFormOptions, {
         onSettled: (data, error) => {
             if (error) toast(error.message, { type: 'error' })
         }
     });
 
-    const handleSubmit = async (values: any) => {
-        mutate(values)
+    const handleSubmit = async (values: typeof defaultInitialValues_WorkoutForm) => {
+        mutate({
+            ...values,
+            id: existingWorkoutId, // if undefined it will be removed by the helper funx in api.ts
+        } as any)
     }
 
 
@@ -73,25 +75,25 @@ export const CreateNewWorkoutModal: React.FC<{
             <>
                 {isModalOpen ?
                     < SigmaModal
-                        isOpen={isModalOpen.state}
-                        setIsOpen={(newVal: boolean) => setIsModalOpen((e) => ({ ...e, state: newVal }))}
+                        isOpen={isModalOpen}
+                        setIsOpen={(newVal: boolean) => setIsModalOpen(newVal)}
                     >
 
                         <div className="mt-16">
 
                             <Formik
-                                initialValues={{ ...initialValues, name: isModalOpen.initialValue ?? '' }}
+                                initialValues={initialValues}
                                 onSubmit={handleSubmit}
                             >
                                 <Form className="text-black" autoComplete="off">
 
                                     <div className="prose text-center my-4">
-                                        <h2>Add New Workout</h2>
+                                        <h2>{isEditMode ? 'Edit' : 'Add New'} Workout</h2>
                                     </div>
 
 
                                     <div className="alert alert-sm text-xs alert-warning my-2">
-                                        We already have 100+ registered workouts, with detailed description, quick tips etc. Please ensure that there isn&apos;t an existing workout you&apos;re trying to add.
+                                        We already have 100+ registered workouts, with detailed description, quick tips etc. Please ensure that there isn&apos;t an existing workout you&apos;re trying to {isEditMode ? 'edit' : 'add'}.
                                     </div>
 
 
@@ -121,12 +123,26 @@ export const CreateNewWorkoutModal: React.FC<{
                                     />
 
 
+                                    <FormInputField
+                                        fieldId="workout_image_url"
+                                        fieldLabel="Workout Image Link"
+                                        placeholder="https://..."
+                                        type="url"
+                                    />
+
+
+                                    <FormikTextAreaField
+                                        fieldId="notes"
+                                        fieldLabel="Notes"
+                                        placeholder="Directions to perform the workout..."
+                                    />
+
 
                                     <div className="flex items-center justify-between">
                                         <button
                                             className="btn"
                                             type="submit"
-                                            disabled={waitingForServerResponse}
+                                            disabled={addWorkoutWaitingForServerResponse}
                                         >
                                             Submit
 

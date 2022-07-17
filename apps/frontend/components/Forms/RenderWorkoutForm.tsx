@@ -33,7 +33,7 @@ export const RenderWorkoutForm = ({
     uniqueIdPrefix: string,
     containerStyles?: string,
     moveHandleClassName: string,
-    setIsCreateNewWorkoutModalOpenAndPassInitValue: React.Dispatch<React.SetStateAction<{state: boolean, initialValue: string}>>
+    setIsCreateNewWorkoutModalOpenAndPassInitValue: ({ state, initialValue }: { state: boolean, initialValue: string }) => void
 }) => {
 
     const targetEntity = workoutInstance ? workoutCategoryToValNeeded(workoutInstance.category) : null

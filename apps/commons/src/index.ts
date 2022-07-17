@@ -7,6 +7,8 @@ export * from './responseTypes/insights'
 export * from './requestTypes/sessionSchema'
 export * from './requestTypes/sessionInstance'
 export * from './requestTypes/insights'
+export * from './requestTypes/workout'
+
 
 
 

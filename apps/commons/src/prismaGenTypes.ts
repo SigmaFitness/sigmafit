@@ -27,15 +27,18 @@ export type user = {
  * Model workout
  * 
  */
-export type workout = {
+ export type workout = {
   id: string
   name: string
   category: workout_type
   target_body_part: body_part | null
+  workout_image_url: string
   intensity: intensity_levels | null
   owner_id: string
   is_public: boolean
+  notes: string
 }
+
 
 /**
  * Model session_schema

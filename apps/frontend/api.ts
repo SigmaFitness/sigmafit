@@ -30,23 +30,28 @@ const usePost = async <T>(url: string, method: 'GET' | 'POST', data?: any): Prom
 
 
 // WORKOUT
-
 export const getAllWorkouts = async () => {
     return usePost<WorkoutListResponse>(`${apiPrefixSlug}/workout/list`, 'GET')
 }
 
 
-export const addNewWorkoutMutation = async (newWorkoutData: any) => {
+export const addNewOrModifyWorkoutMutation = async (workoutData: any) => {
     const newObj: any = {}
-    Object.keys(newWorkoutData).forEach(e => {
-        if (newWorkoutData[e]) newObj[e] = newWorkoutData[e]
+    Object.keys(workoutData).forEach(e => {
+        if (workoutData[e]) newObj[e] = workoutData[e]
     })
-    return usePost<any>(`${apiPrefixSlug}/workout/add`, 'POST', newObj)
+    return usePost<any>(`${apiPrefixSlug}/workout/addOrModify`, 'POST', newObj)
 }
 
 export const getNewWorkoutAddFormOptions = async () => {
     return usePost<any>(`${apiPrefixSlug}/workout/formOptions`, 'GET')
 }
+
+
+export const deleteWorkout = async (workout_id: string) => {
+    return usePost<any>(`${apiPrefixSlug}/workout/delete`, 'POST', {id: workout_id})
+}
+
 
 
 

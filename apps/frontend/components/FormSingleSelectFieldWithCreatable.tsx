@@ -14,9 +14,9 @@ export const FormSingleSelectFieldWithCreatable = ({
 	fieldLabel: string;
 	options: { value: string; label: string }[];
 	isInline?: boolean;
-	setIsCreateNewWorkoutModalOpenAndPassInitValue: React.Dispatch<React.SetStateAction<{ state: boolean, initialValue: string }>>
+	setIsCreateNewWorkoutModalOpenAndPassInitValue: ({ state, initialValue }: { state: boolean, initialValue: string }) => void
 }) => {
-	const {  setFieldValue, getFieldProps } = useFormikContext();
+	const { setFieldValue, getFieldProps } = useFormikContext();
 	const value = getFieldProps(fieldId).value;
 
 	const getValue = () => {
@@ -31,13 +31,7 @@ export const FormSingleSelectFieldWithCreatable = ({
 	return (
 
 		<>
-
 			<label className={`mb-4 input-group w-full text-sm ${isInline ? 'flex-row' : 'flex-col'}`}>
-				{/* <label htmlFor='jello' className="btn modal-button">open modal</label> */}
-
-
-
-
 				<div className="label  w-full pb-1">
 					{fieldLabel}
 				</div>

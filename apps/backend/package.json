@@ -10,7 +10,7 @@
     "prettier": "prettier --write .",
     "build": "tsc --build",
     "generate:prisma": "prisma generate",
-    "lint": "eslint .",
+    "lint": "eslint . && tsc --noEmit",
     "format": "prettier --write .",
     "postinstall": "prisma generate"
   },

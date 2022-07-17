@@ -20,7 +20,7 @@ export const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance,
         }
     },
     removeInstance: any // TODO
-    setIsCreateNewWorkoutModalOpenAndPassInitValue: React.Dispatch<React.SetStateAction<{ state: boolean, initialValue: string }>>
+    setIsCreateNewWorkoutModalOpenAndPassInitValue: ({ state, initialValue }: { state: boolean, initialValue: string }) => void
 }) => {
 
     const { setFieldValue } = useFormikContext();
