@@ -171,6 +171,7 @@ router.get("/state/:sessionInstanceId", isAuthenticated, async (req, res) => {
                 'CLASSIC_WORKOUT' as type,
                 workout.category as workout_category,
                 workout.name as workout_name,
+                workout.workout_image_url as workout_image_url,
                 NULL as superset_schema_name -- since it's classic workout no superset_schema_name
             FROM workout_schema
             LEFT JOIN 
@@ -206,6 +207,7 @@ router.get("/state/:sessionInstanceId", isAuthenticated, async (req, res) => {
                 'SUPERSET_WORKOUT' as type,
                 workout.category as workout_category,
                 workout.name as workout_name,
+                workout.workout_image_url as workout_image_url,
                 superset_schema.name as superset_schema_name
             FROM superset_workout_schema
             INNER JOIN superset_schema ON superset_schema.id = superset_workout_schema.superset_schema_id 

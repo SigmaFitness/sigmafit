@@ -380,7 +380,8 @@ const Card = ({ session_block_instance }: {
         workout_name,
         workout_category,
         prev_workout_instance_sets_data,
-        current_workout_instance_sets_data
+        current_workout_instance_sets_data,
+        workout_image_url
     } = session_block_instance
 
 
@@ -393,7 +394,7 @@ const Card = ({ session_block_instance }: {
         <div className='z-10'>
             <div className="card py-4 bg-gray-200  shadow-xl">
                 <figure>
-                    <img src="https://www.pngkit.com/png/detail/915-9154256_lateral-raise-dumbbell-shoulder-fly.png" className='select-none h-72 w-72 object-cover pointer-events-none mask mask-squircle' alt="Shoes" />
+                    <img src={workout_image_url} className='select-none h-72 w-72 object-cover pointer-events-none mask mask-squircle' alt="Shoes" />
                 </figure>
 
 

@@ -42,6 +42,7 @@ export type SessionInstanceStateResponse = {
         type: 'CLASSIC_WORKOUT' | 'SUPERSET_WORKOUT',
         workout_category: keyof typeof workout_type,
         workout_name: string,
+        workout_image_url: string,
         superset_schema_name: string | null
     }[],
     session_instance_details: {

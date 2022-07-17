@@ -50,6 +50,7 @@ model workout {
   name                    String
   category                workout_type
   target_body_part        body_part?
+  workout_image_url               String                    @default("https://images.unsplash.com/photo-1597076545399-91a3ff0e71b3?ixlib=rb-1.2.1&w=640&q=80&fm=jpg&crop=entropy&cs=tinysrgb")
   intensity               intensity_levels?
   owner_id                String
   owner                   user                      @relation(fields: [owner_id], references: [id])
