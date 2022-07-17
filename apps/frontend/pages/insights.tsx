@@ -12,20 +12,23 @@ import {
     TimeScale,
     BarElement,
     TimeSeriesScale,
+    ArcElement,
+    RadialLinearScale,
 } from 'chart.js'
 import { Chart } from "react-chartjs-2";
 import { addHours } from 'date-fns'
 import 'chartjs-adapter-date-fns';
 import { StarIcon } from "@heroicons/react/solid";
 import { useQueries, useQuery } from "react-query";
-import { Insights_Workout_Response, WorkoutListResponse } from "@sigmafit/commons";
-import { ErrorResponse, getAllWorkouts, getWorkoutInsights } from "../api";
+import { Insights_TimeSpent_Response, Insights_Workout_Response, WorkoutListResponse } from "@sigmafit/commons";
+import { ErrorResponse, getAllWorkouts, getTimeSpentInsights, getWorkoutInsights } from "../api";
 import { toast } from "react-toastify";
 import { FormSingleSelectField, FormSingleSelectFormikField } from "../components/FormSingleSelectField";
 import { Formik } from "formik";
 import { DescriptionText } from "./sessionSchema/[id]/view";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
+import { TimeSpentChart } from "../components/TimeSpentChart";
 
 
 ChartJS.register(
@@ -38,7 +41,9 @@ ChartJS.register(
     Legend,
     TimeScale,
     BarElement,
-    TimeSeriesScale
+    TimeSeriesScale,
+    ArcElement,
+    RadialLinearScale
 )
 
 
@@ -87,11 +92,19 @@ const Insights = () => {
         <>
             <MetaHead />
             <Navbar />
+
             <div className="max-w-2xl mx-auto px-2 prose mt-5">
                 <h2 className="mb-5">Training Insights</h2>
 
+                <h3>Session length by day</h3>
+                <TimeSpentChart
+                
+                height={100}/>
+
                 {isLoading || !workouts ? <div>Loading Workouts....</div> :
                     <>
+
+                    <h3>Workout Insights</h3>
                         <FormSingleSelectField
                             fieldId="workout_id"
                             fieldLabel="Workout Name"
@@ -188,6 +201,7 @@ const Insights = () => {
 
                     </>}
             </div>
+
         </>
     )
 }
@@ -237,21 +251,6 @@ const SigmaFitChartComp = ({ labels, data, pointStyle, getTooltipText, toolTipLa
             }
             options={{
                 responsive: true,
-                // legendCallback: function (chart) {             
-                //     // // Return the HTML string here.
-                //     // console.log(chart.data.datasets);
-                //     // var text = [];
-                //     // text.push('<ul class="' + chart.id + '-legend">');
-                //     // for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
-                //     //     text.push('<li><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"   onclick="updateDataset(event, ' + '\'' + i + '\'' + ')">');
-                //     //     if (chart.data.labels[i]) {
-                //     //         text.push(chart.data.labels[i]);
-                //     //     }
-                //     //     text.push('</span></li>');
-                //     // }
-                //     // text.push('</ul>');
-                //     // return text.join("");
-                // },
                 plugins: {
                     tooltip: {
                         callbacks: {
@@ -292,3 +291,6 @@ const SigmaFitChartComp = ({ labels, data, pointStyle, getTooltipText, toolTipLa
         />
     )
 }
+
+
+

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import { Insights_Workout_Request, SessionSchemaVoteRequest, SessionSchema_SubmitForReview_Request, SessionSchema_Top_Request, WorkoutListResponse } from '@sigmafit/commons'
+import { Insights_TimeSpent_Response, Insights_Workout_Request, SessionSchemaVoteRequest, SessionSchema_SubmitForReview_Request, SessionSchema_Top_Request, WorkoutListResponse } from '@sigmafit/commons'
 
 const apiPrefixSlug = '/api'
 
@@ -164,4 +164,8 @@ export const voteASessionSchema = async (payload: SessionSchemaVoteRequest) => {
 
 export const getWorkoutInsights = async (payload: Insights_Workout_Request) => {
     return usePost<any>(`${apiPrefixSlug}/insights/workout`, 'POST', payload)
+}
+
+export const getTimeSpentInsights = async () => {
+    return usePost<any>(`${apiPrefixSlug}/insights/timeSpent`, 'POST')
 }

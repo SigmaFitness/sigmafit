@@ -3,6 +3,7 @@ import { Router } from "express";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { isAuthenticated } from "../utils/authMiddlewares";
 import {
+  Insights_TimeSpent_Response,
   Insights_Workout_Request,
   Insights_Workout_Response,
   SessionInstanceState_SetData,
@@ -88,15 +89,6 @@ router.post("/workout", isAuthenticated, async (req, res) => {
       return dataPoints;
     };
 
-    // const dataPoints: Insights_Workout_Response['dataPoints'][] = data.map(e => (
-    //     [
-    //         e.sets_data.map(f => ({
-    //             date: 'string',
-    //             setValue: f.values[0],
-    //             type: 'NORMAL'
-    //         }))
-    //     ]
-    // ))
     const resp: Insights_Workout_Response = {
       workout_type: workoutInstance.category,
       dataPoints: buildDataPoints(data),
@@ -106,4 +98,48 @@ router.post("/workout", isAuthenticated, async (req, res) => {
     sendErrorResponse(res, err);
   }
 });
+
+
+
+
+
+router.post('/timeSpent', isAuthenticated, async(req, res) => {
+  try{
+    // look for all session schema
+    // Note: we aren't merging it!
+  
+    const sessionInstances=await prisma.session_instance.findMany({
+      where: {
+        session_schema: {
+          owner_id: req.user.id
+        },
+        NOT: {
+          end_timestamp: null
+        }
+      },
+      include: {
+        session_schema: {
+          select: {
+            name: true
+          }
+        }
+      },
+      orderBy: {
+        start_timestamp: 'asc'
+      }
+    })
+
+    const resp: Insights_TimeSpent_Response = {
+      dataPoints: sessionInstances.map(e => ({
+        startTime: e.start_timestamp,
+        session_name: e.session_schema.name,
+        duration: Math.round(((e.end_timestamp.getTime()-e.start_timestamp.getTime())/1000/60) * 100)/100 // minutes
+      })).slice(0,5)
+    }
+
+    res.send(resp)
+  }catch(err){
+    sendErrorResponse(res,err);
+  }
+})
 export default router;

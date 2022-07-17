@@ -10,3 +10,12 @@ export type Insights_Workout_Response = {
         type: 'DROPSET' | 'NORMAL' | 'SUPERSET'
     }[]
 }
+
+
+export type Insights_TimeSpent_Response = {
+    dataPoints: {
+        duration: number,
+        startTime: Date, // it's date
+        session_name: string
+    }[]
+}

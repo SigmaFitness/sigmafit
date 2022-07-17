@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { ErrorResponse, getAllActiveSessions, getAllSessionSchemaOwnedByUser, startANewSessionFromSchemaId } from "../api";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
+import { TimeSpentChart } from "../components/TimeSpentChart";
 import { withAuthHOC } from "../hooks/withAuthHOC";
 
 
@@ -42,8 +43,16 @@ const Dash = () => {
 
 
             <div className="max-w-2xl mx-auto my-12 prose px-2">
-                {/* Show current active sessions if any */}
 
+                <h2>Analytics</h2>
+
+                <h3>Session length by day</h3>
+                <TimeSpentChart height={100} />
+
+
+
+
+                {/* Show current active sessions if any */}
                 <h2>Active Sessions</h2>
                 <div className="my-3">
                     {activeSessions ?
