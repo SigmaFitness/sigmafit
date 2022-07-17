@@ -1,9 +1,9 @@
 
 
-import { ErrorMessage, Field, useField, useFormikContext } from "formik";
-import Select from "react-select";
+import { ErrorMessage, useFormikContext } from "formik";
+import Select, { ActionMeta } from "react-select";
 
-export const FormSingleSelectField = ({
+export const FormSingleSelectFormikField = ({
 	fieldId,
 	fieldLabel,
 	options,
@@ -17,6 +17,46 @@ export const FormSingleSelectField = ({
 	const { values, setFieldValue, getFieldProps } = useFormikContext();
 	const value = getFieldProps(fieldId).value;
 
+
+
+
+	return (
+		<>
+		<FormSingleSelectField
+			fieldId={fieldId}
+			fieldLabel={fieldLabel}
+			onChange={(option) => {
+				setFieldValue(fieldId, option?.value)
+			}}
+			options={options}
+			value={value}
+			isInline={isInline}
+		/>
+		<ErrorMessage
+				className="text-red-500 text-xs mt-1"
+				name={fieldId} />
+		
+		</>
+	);
+};
+
+
+export const FormSingleSelectField = ({
+	fieldId,
+	fieldLabel,
+	options,
+	isInline,
+	onChange,
+	value
+}: {
+	fieldId: string;
+	fieldLabel: string;
+	options: { value: string; label: string }[];
+	isInline?: boolean;
+	onChange: ((newValue: {value: string, label: string}, actionMeta: ActionMeta<any>) => void) | undefined,
+	value: string
+}) => {
+
 	const getValue = () => {
 		if (value) {
 			return options.filter(option => value.indexOf(option.value) >= 0)
@@ -24,21 +64,17 @@ export const FormSingleSelectField = ({
 			return []
 		}
 	};
-
-
 	return (
 		<label className={`mb-4 input-group w-full text-sm ${isInline ? 'flex-row' : 'flex-col'}`}>
 			<div className="label  w-full pb-1">
 				{fieldLabel}
 			</div>
 			<Select
-			components={{
-				IndicatorSeparator: null
-			}}
-				name={fieldId}
-				onChange={(option) => {
-					setFieldValue(fieldId, option?.value)
+				components={{
+					IndicatorSeparator: null
 				}}
+				name={fieldId}
+				onChange={onChange as any}
 				isMulti={false}
 				value={getValue()}
 				styles={{
@@ -71,9 +107,7 @@ export const FormSingleSelectField = ({
 			/>
 
 
-			<ErrorMessage
-				className="text-red-500 text-xs mt-1"
-				name={fieldId} />
+			
 		</label>
-	);
-};
+	)
+}

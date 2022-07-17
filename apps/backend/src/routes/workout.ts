@@ -148,10 +148,9 @@ router.post("/modify/", isAuthenticated, async (req, res) => {
 
 /**
  * Route to delete a workout is removed.
- * 
+ *
  * Any workout added cannot be removed. It ensures that any shared schema workouts are always safe!
  */
-
 
 /**
  * Route to send all the form options to add a new form

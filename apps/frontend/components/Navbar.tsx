@@ -41,12 +41,12 @@ export const Navbar = () => {
                         {!isLoading && !isError ?
 
                             <>
-                                <li className={route === '/dash' ? 'bg-base-300' : ''}>
+                                <li className={route === '/dash' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/dash'>
                                         Dashboard
                                     </Link>
                                 </li>
-                                <li className={route === '/sessionSchema/top' ? 'bg-base-300' : ''}>
+                                <li className={route === '/sessionSchema/top' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/sessionSchema/top'>
                                         Top Workout Routines
                                     </Link>
@@ -58,43 +58,43 @@ export const Navbar = () => {
                                         Manage Workouts 
                                     </Link>
                                 </li> */}
-                                <li className={route === '/profile' ? 'bg-base-300' : ''}>
+                                <li className={route === '/profile' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/profile'>
                                         Profile
                                     </Link>
                                 </li>
-                                <li className={route === '/insights' ? 'bg-base-300' : ''}>
+                                <li className={route === '/insights' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/insights'>
                                         <div className="justify-between">
-                                            Insights
-                                            <span className="badge">New</span>
+                                            Training Insights
+                                            <span className="badge badge-sm badge-warning">New</span>
                                         </div>
                                     </Link>
                                 </li>
-                                <li className={route === '/auth/logout' ? 'bg-base-300' : ''}>
+                                <li className={route === '/auth/logout' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/auth/logout'>
                                         Logout
                                     </Link>
                                 </li>
 
                             </> : <>
-                                <li className={route === '/about-us' ? 'bg-base-300' : ''}>
+                                <li className={route === '/about-us' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/about-us'>
                                         About Us
                                     </Link>
                                 </li>
 
-                                <li className={route === '/pricing' ? 'bg-base-300' : ''}>
+                                <li className={route === '/pricing' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/pricing'>
                                         Pricing
                                     </Link>
                                 </li>
-                                <li className={route === '/auth/signin' ? 'bg-base-300' : ''}>
+                                <li className={route === '/auth/signin' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/auth/signin'>
                                         Sign In
                                     </Link>
                                 </li>
-                                <li className={route === '/auth/signup' ? 'bg-base-300' : ''}>
+                                <li className={route === '/auth/signup' ? 'bg-base-300 rounded-lg' : ''}>
                                     <Link href='/auth/signup'>
                                         Sign Up
                                     </Link>

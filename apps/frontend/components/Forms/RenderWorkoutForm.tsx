@@ -1,5 +1,5 @@
 import { XIcon, InformationCircleIcon } from "@heroicons/react/solid";
-import { FormSingleSelectField } from "../FormSingleSelectField";
+import { FormSingleSelectFormikField } from "../FormSingleSelectField";
 import { FormSingleSelectFieldWithCreatable } from "../FormSingleSelectFieldWithCreatable";
 import { MoveGrabberIcon } from "../icons/MoveGrabber";
 import { MultiCreateInput } from "../MultiCreateInput";

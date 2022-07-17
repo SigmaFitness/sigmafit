@@ -2,13 +2,13 @@ import type { NextPage } from 'next'
 import { MetaHead } from '../../components/Head'
 import { Navbar } from '../../components/Navbar'
 import ReactDraggable from 'react-draggable'
-import { createRef, useEffect, useRef, useState } from 'react'
+import { createRef, Fragment, useEffect, useRef, useState } from 'react'
 import { Field, FieldArray, Form, Formik, useFormik, useFormikContext } from 'formik'
 import Image from 'next/image'
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon, DotsVerticalIcon } from '@heroicons/react/solid'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { endSessionInstance, ErrorResponse, getSessionInstanceDetails, sessionInstanceAddOrModifyBlock } from '../../api'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
@@ -74,47 +74,84 @@ const SessionInstance: NextPage = () => {
         },
     })
 
-    const handleAddOrModifyBlockSubmit = async (values: any) => {
-        // get data from formik
-        const data = values.sets_data
-        // make request
-        if (data.length !== 0 && data !== workouts[workoutIndex].current_workout_instance_sets_data) {
-            try {
-                const res = await mutateAsync({
-                    block_type: workouts[workoutIndex].type,
-                    session_instance_id: sessionInstanceId as string,
-                    id: workouts[workoutIndex].superset_or_classic_workout_schema_id,
-                    sets_data: data
-                })
-            } catch (_) {
-                return;
-            }
+    const queryClient = useQueryClient()
 
-        }
+    const handleAddOrModifyBlockSubmit = async (values: { sets_data: SessionInstanceState_SetData[] }) => {
+        try {
 
+            // get data from formik
+            const sets_data: SessionInstanceState_SetData[] = []
 
-        // if success then add to next exercise
-        if (workoutIndex + 1 !== workouts.length) setWorkoutIndex((val) => val + 1)
-        else {
-            // if end then ask them if we should stop the exercise
-            if (confirm('Are you sure you want to end this session?')) {
-
-
-                toast('Ending session', { type: 'info' })
-
-                try {
-                    const res = await endSessionInstance(sessionInstanceId)
-                    if (res.error) {
-                        throw { message: res.message }
+            values.sets_data.forEach(e => {
+                const current: SessionInstanceState_SetData['values'] = []
+                let isFirstEmpty = false
+                e.values.every((f, indx) => {
+                    let numberOfEmptyValues = 0;
+                    Object.keys(f).forEach((t) => numberOfEmptyValues += Number((f as any)[t] === ''))
+                    if (numberOfEmptyValues !== Object.keys(f).length) current.push(f);
+                    else if (indx == 0) {
+                        isFirstEmpty = true;
                     }
+                    return true;
+                })
 
-                    router.push('/dash')
-                } catch (err: any) {
-                    toast(err.message, { type: 'error' })
+                if (current.length && isFirstEmpty) {
+                    // no dropset can be used
+                    throw new Error("Cannot have a drop set without the actual one!")
+                }
+
+                if (current.length) sets_data.push({
+                    values: current
+                })
+
+
+            })
+
+            // make request
+            if (sets_data.length !== 0 && values.sets_data != workouts[workoutIndex].current_workout_instance_sets_data) {
+                try {
+                    const res = await mutateAsync({
+                        block_type: workouts[workoutIndex].type,
+                        session_instance_id: sessionInstanceId as string,
+                        id: workouts[workoutIndex].superset_or_classic_workout_schema_id,
+                        sets_data
+                    })
+
+                    // refetch
+                    // TODO: Since we already have the data, it's better to do optimistic updates (after the original update is successful instead of refetching)
+                    queryClient.refetchQueries(['getSessionInstanceDetails', sessionInstanceId])
+                } catch (_) {
+                    return;
                 }
             }
 
+
+            // if success then add to next exercise
+            if (workoutIndex + 1 !== workouts.length) setWorkoutIndex((val) => val + 1)
+            else {
+                // if end then ask them if we should stop the exercise
+                if (confirm('Are you sure you want to end this session?')) {
+
+
+                    toast('Ending session', { type: 'info' })
+
+                    try {
+                        const res = await endSessionInstance(sessionInstanceId)
+                        if (res.error) {
+                            throw { message: res.message }
+                        }
+
+                        router.push('/dash')
+                    } catch (err: any) {
+                        toast(err.message, { type: 'error' })
+                    }
+                }
+
+            }
+        } catch (err: any) {
+            toast(err.message, { type: 'error' })
         }
+
     }
 
     useEffect(() => {
@@ -180,28 +217,25 @@ const SessionInstance: NextPage = () => {
                                         initialValues={{ sets_data: workouts[workoutIndex].current_workout_instance_sets_data ?? [getInitialSetValue(workouts[workoutIndex].workout_category)] }}
                                         onSubmit={handleAddOrModifyBlockSubmit}
                                         enableReinitialize={true}
-                                    // validationSchema={schema}
                                     >
                                         <Form>
-
-                                            <Card
-                                                session_block_instance={workouts[workoutIndex]}
-                                            // current_workout_instance_sets_data={workouts[workoutIndex].current_workout_instance_sets_data}
-                                            // prev_workout_instance_sets_data={workouts[workoutIndex].prev_workout_instance_sets_data}
-
-                                            />
+                                            <div>
+                                                <Card
+                                                    session_block_instance={workouts[workoutIndex]}
+                                                />
 
 
-                                            <div className='col-span-6 flex justify-between mt-8 gap-3'>
-                                                <button disabled={workoutIndex === 0} className='btn' type='button' onClick={handleBack}>
-                                                    <ChevronLeftIcon className='w-6' />
-                                                </button>
-                                                <button
-                                                    disabled={isMutationResultLoading}
-                                                    className='btn flex-grow' type='submit'>
-                                                    <div>{workoutIndex + 1 === workouts.length ? 'End Session' : 'Next Exercise'}</div>
-                                                    <ChevronRightIcon className='w-6' />
-                                                </button>
+                                                <div className='col-span-6 flex justify-between mt-8 gap-3'>
+                                                    <button disabled={workoutIndex === 0} className='btn' type='button' onClick={handleBack}>
+                                                        <ChevronLeftIcon className='w-6' />
+                                                    </button>
+                                                    <button
+                                                        disabled={isMutationResultLoading}
+                                                        className='btn flex-grow' type='submit'>
+                                                        <div>{workoutIndex + 1 === workouts.length ? 'End Session' : 'Next Exercise'}</div>
+                                                        <ChevronRightIcon className='w-6' />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </Form>
 
@@ -265,20 +299,20 @@ const RenderFields = ({ workoutCategory, idPrefix }: { idPrefix: string, workout
     if (workoutCategory === 'WEIGHT_AND_REPS') {
         return (
             <>
-                <Field type='number' placeholder="Weight" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.weight`} />
-                <Field type='number' placeholder="Reps" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.reps`} />
+                <Field type='number' placeholder="Weight" className="input input-primary w-full input-sm" name={`${idPrefix}.weight`} />
+                <Field type='number' placeholder="Reps" className="input input-primary w-full input-sm" name={`${idPrefix}.reps`} />
             </>
         )
     } else if (workoutCategory === 'DISTANCE_AND_DURATION') {
         return <>
-            <Field type='number' placeholder="Distance" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.distance`} />
-            <Field type='number' placeholder="Duration" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.duration`} />
+            <Field type='number' placeholder="Distance (in KMs)" className="input input-primary w-full input-sm" name={`${idPrefix}.distance`} />
+            <Field type='number' placeholder="Duration (in Minutes)" className="input input-primary w-full input-sm" name={`${idPrefix}.duration`} />
         </>
     } else if (workoutCategory === 'DURATION') {
-        return <Field type='number' placeholder="Duration" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.duration`} />
+        return <Field type='number' placeholder="Duration (in Minutes)" className="input input-primary w-full input-sm" name={`${idPrefix}.duration`} />
 
     } else if (workoutCategory === 'REPS') {
-        return <Field type='number' placeholder="Reps" className="flex-2 input input-primary w-full input-xs max-w-xs" name={`${idPrefix}.reps`} />
+        return <Field type='number' placeholder="Reps" className="input input-primary w-full input-sm" name={`${idPrefix}.reps`} />
     } else {
         return null;
     }
@@ -289,13 +323,13 @@ const RenderDataByWorkoutCategory = ({ workoutCategory, lastSessionSetInfo }: { 
     if ('weight' in lastSessionSetInfo) {
         return (
             <>
-                <div className='inline-block sm:block'>
+                <div className='inline-block'>
                     {lastSessionSetInfo.weight} kgs
                 </div>
-                <div className='inline-block sm:hidden mx-1 '>
+                <div className='inline-block mx-1 '>
                     /
                 </div>
-                <div className='inline-block sm:block'>
+                <div className='inline-block'>
                     {lastSessionSetInfo.reps} reps
                 </div>
             </>
@@ -303,7 +337,7 @@ const RenderDataByWorkoutCategory = ({ workoutCategory, lastSessionSetInfo }: { 
     } else if ('reps' in lastSessionSetInfo) {
         return (
             <>
-                <div className='inline-block sm:block'>
+                <div className='inline-block'>
                     {lastSessionSetInfo.reps} reps
                 </div>
             </>
@@ -311,13 +345,13 @@ const RenderDataByWorkoutCategory = ({ workoutCategory, lastSessionSetInfo }: { 
     } else if ('distance' in lastSessionSetInfo) {
 
         return <>
-            <div className='inline-block sm:block'>
-                {lastSessionSetInfo.distance} metres
+            <div className='inline-block'>
+                {lastSessionSetInfo.distance} KMs
             </div>
-            <div className='inline-block sm:hidden mx-1 '>
+            <div className='inline-block mx-1 '>
                 /
             </div>
-            <div className='inline-block sm:block'>
+            <div className='inline-block'>
                 {lastSessionSetInfo.duration} minutes
             </div>
 
@@ -325,7 +359,7 @@ const RenderDataByWorkoutCategory = ({ workoutCategory, lastSessionSetInfo }: { 
     } else if ('duration' in lastSessionSetInfo) {
 
         return <>
-            <div className='inline-block sm:block'>
+            <div className='inline-block'>
                 {lastSessionSetInfo.duration} minutes
             </div>
 
@@ -357,9 +391,6 @@ const Card = ({ session_block_instance }: {
     return (
 
         <div className='z-10'>
-
-
-
             <div className="card py-4 bg-gray-200  shadow-xl">
                 <figure>
                     <img src="https://www.pngkit.com/png/detail/915-9154256_lateral-raise-dumbbell-shoulder-fly.png" className='select-none h-72 w-72 object-cover pointer-events-none mask mask-squircle' alt="Shoes" />
@@ -381,18 +412,6 @@ const Card = ({ session_block_instance }: {
                             render={setsArrayHelpers => (
                                 <div className='grid grid-cols-6 text-sm items-center justify-center'>
 
-                                    {/* <div className='hidden sm:block col-span-2 border-b-2 border-dashed'>
-                                        <div className="tooltip tooltip-bottom tooltip-info" data-tip="weight / reps">
-                                            <div className=''>
-                                                <div className="font-bold gap-2">
-                                                    Last Session
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="hidden sm:block col-span-4"></div> */}
-
-
                                     {/* PRINT THE FIRST ONE */}
 
                                     {values.sets_data.map((set, setIndx) => {
@@ -404,13 +423,11 @@ const Card = ({ session_block_instance }: {
                                         // TODO: based on the category show values
 
                                         return (
-                                            <>
+                                            <Fragment key={setIndx}>
 
 
-                                                <div key={'last_session' + setIndx} className='col-span-6 sm:col-span-2 mt-2'>
-                                                    {/* <div className='inline-block mx-1 font-bold'>
-                                                        Last session:
-                                                    </div> */}
+                                                <div key={'last_session_one_' + setIndx} className='col-span-6 mt-2'>
+                                                  
                                                     <DescriptionText
                                                         type='gap-2'
                                                         name='Last session:'
@@ -433,7 +450,7 @@ const Card = ({ session_block_instance }: {
                                                 </div>
 
 
-                                                <div key={'last_session' + setIndx} className='col-span-6 mt-2'>
+                                                <div key={'last_session_two_' + setIndx} className='col-span-6 mt-2'>
                                                     <DescriptionText
                                                         type='gap-2'
                                                         name='Target:'
@@ -445,12 +462,12 @@ const Card = ({ session_block_instance }: {
 
                                                 <FieldArray
                                                     name={`sets_data.${setIndx}.values`}
-                                                    key={'field_array' + setIndx}
+                                                    key={'field_array_aa_' + setIndx}
                                                     render={arrayHelpers => {
 
                                                         return (
                                                             <>
-                                                                <div className='col-span-6 mt-2 flex flex-row flex-grow gap-2 items-center justify-center'>
+                                                                <div className='col-span-6 mt-2 flex flex-row flex-grow gap-2 items-center'>
                                                                     <RenderFields
                                                                         idPrefix={`sets_data.${setIndx}.values[0]`}
                                                                         workoutCategory={workout_category}
@@ -460,8 +477,7 @@ const Card = ({ session_block_instance }: {
                                                                 {values.sets_data[setIndx].values.map((e, valueIndx) => {
 
                                                                     return (
-                                                                        <>
-
+                                                                        <Fragment key={valueIndx}>
                                                                             {
                                                                                 valueIndx ? <>
 
@@ -485,7 +501,7 @@ const Card = ({ session_block_instance }: {
                                                                                 </> : null
                                                                             }
 
-                                                                        </>)
+                                                                        </Fragment>)
                                                                 })}
 
                                                                 {workout_category === 'WEIGHT_AND_REPS' ?
@@ -506,7 +522,7 @@ const Card = ({ session_block_instance }: {
 
 
 
-                                            </>
+                                            </Fragment>
                                         )
                                     })}
 
@@ -520,16 +536,8 @@ const Card = ({ session_block_instance }: {
 
 
 
-
-
-
                                 </div>
-
-
-
-
-                            )
-                            }
+                            )}
                         />
 
 

@@ -220,7 +220,7 @@ export const DescriptionText = ({ name, value, size = 'small', type = 'justify-b
 }) => (
     <div className={"flex flex-col sm:flex-row sm:items-center " + type}>
         <div className={"uppercase font-bold  text-gray-500 " + (size === 'small' ? 'text-2xs' : 'text-xs')}>{name}</div>
-        <div className={"text-gray-900 " + (size === 'small' ? 'text-sm' : 'text-base')}>{value}</div>
+        <div className={"text-gray-900 " + (size === 'small' ? 'text-sm' : 'text-sm')}>{value}</div>
     </div>
 )
 

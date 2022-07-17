@@ -3,6 +3,7 @@ import authRouter from "./routes/auth";
 import workoutRouter from "./routes/workout";
 import sessionSchemaRouter from "./routes/sessionSchema";
 import sessionInstanceRouter from "./routes/sessionInstance";
+import insightsRouter from "./routes/insights";
 import cookieParser from "cookie-parser";
 import { jwtUserPayloadType } from "./utils/setAuthTokenAsCookie";
 import cors from "cors";
@@ -34,6 +35,7 @@ app.use("/api/auth/", authRouter);
 app.use("/api/workout/", workoutRouter);
 app.use("/api/sessionSchema/", sessionSchemaRouter);
 app.use("/api/sessionInstance/", sessionInstanceRouter);
+app.use("/api/insights/", insightsRouter);
 
 app.all("*", (req, res) =>
   res.status(400).send({

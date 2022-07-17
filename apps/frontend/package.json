@@ -12,10 +12,14 @@
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/typography": "^0.5.2",
     "axios": "^0.27.2",
+    "chart.js": "^3.8.0",
+    "chartjs-adapter-date-fns": "^2.0.0",
     "daisyui": "^2.17.0",
+    "date-fns": "^2.28.0",
     "formik": "^2.2.9",
     "next": "12.2.0",
     "react": "18.2.0",
+    "react-chartjs-2": "^4.3.1",
     "react-dom": "18.2.0",
     "react-draggable": "^4.4.5",
     "react-query": "^3.39.1",
@@ -26,6 +30,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@sigmafit/commons": "1.0.0",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
@@ -35,7 +40,6 @@
     "eslint-config-next": "12.2.0",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.4",
-    "typescript": "4.7.4",
-    "@sigmafit/commons": "1.0.0"
+    "typescript": "4.7.4"
   }
 }

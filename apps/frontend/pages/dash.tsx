@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query"
 import { toast } from "react-toastify";
 import { ErrorResponse, getAllActiveSessions, getAllSessionSchemaOwnedByUser, startANewSessionFromSchemaId } from "../api";
+import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { withAuthHOC } from "../hooks/withAuthHOC";
 
@@ -36,6 +37,7 @@ const Dash = () => {
     return (
         <>
 
+            <MetaHead />
             <Navbar />
 
 

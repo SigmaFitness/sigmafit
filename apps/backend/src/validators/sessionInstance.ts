@@ -24,22 +24,22 @@ export const isInstanceDataValid = async (
     workoutType === workout_type.WEIGHT_AND_REPS
   ) {
     schema = yup.object().shape({
-      reps: yup.number().required(),
+      reps: yup.number().min(0).required(),
     });
 
     if (workoutType === workout_type.WEIGHT_AND_REPS) {
       schema = schema.shape({
-        weight: yup.number().integer().required(),
+        weight: yup.number().min(0).integer().required(),
       });
     }
   } else {
     schema = yup.object().shape({
-      duration: yup.number().required(),
+      duration: yup.number().min(0).required(),
     });
 
     if (workoutType === workout_type.DISTANCE_AND_DURATION) {
       schema = schema.shape({
-        distance: yup.number().required(),
+        distance: yup.number().min(0).required(),
       });
     }
   }

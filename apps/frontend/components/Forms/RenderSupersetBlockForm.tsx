@@ -47,7 +47,7 @@ export const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance,
                 <FieldArray
                     name={`${fieldPrefix}.superset_workout_schema`}
                     render={supersetWorkoutSchemaArrayHelpers => (
-                        <>
+                        <div>
                             <ReactSortable list={superset_schema_instance.superset_workout_schema} setList={(newList) => {
                                 setFieldValue(`${fieldPrefix}.superset_workout_schema`, newList)
                             }}
@@ -82,7 +82,7 @@ export const RenderSupersetBlockForm = ({ fieldPrefix, superset_schema_instance,
                                     { workout_id: '', default_target: [], }
                                 )
                             }} className="btn btn-xs mb-3">Add workout to superset</div>
-                        </>)} />
+                        </div>)} />
 
 
             </>

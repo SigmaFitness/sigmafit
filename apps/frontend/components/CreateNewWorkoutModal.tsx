@@ -1,11 +1,10 @@
 import { WorkoutAddResponse, WorkoutFormOptionsResponse, WorkoutListResponse } from "@sigmafit/commons";
 import { Formik, Form } from "formik";
-import router from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { addNewWorkoutMutation, ErrorResponse, getNewWorkoutAddFormOptions } from "../api";
-import { FormSingleSelectField } from "./FormSingleSelectField";
+import { FormSingleSelectFormikField } from "./FormSingleSelectField";
 import { FormInputField } from "./InputField";
 import { SigmaModal } from "./SigmaModal";
 
@@ -102,20 +101,20 @@ export const CreateNewWorkoutModal: React.FC<{
                                         placeholder="Lateral Raises"
                                     />
 
-                                    <FormSingleSelectField
+                                    <FormSingleSelectFormikField
                                         fieldId="category"
                                         fieldLabel="Category"
                                         options={(formOptions) ? formOptions.category.map((e: any) => ({ value: e, label: e })) : []}
                                     />
 
-                                    <FormSingleSelectField
+                                    <FormSingleSelectFormikField
                                         fieldId="target_body_part"
                                         fieldLabel="Target body part"
                                         options={(formOptions) ? formOptions.target_body_part.map((e: any) => ({ value: e, label: e })) : []}
 
                                     />
 
-                                    <FormSingleSelectField
+                                    <FormSingleSelectFormikField
                                         fieldId="intensity"
                                         fieldLabel="Intensity"
                                         options={(formOptions) ? formOptions.intensity.map((e: any) => ({ value: e, label: e })) : []}

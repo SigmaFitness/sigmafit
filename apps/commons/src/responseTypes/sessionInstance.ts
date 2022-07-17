@@ -3,24 +3,30 @@ import { session_instance, superset_schema, superset_workout_instance, workout_i
 
 export type SessionInstanceStartResponse = session_instance
 
+export type SessionInstanceState_SetData_WEIGHT_AND_REPS = {
+    weight: number,
+    reps: number
+}
 
-export type SessionInstanceSetData = {
-    value: string,
+export type SessionInstanceState_SetData_REPS = {
+    reps: number
+}
 
+export type SessionInstanceState_SetData_DISTANCE_AND_DURATION = {
+    duration: number
+    distance: number,
+}
+
+export type SessionInstanceState_SetData_DURATION = {
+    duration: number,
 }
 
 export type SessionInstanceState_SetData = {
-    values: Array<({
-        weight: number,
-        reps: number
-    } | {
-        reps: number
-    } | {
-        duration: number
-        distance: number,
-    } | {
-        duration: number,
-    })>
+    values: Array<(
+        SessionInstanceState_SetData_WEIGHT_AND_REPS |
+        SessionInstanceState_SetData_REPS |
+        SessionInstanceState_SetData_DISTANCE_AND_DURATION |
+        SessionInstanceState_SetData_DURATION)>
 }
 // TODO: Shall we add just DISTANCE?
 
