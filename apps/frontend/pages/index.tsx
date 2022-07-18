@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
       <div className="landing-hero" >
         <Navbar />
-        <div className="hero-content  text-center pt-20  flex-col lg:flex-row-reverse mt-20 mx-auto">
+        <div className="hero-content  text-center lg:pt-20  flex-col lg:flex-row-reverse mt-20 mx-auto">
           <div className="max-w-4xl">
             <h1 className="mb-5 text-4xl font-black">Workout tracking made easy.</h1>
             <p className="mb-5 text-xl">Track your progress at gym hassle free. And use our personalized insights to improve your fitness journey.</p>

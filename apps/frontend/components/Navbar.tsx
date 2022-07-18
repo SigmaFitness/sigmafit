@@ -33,13 +33,21 @@ export const Navbar = () => {
                     </div>
 
 
-                    <Menu.Button className='btn btn-circle btn-ghost transition'>{open ? <XIcon className='w-8 text-white' /> : <MenuIcon className='w-8 text-black' />}</Menu.Button>
+                    <Menu.Button className={'btn btn-circle btn-ghost ' + (isLoading || isError ? 'xs:hidden' : '')}>{open ? <XIcon className='w-8 text-white' /> : <MenuIcon className='w-8 text-black' />}</Menu.Button>
 
+
+                    {!isLoading && isError && <div className="xs:flex gap-4 hidden">
+                        <Link href='/auth/signin'>
+                            <button className="btn btn-outline btn-secondary">Login</button>
+                        </Link>
+                        <Link href='/auth/signup'>
+                            <button className="btn btn-secondary">Register</button>
+                        </Link>
+                    </div>}
 
 
                     {open && <Menu.Items as='div' className=' z-50 flex px-6 text-center pt-5 flex-col text-white fixed left-0 bottom-0 w-screen bg-primary' style={{ height: 'calc(100vh - 64px)' }}>
                         {!isLoading && !isError ?
-
                             <>
                                 <Menu.Item>
                                     <Link href='/dash'>
@@ -72,7 +80,7 @@ export const Navbar = () => {
 
                                     </Link>
                                 </Menu.Item>
-                                <Menu.Item>
+                                {/* <Menu.Item>
                                     <Link href='/profile'>
                                         <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/profile' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
                                             <div className="flex justify-between h-9">
@@ -82,7 +90,7 @@ export const Navbar = () => {
                                         </div>
 
                                     </Link>
-                                </Menu.Item>
+                                </Menu.Item> */}
                                 <Menu.Item>
                                     <Link href='/insights'>
                                         <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/insights' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
@@ -94,8 +102,6 @@ export const Navbar = () => {
                                                 <ChevronRightIcon className='text-red-500 w-7' />
                                             </div>
                                         </div>
-
-
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Item>
@@ -110,10 +116,11 @@ export const Navbar = () => {
                                 </Menu.Item>
 
                             </> : <>
-                                <Menu.Item>
+                                {/* <Menu.Item>
                                     <Link href='/about-us'>
                                         <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/about-us' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
                                             <div className="flex justify-between h-9">
+
                                                 About Us
                                                 <ChevronRightIcon className='text-red-500 w-7' />
 
@@ -122,23 +129,41 @@ export const Navbar = () => {
 
                                         </div>
                                     </Link>
-                                </Menu.Item>
+                                </Menu.Item> */}
 
-                                <Menu.Item>
-                                    <Link href='/pricing'>
-                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/pricing' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                {/* <Menu.Item>
+                                    <Link href='/about-us'>
+                                    <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/about-us' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                        <div className="flex justify-between h-9">
 
-                                            <div className="flex justify-between h-9">
-
-                                                Pricing
-                                                <ChevronRightIcon className='text-red-500 w-7' />
-
+                                            <div className="space-x-2">
+                                                <span>Features</span>
+                                                <span className='badge badge-sm badge-warning'>Coming Soon</span>
                                             </div>
 
+                                            <ChevronRightIcon className='text-red-500 w-7' />
 
                                         </div>
+
+
+                                    </div>
                                     </Link>
-                                </Menu.Item>
+                                </Menu.Item> */}
+
+                                {/* <Menu.Item>
+                                    <Link href='/pricing'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/pricing' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                <div className='space-x-2'>
+                                                    <span>Pricing</span>
+                                                    <span className='badge badge-sm badge-warning'>Coming Soon</span>
+                                                </div>
+
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </Menu.Item> */}
                                 <Menu.Item>
                                     <Link href='/auth/signin'>
                                         <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/signin' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
@@ -166,21 +191,6 @@ export const Navbar = () => {
                             </>}
 
                     </Menu.Items>}
-
-                    {/* <div className="flex-none">
-    <div className="dropdown dropdown-end md:dropdown">
-      
-        <ul
-            tabIndex={0}
-            className="menu menu-compact mt-12 dropdown-content -mr-2 p-2 shadow bg-primary text-white w-screen px-7 fixed top-0 sf-navbar-dropdown"
-            
-        >
-
-
-
-        </ul>
-    </div>
-</div> */}
                 </div>
             )}
         </Menu>
