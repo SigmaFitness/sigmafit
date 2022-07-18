@@ -216,7 +216,7 @@ export const DescriptionText = ({ name, value, size = 'small', type = 'justify-b
     name: string,
     value: any,
     size?: 'med' | 'small',
-    type?: 'justify-between' | 'gap-2'
+    type?: 'justify-between' | 'gap-2' | 'gap-1'
 }) => (
     <div className={"flex flex-col sm:flex-row sm:items-center " + type}>
         <div className={"uppercase font-bold  text-gray-500 " + (size === 'small' ? 'text-2xs' : 'text-xs')}>{name}</div>

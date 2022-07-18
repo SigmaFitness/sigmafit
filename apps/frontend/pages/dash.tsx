@@ -107,13 +107,13 @@ const Dash = () => {
                 {/* Show sessions */}
                 <h2>Workout Routines</h2>
 
-                <div className="flex justify-between">
+                <div className="flex justify-between flex-col gap-2 sm:flex-row">
                     <Link href='sessionSchema/top'>
-                        <div className="btn btn-primary btn-sm">Explore top routines</div>
+                        <div className="btn btn-secondary btn-sm">Explore top routines</div>
                     </Link>
 
                     <Link href='sessionSchema/new'>
-                        <div className="btn btn-primary btn-sm">Create a customized one</div>
+                        <div className="btn btn-secondary btn-sm">Create a customized one</div>
                     </Link>
 
                 </div>

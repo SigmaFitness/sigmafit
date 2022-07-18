@@ -5,7 +5,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xs': '460px',
+      }
+    },
   },
   plugins: [
     require("daisyui"),
@@ -25,13 +29,16 @@ module.exports = {
           "secondary-content": "#fff",
 
 
-          "accent": "#1FB2A6",
+          "accent": "#3a86ff",
+          "accent-content": "#fff",
 
           "neutral": "#191D24",
           "neutral-content": "#fff",
           "neutral-dark": "131517",
 
           "base-100": "#f9f7ef",
+          "base-200": "#fee2e2",
+          "base-300": "#f9dec9",
 
           "info": "#3ABFF8",
 

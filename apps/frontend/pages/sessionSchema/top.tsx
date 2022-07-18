@@ -30,7 +30,7 @@ const TopSessionSchema = () => {
             <MetaHead />
 
             <Navbar />
-            <div className="mt-10 max-w-2xl mx-auto px-2 prose">
+            <div className="my-10 max-w-2xl mx-auto px-2 prose">
                 <h2>Top workout routines</h2>
 
                 {isLoading || !data ? <div>Loading..</div> :

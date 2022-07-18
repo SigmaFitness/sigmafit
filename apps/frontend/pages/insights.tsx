@@ -126,14 +126,15 @@ const Insights = () => {
                             <DescriptionText
                                 name="Workout Type:"
                                 value={workout_insights.workout_type}
-                                type='gap-2'
+                                type='gap-1'
                                 size="med"
                             />
+                            <br/>
 
                             <DescriptionText
                                 name="Number of data points:"
                                 value={workout_insights.dataPoints.length}
-                                type='gap-2'
+                                type='gap-1'
                                 size="med"
                             />
 

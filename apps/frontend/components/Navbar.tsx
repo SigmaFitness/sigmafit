@@ -1,110 +1,190 @@
-import { MenuAlt1Icon, MenuIcon } from '@heroicons/react/solid'
+import { ArrowRightIcon, ChevronRightIcon, MenuAlt1Icon, MenuIcon, XIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useGetCurrentUserQuery } from '../api'
 import { Logo } from './Logo'
-
+import { Menu } from '@headlessui/react'
 
 
 export const Navbar = () => {
     const { isError, isLoading } = useGetCurrentUserQuery()
     const topLinkUrl = (!isLoading && !isError) ? '/dash' : '/'
-
+    // const [open, setIsOpen] = useState(false)
     const { route } = useRouter()
 
     return (
-        <div className="navbar min-h-12 h-12   border-b">
-            <div className="flex-1 h-full">
-                <Link href={topLinkUrl}>
-                    <div className=' btn btn-ghost normal-case text-base'>
-                        {/* <Image src={require('../public/assets/SigmaFit-logo.svg')} /> */}
-                        <Logo className='w-36' />
+        <Menu>
+            {({ open }) =>
+
+
+            (
+
+                <div className={"navbar min-h-16 h-16 border-b z-50 " + (open ? 'bg-primary border-gray-700 fixed top-0 left-0 w-full' : '')}>
+                    <div className="flex-1 h-full">
+                        <Link href={topLinkUrl}>
+                            <div className='btn btn-ghost normal-case text-base'>
+                                {/* <Image src={require('../public/assets/SigmaFit-logo.svg')} /> */}
+                                <Logo className={'w-36 ' + (open ? 'text-white' : 'text-black')} />
+                            </div>
+                        </Link>
                     </div>
-                </Link>
-            </div>
 
 
-            <div className="flex-none">
-                <div className="dropdown dropdown-end md:dropdown">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                        <div className="rounded-full">
-                            <MenuIcon className='w-8' />
-                        </div>
-                    </label>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52"
-                    >
+                    <Menu.Button className='btn btn-circle btn-ghost transition'>{open ? <XIcon className='w-8 text-white' /> : <MenuIcon className='w-8 text-black' />}</Menu.Button>
 
+
+
+                    {open && <Menu.Items as='div' className=' z-50 flex px-6 text-center pt-5 flex-col text-white fixed left-0 bottom-0 w-screen bg-primary' style={{ height: 'calc(100vh - 64px)' }}>
                         {!isLoading && !isError ?
 
                             <>
-                                <li className={route === '/dash' ? 'bg-base-300 rounded-lg' : ''}>
+                                <Menu.Item>
                                     <Link href='/dash'>
-                                        Dashboard
-                                    </Link>
-                                </li>
-                                <li className={route === '/sessionSchema/top' ? 'bg-base-300 rounded-lg' : ''}>
-                                    <Link href='/sessionSchema/top'>
-                                        Top Workout Routines
-                                    </Link>
-                                </li>
-                                <li className={route==='/workout'?'bg-base-300':''}>
-                                {/* // TODO: Enable it when you've added support for workout notes; and don't allow change the name or anything once created
-                                // the user can delete it only if the workout isn't public (i.e. the workout isn't part of any public schema) and it isn't getting used by any workout (owned by user) */}
-                                    <Link href='/workout'>
-                                        Manage Workouts 
-                                    </Link>
-                                </li>
-                                <li className={route === '/profile' ? 'bg-base-300 rounded-lg' : ''}>
-                                    <Link href='/profile'>
-                                        Profile
-                                    </Link>
-                                </li>
-                                <li className={route === '/insights' ? 'bg-base-300 rounded-lg' : ''}>
-                                    <Link href='/insights'>
-                                        <div className="justify-between">
-                                            Training Insights
-                                            <span className="badge badge-sm badge-warning">New</span>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/dash' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between w-full h-9 ">Dashboard
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
                                         </div>
                                     </Link>
-                                </li>
-                                <li className={route === '/auth/logout' ? 'bg-base-300 rounded-lg' : ''}>
-                                    <Link href='/auth/logout'>
-                                        Logout
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Link href='/sessionSchema/top'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/sessionSchema/top' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`} >
+                                            <div className="flex justify-between h-9">
+                                                Top Workout Routines
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+                                        </div>
+
                                     </Link>
-                                </li>
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Link href='/workout'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/workout' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                Manage Workouts
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+                                        </div>
+
+                                    </Link>
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Link href='/profile'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/profile' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                Profile
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+                                        </div>
+
+                                    </Link>
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Link href='/insights'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/insights' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                <div className="space-x-2">
+                                                    <span>Training Insights</span>
+                                                    <span className="badge badge-sm badge-warning">New</span>
+                                                </div>
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+                                        </div>
+
+
+                                    </Link>
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Link href='/auth/logout'>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/logout' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                Logout
+                                            </div>
+
+                                        </div>
+                                    </Link>
+                                </Menu.Item>
 
                             </> : <>
-                                <li className={route === '/about-us' ? 'bg-base-300 rounded-lg' : ''}>
+                                <Menu.Item>
                                     <Link href='/about-us'>
-                                        About Us
-                                    </Link>
-                                </li>
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/about-us' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                About Us
+                                                <ChevronRightIcon className='text-red-500 w-7' />
 
-                                <li className={route === '/pricing' ? 'bg-base-300 rounded-lg' : ''}>
+                                            </div>
+
+
+                                        </div>
+                                    </Link>
+                                </Menu.Item>
+
+                                <Menu.Item>
                                     <Link href='/pricing'>
-                                        Pricing
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/pricing' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+
+                                            <div className="flex justify-between h-9">
+
+                                                Pricing
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+
+                                            </div>
+
+
+                                        </div>
                                     </Link>
-                                </li>
-                                <li className={route === '/auth/signin' ? 'bg-base-300 rounded-lg' : ''}>
+                                </Menu.Item>
+                                <Menu.Item>
                                     <Link href='/auth/signin'>
-                                        Sign In
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/signin' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+
+                                                Sign In
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+
+                                            </div>
+
+                                        </div>
                                     </Link>
-                                </li>
-                                <li className={route === '/auth/signup' ? 'bg-base-300 rounded-lg' : ''}>
+                                </Menu.Item>
+                                <Menu.Item>
                                     <Link href='/auth/signup'>
-                                        Sign Up
+                                        <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/signup' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                            <div className="flex justify-between h-9">
+                                                Sign Up
+                                                <ChevronRightIcon className='text-red-500 w-7' />
+                                            </div>
+
+                                        </div>
                                     </Link>
-                                </li>
+                                </Menu.Item>
                             </>}
 
-                    </ul>
+                    </Menu.Items>}
+
+                    {/* <div className="flex-none">
+    <div className="dropdown dropdown-end md:dropdown">
+      
+        <ul
+            tabIndex={0}
+            className="menu menu-compact mt-12 dropdown-content -mr-2 p-2 shadow bg-primary text-white w-screen px-7 fixed top-0 sf-navbar-dropdown"
+            
+        >
+
+
+
+        </ul>
+    </div>
+</div> */}
                 </div>
-            </div>
-        </div>
+            )}
+        </Menu>
+
 
     )
 }
