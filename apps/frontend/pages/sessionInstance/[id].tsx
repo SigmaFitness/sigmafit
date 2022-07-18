@@ -272,7 +272,7 @@ const SessionInstance: NextPage = () => {
                     })}
 
 
-                    {workouts.length == 0 && <li className='px-6 py-4'> Loading Workouts...</li>}
+                    {workouts.length == 0 && <li className='alert px-6 py-4'> Loading Workouts...</li>}
 
                 </ul>
             </div>

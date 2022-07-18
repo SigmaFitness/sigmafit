@@ -100,13 +100,14 @@ const Insights = () => {
 
                 <h3>Session length by day</h3>
                 <TimeSpentChart
-                
-                height={100}/>
 
-                {isLoading || !workouts ? <div>Loading Workouts....</div> :
+                    height={100} />
+
+                <h3>Workout Insights</h3>
+
+                {isLoading || !workouts ? <div className="alert">Loading Workouts....</div> :
                     <>
 
-                    <h3>Workout Insights</h3>
                         <FormSingleSelectField
                             fieldId="workout_id"
                             fieldLabel="Workout Name"
@@ -115,7 +116,7 @@ const Insights = () => {
                             options={[...workouts.myWorkouts, ...workouts.publicWorkouts].map(e => ({ label: e.name, value: e.id }))}
                         />
 
-                        {(isWorkoutInsightsLoading && isFetching) && <div>Loading...</div>}
+                        {(isWorkoutInsightsLoading && isFetching) && <div className="alert">Loading...</div>}
 
 
 
@@ -129,7 +130,7 @@ const Insights = () => {
                                 type='gap-1'
                                 size="med"
                             />
-                            <br/>
+                            <br />
 
                             <DescriptionText
                                 name="Number of data points:"

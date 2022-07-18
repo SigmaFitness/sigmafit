@@ -29,7 +29,7 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
     return (
         <>
             {isLoading || !timeSpentData ?
-                <div>Loading...</div>
+                <div className="alert">Loading...</div>
                 :
                 <div>
 
