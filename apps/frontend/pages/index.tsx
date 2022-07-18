@@ -22,7 +22,7 @@ const Home: NextPage = () => {
             <p className="mb-5 text-xl">Track your progress at gym hassle free. And use our personalized insights to improve your fitness journey.</p>
             {!isError && !isLoading ?
               <Link href={'/dash'}>
-              <button className="btn btn-primary">Go to Dashboard <span className="lowercase mx-1">@{(data as any).user.fName}</span> </button>
+              <button className="btn btn-primary">Go to Dashboard</button>
               </Link> : <Link href={'/auth/signin'}><button className="btn btn-primary">Get Started for free</button></Link>}
           </div>
 

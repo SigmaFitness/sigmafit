@@ -10,6 +10,15 @@ export const MetaHead = ({ title }: { title?: string }) => {
             <link rel="icon" href="/favicon.ico" />
             <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
 
+
+            <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+            <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+            <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#000000" />
+            <meta name="msapplication-TileColor" content="#2d89ef" />
+            <meta name="theme-color" content="#f9f8f0" />
+
+
             <meta name='application-name' content='Sigma Fit' />
             <meta name='apple-mobile-web-app-capable' content='yes' />
             <meta name='apple-mobile-web-app-status-bar-style' content='default' />
@@ -17,9 +26,8 @@ export const MetaHead = ({ title }: { title?: string }) => {
             <meta name='description' content='Workout tracking made easy!' />
             <meta name='mobile-web-app-capable' content='yes' />
 
-            <link rel='manifest' href='/manifest.json' />
-            <link rel='shortcut icon' href='/favicon.ico' />
 
+            <link rel='manifest' href='/manifest.json' />
         </Head>
     )
 }
