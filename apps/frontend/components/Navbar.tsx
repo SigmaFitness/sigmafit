@@ -12,15 +12,11 @@ import { Menu } from '@headlessui/react'
 export const Navbar = () => {
     const { isError, isLoading } = useGetCurrentUserQuery()
     const topLinkUrl = (!isLoading && !isError) ? '/dash' : '/'
-    // const [open, setIsOpen] = useState(false)
     const { route } = useRouter()
 
     return (
         <Menu>
-            {({ open }) =>
-
-
-            (
+            {({ open }) => (
 
                 <div className={"navbar min-h-16 h-16 border-b z-50 " + (open ? 'bg-primary border-gray-700 fixed top-0 left-0 w-full' : '')}>
                     <div className="flex-1 h-full">
@@ -36,7 +32,7 @@ export const Navbar = () => {
                     <Menu.Button className={'btn btn-circle btn-ghost ' + (isLoading || isError ? 'xs:hidden' : '')}>{open ? <XIcon className='w-8 text-white' /> : <MenuIcon className='w-8 text-black' />}</Menu.Button>
 
 
-                    {!isLoading && isError && <div className="xs:flex gap-4 hidden">
+                    {isError && <div className="xs:flex gap-4 hidden">
                         <Link href='/auth/signin'>
                             <button className="btn btn-outline btn-secondary">Login</button>
                         </Link>

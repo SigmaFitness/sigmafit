@@ -161,7 +161,7 @@ const SessionSchemaForm = ({ initialValues, handleSubmit, waitingForServerRespon
                                             <div onClick={() => {
                                                 const newWorkout: create_session_schema__workout_schema__without_order = { id: Math.random().toString(), workout_id: '', default_target: [] }
                                                 setsArrayHelpers.push(newWorkout)
-                                            }} className="btn btn-sm">Add another workout</div>
+                                            }} className="btn btn-sm">Add workout</div>
 
 
 
