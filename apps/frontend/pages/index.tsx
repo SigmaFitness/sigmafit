@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import { useGetCurrentUserQuery } from "../api";
+import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 
 const Home: NextPage = () => {
@@ -10,6 +11,8 @@ const Home: NextPage = () => {
   return (
     <div>
       {/* <div className="hero"> */}
+
+      <MetaHead/>
 
       <div className="landing-hero" >
         <Navbar />
