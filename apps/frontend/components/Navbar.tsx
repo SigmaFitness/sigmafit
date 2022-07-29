@@ -31,9 +31,9 @@ export const Navbar = () => {
                     <Menu.Button className={'btn btn-circle btn-ghost ' + (isLoading || isError ? 'xs:hidden' : '')}>{open ? <XIcon className='w-8 text-white' /> : <MenuIcon className='w-8 text-black' />}</Menu.Button>
 
 
-                    {isError && <div className="xs:flex gap-4 hidden">
+                    {isError && <div className="xs:flex gap-4 hidden -translate-x-5">
                         <Link href='/auth/welcome'>
-                            <button className="btn btn-secondary">Sign In</button>
+                            <button className=" text-white btn rounded-md shadow-xl  font-bold bg-gradient-to-r from-secondary to-pink-700 px-3 btn-secondary">Sign In</button>
                         </Link>
                     </div>}
 
