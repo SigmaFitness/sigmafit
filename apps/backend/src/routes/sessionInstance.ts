@@ -234,7 +234,7 @@ router.get("/state/:sessionInstanceId", isAuthenticated, async (req, res) => {
                 ) as prev_superset_workout_instance ON prev_superset_workout_instance.superset_workout_schema_id = superset_workout_schema.id
             INNER JOIN workout ON workout.id = superset_workout_schema.workout_id
 
-            ORDER BY "order" DESC -- it's applied on whole UNION
+            ORDER BY "order" -- it's applied on whole UNION
         `;
 
     const response: SessionInstanceStateResponse = {
