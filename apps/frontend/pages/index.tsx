@@ -23,7 +23,7 @@ const Home: NextPage = () => {
             {!isError && !isLoading ?
               <Link href={'/dash'}>
               <button className="btn btn-primary">Go to Dashboard</button>
-              </Link> : <Link href={'/auth/signin'}><button className="btn btn-primary">Get Started for free</button></Link>}
+              </Link> : <Link href={'/auth/welcome'}><button className="btn btn-primary">Get Started for free</button></Link>}
           </div>
 
           <img src='https://unsplash.com/photos/JKUTrJ4vK00/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MXx8ZGFzaGJvYXJkfGVufDB8fHx8MTY1Njg0MDY0Nw&force=true' className="rounded-lg w-full flex-grow-0 h-96 object-cover mx-auto mt-5 mb-20" />

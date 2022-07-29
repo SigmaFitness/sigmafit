@@ -14,7 +14,7 @@ export const withAuthHOC = (WrappedComponent: any): React.FC<any> => {
         if (isLoading) {
             return  <div className="alert justify-center my-96">Loading....</div>
         } else if (isError) {
-            if (error.status === 401) router.push('/auth/signin')
+            if (error.status === 401) router.push('/auth/welcome')
             return null;
         } else {
             return (

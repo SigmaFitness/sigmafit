@@ -4,8 +4,6 @@
 
 
 
-
-
 .form-container {
 	width: 94%;
 	@apply relative border-4 border-green-800 p-4 mx-auto max-w-lg text-left;

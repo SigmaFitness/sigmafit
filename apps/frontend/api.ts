@@ -60,31 +60,9 @@ export const deleteWorkout = async (workout_id: string) => {
 
 
 
-
-
-/**
- * Signup the user
- */
-export const signUpUserMutation = async (userData: any) => {
-    return usePost<any>(`${apiPrefixSlug}/auth/signUp`, 'POST', userData)
-}
-
-
-
-/**
- * Signin the user
- */
-export const signInUserMutation = async (userData: any) => {
-    return usePost<any>(`${apiPrefixSlug}/auth/signIn`, 'POST', userData)
-}
-
-
-
-
 /**
  * Get all active sessions for the user
  */
-// DONE
 export const getAllActiveSessions = async () => {
     return usePost<any>(`${apiPrefixSlug}/sessionInstance/allActive`, 'GET')
 }

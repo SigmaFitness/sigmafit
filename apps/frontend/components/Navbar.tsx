@@ -22,7 +22,6 @@ export const Navbar = () => {
                     <div className="flex-1 h-full">
                         <Link href={topLinkUrl}>
                             <div className='btn btn-ghost normal-case text-base'>
-                                {/* <Image src={require('../public/assets/SigmaFit-logo.svg')} /> */}
                                 <Logo className={'w-36 ' + (open ? 'text-white' : 'text-black')} />
                             </div>
                         </Link>
@@ -33,11 +32,8 @@ export const Navbar = () => {
 
 
                     {isError && <div className="xs:flex gap-4 hidden">
-                        <Link href='/auth/signin'>
-                            <button className="btn btn-outline btn-secondary">Login</button>
-                        </Link>
-                        <Link href='/auth/signup'>
-                            <button className="btn btn-secondary">Register</button>
+                        <Link href='/auth/welcome'>
+                            <button className="btn btn-secondary">Sign In</button>
                         </Link>
                     </div>}
 
@@ -171,24 +167,13 @@ export const Navbar = () => {
                                     </Link>
                                 </Menu.Item> */}
                                     <Menu.Item>
-                                        <Link href='/auth/signin'>
-                                            <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/signin' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                                        <Link href='/auth/welcome'>
+                                            <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/welcome' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
                                                 <div className="flex justify-between h-9">
 
                                                     Sign In
                                                     <ChevronRightIcon className='text-red-500 w-7' />
 
-                                                </div>
-
-                                            </div>
-                                        </Link>
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        <Link href='/auth/signup'>
-                                            <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/auth/signup' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
-                                                <div className="flex justify-between h-9">
-                                                    Sign Up
-                                                    <ChevronRightIcon className='text-red-500 w-7' />
                                                 </div>
 
                                             </div>

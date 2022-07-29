@@ -12,9 +12,8 @@ model user {
   id                          String                        @id @db.VarChar(36) // since UUID is 36 chars long
   first_name                  String
   last_name                   String
+  picture                     String
   email                       String                        @unique
-  hashed_password             String
-  is_banned                   Boolean                       @default(false)
   created_time                DateTime                      @default(now())
   last_token_generated_at     DateTime                      @default(now())
   workout                     workout[]
@@ -90,6 +89,7 @@ model session_schema_vote_by_user {
   session_schema    session_schema @relation(fields: [session_schema_id], references: [id], onDelete: Restrict)
 
   voted_at DateTime
+
   @@id([user_id, session_schema_id])
 }
 
