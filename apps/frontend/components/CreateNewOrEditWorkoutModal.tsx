@@ -57,7 +57,7 @@ export const CreateNewOrEditWorkoutModal: React.FC<{
           ...prevWorkouts,
           myWorkouts: isEditMode
             ? prevWorkouts.myWorkouts.filter((e) => e.id !== data.workout.id)
-            : [...prevWorkouts.myWorkouts, data],
+            : [...prevWorkouts.myWorkouts, data.workout],
         };
         queryClient.setQueryData("getAllWorkouts", newWorkouts);
       }

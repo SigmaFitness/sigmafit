@@ -1,7 +1,6 @@
 import {
   EyeIcon,
   InformationCircleIcon,
-  PencilAltIcon,
 } from "@heroicons/react/solid";
 import {
   SessionInstanceAllActiveResponse,
@@ -60,8 +59,8 @@ const Dash = () => {
       <div className="max-w-2xl mx-auto my-12 prose px-2">
         <h2>Analytics</h2>
 
-        <h3>Session length by day</h3>
-        <TimeSpentChart height={100} />
+        <h3>Session duration (in minutes)</h3>
+        <TimeSpentChart height={350} />
 
         {/* Show current active sessions if any */}
         <h2>Active Sessions</h2>

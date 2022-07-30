@@ -115,11 +115,11 @@ const Insights = () => {
       <MetaHead />
       <Navbar />
 
-      <div className="max-w-2xl mx-auto px-2 prose mt-5">
+      <div className="max-w-2xl mx-auto px-2 prose mt-5 mb-10">
         <h2 className="mb-5">Training Insights</h2>
 
-        <h3>Session length by day</h3>
-        <TimeSpentChart height={100} />
+        <h3>Session duration (in minutes)</h3>
+        <TimeSpentChart height={300} />
 
         <h3>Workout Insights</h3>
 
@@ -300,7 +300,6 @@ const SigmaFitChartComp = ({
   return (
     <Chart
       type="line"
-      height={75}
       data={{
         labels,
         datasets: [
@@ -316,8 +315,10 @@ const SigmaFitChartComp = ({
           },
         ],
       }}
+      style={{maxHeight: "300px"}}
       options={{
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           tooltip: {
             callbacks: {
@@ -334,7 +335,7 @@ const SigmaFitChartComp = ({
           x: {
             display: true,
             title: {
-              display: true,
+              display: false,
             },
             ticks: {
               autoSkip: true,
@@ -342,14 +343,6 @@ const SigmaFitChartComp = ({
             type: "time",
             time: {
               unit: "day",
-            },
-          },
-          y: {
-            stacked: false,
-            display: true,
-            title: {
-              display: true,
-              text: yAxisTitle,
             },
           },
         },

@@ -64,105 +64,108 @@ const TopSessionSchema = () => {
         {isLoading || !data ? (
           <div className="alert">Loading..</div>
         ) : (
-          <div>
-            {data.results.map((e) => {
-              const isVoted = e.session_schema_vote_by_user.length;
-              return (
-                <div className="my-2 card bg-red-100" key={e.id}>
-                  {/* have a card to show top workouts */}
 
-                  <div className="card-body">
-                    <div className="card-title uppercase text-lg font-extrabold">
-                      {e.name}
-                    </div>
-                    <DescriptionText
-                      name="number of superset workouts:"
-                      value={e.number_of_superset_workouts}
-                    />
-                    <DescriptionText
-                      name="number of workouts:"
-                      value={e.number_of_workouts}
-                    />
-                    <DescriptionText
-                      name="number of workouts in superset:"
-                      value={e.number_of_workouts_in_superset}
-                    />
-                    <DescriptionText
-                      name="votes count:"
-                      value={e.votes_count}
-                    />
-                    <DescriptionText
-                      name="Created By:"
-                      value={"@" + e.owner.first_name}
-                    />
+          data.results.length ? (
+            <div>
+              {data.results.map((e) => {
+                const isVoted = e.session_schema_vote_by_user.length;
+                return (
+                  <div className="my-2 card bg-red-100" key={e.id}>
+                    {/* have a card to show top workouts */}
 
-                    <div className="flex flex-row mx-2 justify-between sm:justify-around">
-                      <button
-                        disabled={
-                          waitingForServerResponseForVote &&
-                          e.id === variables?.schema_id
-                        }
-                        className={
-                          "btn btn-outline btn-sm space-x-2 " +
-                          (isVoted ? "text-red-500" : "")
-                        }
-                        onClick={async () => {
-                          mutate({
-                            schema_id: e.id,
-                            state: !isVoted,
-                          });
-                        }}
-                      >
-                        <ThumbUpIcon className="w-5 " />{" "}
-                        <span>{isVoted ? "Liked" : "Like"}</span>
-                      </button>
-                      <div
-                        className="btn-outline btn btn-sm space-x-2 "
-                        onClick={() => {
-                          toast("Link successfully copied to clipboard", {
-                            type: "info",
-                          });
-                          const link = `${window.location.origin}/sessionSchema/${e.id}/view`;
-                          navigator.clipboard.writeText(link);
-                        }}
-                      >
-                        <ShareIcon className="w-5 " /> <span>Share</span>
+                    <div className="card-body">
+                      <div className="card-title uppercase text-lg font-extrabold">
+                        {e.name}
                       </div>
-                      <Link href={`/sessionSchema/${e.id}/clone`}>
-                        <div className="btn-outline btn-sm btn space-x-2">
-                          <ClipboardCopyIcon className="w-5" />{" "}
-                          <span>Clone</span>
+                      <DescriptionText
+                        name="number of superset workouts:"
+                        value={e.number_of_superset_workouts}
+                      />
+                      <DescriptionText
+                        name="number of workouts:"
+                        value={e.number_of_workouts}
+                      />
+                      <DescriptionText
+                        name="number of workouts in superset:"
+                        value={e.number_of_workouts_in_superset}
+                      />
+                      <DescriptionText
+                        name="votes count:"
+                        value={e.votes_count}
+                      />
+                      <DescriptionText
+                        name="Created By:"
+                        value={"@" + e.owner.first_name}
+                      />
+
+                      <div className="flex flex-row mx-2 justify-between sm:justify-around">
+                        <button
+                          disabled={
+                            waitingForServerResponseForVote &&
+                            e.id === variables?.schema_id
+                          }
+                          className={
+                            "btn btn-outline btn-sm space-x-2 " +
+                            (isVoted ? "text-red-500" : "")
+                          }
+                          onClick={async () => {
+                            mutate({
+                              schema_id: e.id,
+                              state: !isVoted,
+                            });
+                          }}
+                        >
+                          <ThumbUpIcon className="w-5 " />{" "}
+                          <span>{isVoted ? "Liked" : "Like"}</span>
+                        </button>
+                        <div
+                          className="btn-outline btn btn-sm space-x-2 "
+                          onClick={() => {
+                            toast("Link successfully copied to clipboard", {
+                              type: "info",
+                            });
+                            const link = `${window.location.origin}/sessionSchema/${e.id}/view`;
+                            navigator.clipboard.writeText(link);
+                          }}
+                        >
+                          <ShareIcon className="w-5 " /> <span>Share</span>
                         </div>
-                      </Link>
+                        <Link href={`/sessionSchema/${e.id}/clone`}>
+                          <div className="btn-outline btn-sm btn space-x-2">
+                            <ClipboardCopyIcon className="w-5" />{" "}
+                            <span>Clone</span>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
 
-            <div className="flex justify-between mx-2">
-              <button
-                disabled={currentPageIndex === 0}
-                className="btn btn-sm"
-                onClick={() => {
-                  setCursorIdArr((e) => e.slice(0, e.length - 1));
-                  setCurrentPageIndex((val) => val - 1);
-                }}
-              >
-                <ArrowLeftIcon className="w-6" />
-              </button>
-              <button
-                disabled={data.next_cursor === null}
-                className="btn btn-sm"
-                onClick={() => {
-                  setCursorIdArr((e) => [...e, data.next_cursor]);
-                  setCurrentPageIndex((val) => val + 1);
-                }}
-              >
-                <ArrowRightIcon className="w-6" />
-              </button>
+              <div className="flex justify-between mx-2">
+                <button
+                  disabled={currentPageIndex === 0}
+                  className="btn btn-sm"
+                  onClick={() => {
+                    setCursorIdArr((e) => e.slice(0, e.length - 1));
+                    setCurrentPageIndex((val) => val - 1);
+                  }}
+                >
+                  <ArrowLeftIcon className="w-6" />
+                </button>
+                <button
+                  disabled={data.next_cursor === null}
+                  className="btn btn-sm"
+                  onClick={() => {
+                    setCursorIdArr((e) => [...e, data.next_cursor]);
+                    setCurrentPageIndex((val) => val + 1);
+                  }}
+                >
+                  <ArrowRightIcon className="w-6" />
+                </button>
+              </div>
             </div>
-          </div>
+          ) : <div className="alert alert-info">No data</div>
         )}
       </div>
     </div>

@@ -61,6 +61,7 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
           <Chart
             type="line"
             height={height}
+            
             data={{
               labels: timeSpentData.dataPoints.map((e) => {
                 const date = new Date(e.startTime);
@@ -70,18 +71,15 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
               datasets: [
                 {
                   data: timeSpentData.dataPoints.map((e) => e.duration), // in minutes
-                  // backgroundColor: ['red', 'blue'],
                   cubicInterpolationMode: "monotone",
                   borderColor: "#2563eb",
-                  // pointStyle,
-                  // pointBorderColor: 'red',
-                  // pointBackgroundColor: 'red',
-                  // pointRadius: 4
+                 
                 },
               ],
             }}
             options={{
               responsive: true,
+              maintainAspectRatio: false,
               plugins: {
                 tooltip: {
                   callbacks: {
@@ -109,17 +107,8 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
                     unit: "day",
                   },
                   title: {
-                    display: true,
-                    text: "Day",
-                  },
-                },
-                y: {
-                  stacked: false,
-                  display: true,
-                  title: {
-                    display: true,
-                    text: "Session Length (in minutes)",
-                  },
+                    display: false
+                  }
                 },
               },
             }}

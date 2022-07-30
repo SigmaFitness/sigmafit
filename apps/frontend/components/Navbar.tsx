@@ -45,9 +45,9 @@ export const Navbar = () => {
             }
           >
             {open ? (
-              <XIcon className="w-8 text-white" />
+              <CustomXIcon className="w-14 text-white" />
             ) : (
-              <MenuIcon className="w-8 text-black" />
+              <CustomMenuIcon className="w-10 text-black" />
             )}
           </Menu.Button>
 
@@ -248,3 +248,14 @@ export const Navbar = () => {
     </Menu>
   );
 };
+
+
+const CustomMenuIcon = ({className}: {className: string}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24"><path d="M3.5,6a1,1,0,1,0,1,1A1,1,0,0,0,3.5,6Zm4,2h14a1,1,0,0,0,0-2H7.5a1,1,0,0,0,0,2Zm0,3a1,1,0,1,0,1,1A1,1,0,0,0,7.5,11Zm4,5a1,1,0,1,0,1,1A1,1,0,0,0,11.5,16Zm10-5h-10a1,1,0,0,0,0,2h10a1,1,0,0,0,0-2Zm0,5h-6a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Z"/></svg>
+)
+
+
+
+const CustomXIcon = ({className}: {className: string}) => (
+<svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 32 32"><path fill="#fff" d="M10.05 23.95a1 1 0 0 0 1.414 0L17 18.414l5.536 5.536a1 1 0 0 0 1.414-1.414L18.414 17l5.536-5.536a1 1 0 0 0-1.414-1.414L17 15.586l-5.536-5.536a1 1 0 0 0-1.414 1.414L15.586 17l-5.536 5.536a1 1 0 0 0 0 1.414z"/></svg>
+  )
