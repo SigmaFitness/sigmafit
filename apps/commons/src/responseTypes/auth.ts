@@ -1,1 +1,1 @@
-import { workout } from "../prismaGenTypes"
+import { workout } from "../prismaGenTypes";

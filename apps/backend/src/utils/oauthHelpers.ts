@@ -2,9 +2,7 @@ import { OAuth } from "oauth";
 
 // CREDITS: https://cri.dev/posts/2020-03-05-Twitter-OAuth-Login-by-example-with-Node.js/
 
-export async function getOAuthRequestToken(
-  oauthConsumer: OAuth
-): Promise<{
+export async function getOAuthRequestToken(oauthConsumer: OAuth): Promise<{
   oauthRequestToken: string;
   oauthRequestTokenSecret: string;
   results: any;

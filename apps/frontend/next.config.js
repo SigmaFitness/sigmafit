@@ -4,17 +4,17 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:slug*',
-        destination: `${process.env.SERVER_URL}/api/:slug*` // Proxy to Backend
-      }
-    ]
-  }
-}
-const withPWA = require('next-pwa')
+        source: "/api/:slug*",
+        destination: `${process.env.SERVER_URL}/api/:slug*`, // Proxy to Backend
+      },
+    ];
+  },
+};
+const withPWA = require("next-pwa");
 
 module.exports = withPWA({
   ...nextConfig,
   pwa: {
-    dest: 'public'
-  }
-})
+    dest: "public",
+  },
+});
