@@ -45,7 +45,7 @@ router.get("/list/", isAuthenticated, async (req, res) => {
     const myWorkouts: workout[] = [];
     workouts.forEach((e) => {
       // we're giving priority to is_public; if the workout is public, then we shall not allow any edits!
-      if (e.is_public) publicWorkouts.push(e)
+      if (e.is_public) publicWorkouts.push(e);
       else if (e.owner_id === req.user.id) myWorkouts.push(e);
     });
 
@@ -65,7 +65,9 @@ router.get("/list/", isAuthenticated, async (req, res) => {
  */
 router.post("/addOrModify/", isAuthenticated, async (req, res) => {
   try {
-    const validatedData = await addOrModifyWorkoutPayloadValidator.validate(req.body);
+    const validatedData = await addOrModifyWorkoutPayloadValidator.validate(
+      req.body
+    );
     // We're adding the url here, but it has no security threat, as the workout is inaccessible to others until we make it public!
 
     // Create Mode
@@ -82,17 +84,17 @@ router.post("/addOrModify/", isAuthenticated, async (req, res) => {
           owner_id: req.user.id,
           target_body_part: validatedData.target_body_part,
           notes: validatedData.notes,
-          workout_image_url: validatedData.workout_image_url
+          workout_image_url: validatedData.workout_image_url,
         },
       });
       response = {
         workout,
-        mode: 'CREATE'
-      }
+        mode: "CREATE",
+      };
     } else {
       const workout = await prisma.workout.update({
         where: {
-          id: validatedData.id
+          id: validatedData.id,
         },
         data: {
           category: validatedData.category,
@@ -101,13 +103,13 @@ router.post("/addOrModify/", isAuthenticated, async (req, res) => {
           owner_id: req.user.id,
           target_body_part: validatedData.target_body_part,
           notes: validatedData.notes,
-          workout_image_url: validatedData.workout_image_url
+          workout_image_url: validatedData.workout_image_url,
         },
       });
       response = {
         workout,
-        mode: 'EDIT'
-      }
+        mode: "EDIT",
+      };
     }
 
     res.send(response);
@@ -178,55 +180,60 @@ router.post("/modify/", isAuthenticated, async (req, res) => {
  *
  * Any workout added cannot be removed. It ensures that any shared schema workouts are always safe!
  */
-router.post('/delete', isAuthenticated, async (req, res) => {
+router.post("/delete", isAuthenticated, async (req, res) => {
   try {
     const validatedData = deleteWorkoutPayloadValidator.validateSync(req.body);
-    // there is no 
+    // there is no
     const workoutInstance = await prisma.workout.findFirst({
       where: {
         id: validatedData.id,
         owner_id: req.user.id,
-        is_public: false
-      }
-    })
+        is_public: false,
+      },
+    });
 
-    if (!workoutInstance) throw { message: "Invalid attempt to delete workout!" }
+    if (!workoutInstance)
+      throw { message: "Invalid attempt to delete workout!" };
 
     // check that nobody is using it
     let workoutDoc = await prisma.workout_schema.findFirst({
       where: {
-        workout_id: validatedData.id
-      }
-    })
+        workout_id: validatedData.id,
+      },
+    });
 
-    if (workoutDoc) throw { message: `This workout is being used by one of the workout routine!` }
+    if (workoutDoc)
+      throw {
+        message: `This workout is being used by one of the workout routine!`,
+      };
 
     let supersetWorkoutDoc = await prisma.superset_workout_schema.findFirst({
       where: {
-        workout_id: validatedData.id
+        workout_id: validatedData.id,
       },
-    })
+    });
 
-    if (supersetWorkoutDoc) throw { message: `This workout is being used by one of the workout routine!` }
-
+    if (supersetWorkoutDoc)
+      throw {
+        message: `This workout is being used by one of the workout routine!`,
+      };
 
     // delete the workout
     await prisma.workout.delete({
       where: {
-        id: validatedData.id
-      }
-    })
+        id: validatedData.id,
+      },
+    });
 
     const resp: Workout_Delete_Response = {
       message: `workout ${workoutInstance.name} deleted successfully!`,
-      deleted_workout_id: workoutInstance.id
-    }
-    res.send(resp)
-
+      deleted_workout_id: workoutInstance.id,
+    };
+    res.send(resp);
   } catch (err) {
     return sendErrorResponse(res, err);
   }
-})
+});
 
 /**
  * Route to send all the form options to add a new form

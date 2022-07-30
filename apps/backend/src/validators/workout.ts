@@ -14,7 +14,6 @@ export const addOrModifyWorkoutPayloadValidator = yup.object().shape({
   notes: yup.string(),
 });
 
-
 export const deleteWorkoutPayloadValidator = yup.object().shape({
   id: yup.string().uuid().required(),
 });

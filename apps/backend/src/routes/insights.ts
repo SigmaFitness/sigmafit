@@ -99,47 +99,51 @@ router.post("/workout", isAuthenticated, async (req, res) => {
   }
 });
 
-
-
-
-
-router.post('/timeSpent', isAuthenticated, async(req, res) => {
-  try{
+router.post("/timeSpent", isAuthenticated, async (req, res) => {
+  try {
     // look for all session schema
     // Note: we aren't merging it!
-  
-    const sessionInstances=await prisma.session_instance.findMany({
+
+    const sessionInstances = await prisma.session_instance.findMany({
       where: {
         session_schema: {
-          owner_id: req.user.id
+          owner_id: req.user.id,
         },
         NOT: {
-          end_timestamp: null
-        }
+          end_timestamp: null,
+        },
       },
       include: {
         session_schema: {
           select: {
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
       orderBy: {
-        start_timestamp: 'asc'
-      }
-    })
+        start_timestamp: "asc",
+      },
+    });
 
     const resp: Insights_TimeSpent_Response = {
-      dataPoints: sessionInstances.map(e => ({
-        startTime: e.start_timestamp,
-        session_name: e.session_schema.name,
-        duration: Math.round(((e.end_timestamp.getTime()-e.start_timestamp.getTime())/1000/60) * 100)/100 // minutes
-      })).slice(0,5)
-    }
+      dataPoints: sessionInstances
+        .map((e) => ({
+          startTime: e.start_timestamp,
+          session_name: e.session_schema.name,
+          duration:
+            Math.round(
+              ((e.end_timestamp.getTime() - e.start_timestamp.getTime()) /
+                1000 /
+                60) *
+                100
+            ) / 100, // minutes
+        }))
+        .slice(0, 5),
+    };
 
-    res.send(resp)
-  }catch(err){
-    sendErrorResponse(res,err);
+    res.send(resp);
+  } catch (err) {
+    sendErrorResponse(res, err);
   }
-})
+});
 export default router;

@@ -24,6 +24,6 @@ export const setAuthTokenAsCookie = (res: Response, user: user) => {
     secure: process.env.USE_SECURE_COOKIE === "1" ? true : false,
     sameSite: "lax",
     httpOnly: true,
-    maxAge: (7*24*3600000) // 7 days
+    maxAge: 7 * 24 * 3600000, // 7 days
   });
 };

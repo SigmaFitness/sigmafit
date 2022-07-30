@@ -4,22 +4,17 @@ import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { ErrorResponse, logOutUser } from "../../api";
 
-
-
 const LogOut = () => {
+  const { data, isLoading } = useQuery("logOutUser", logOutUser, {
+    onSettled: (data, error: ErrorResponse | null) => {
+      if (error) toast(error.message, { type: "error" });
+      else toast(data?.message, { type: "success" });
 
-    const { data, isLoading } = useQuery('logOutUser', logOutUser, {
-        onSettled: (data, error: ErrorResponse | null) => {
-            if (error) toast(error.message, { type: 'error' })
-            else toast(data?.message, { type: 'success' })
+      Router.push("/");
+    },
+  });
 
-            Router.push('/')
-        }
-    });
-
-    return (
-        null
-    )
-}
+  return null;
+};
 
 export default LogOut;
