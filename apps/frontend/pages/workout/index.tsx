@@ -4,7 +4,7 @@ import {
   Workout_Delete_Response,
 } from "@sigmafit/commons";
 import { workout } from "@sigmafit/commons/dist/prismaGenTypes";
-import Link from "next/link";
+import Image from "next/future/image";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
@@ -157,7 +157,7 @@ const RenderWorkouts = ({
                 <div className="avatar">
                   {/* hidden sm:block */}
                   <div className="w-36 xs:w-24 rounded-full">
-                    <img
+                    <Image
                       className="m-0 object-center"
                       src={workout.workout_image_url}
                     />
@@ -242,7 +242,7 @@ const RenderWorkouts = ({
             <div className="flex gap-4">
               <div className="avatar ">
                 <div className="w-24 rounded-full">
-                  <img
+                  <Image
                     className="m-0"
                     src={workouts[isNotesModalWorkoutIndex].workout_image_url}
                   />

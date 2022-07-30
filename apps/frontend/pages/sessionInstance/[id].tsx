@@ -3,7 +3,7 @@ import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import { Fragment, useEffect, useState } from "react";
 import { Field, FieldArray, Form, Formik, useFormikContext } from "formik";
-import Image from "next/image";
+import Image from "next/future/image";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -507,7 +507,7 @@ const Card = ({
     <div className="z-10">
       <div className="card py-4 bg-gray-200  shadow-xl">
         <figure>
-          <img
+          <Image
             src={workout_image_url}
             className="select-none h-72 w-72 object-cover pointer-events-none mask mask-squircle"
             alt="Shoes"

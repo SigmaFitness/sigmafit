@@ -12,9 +12,7 @@ export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
     if (isLoading) {
       return null;
     } else if (isError) {
-      return (
-        <ErrorScreen message={error?.message} />
-      );
+      return <ErrorScreen message={error?.message} />;
     } else {
       if (data?.is_logged_in) {
         // user logged in
@@ -26,8 +24,3 @@ export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
     }
   };
 };
-
-
-
-
-

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import {
-  Insights_TimeSpent_Response,
   Insights_Workout_Request,
   SessionSchemaVoteRequest,
   SessionSchema_SubmitForReview_Request,
@@ -10,7 +9,7 @@ import {
 } from "@sigmafit/commons";
 import { user } from "@sigmafit/commons/dist/prismaGenTypes";
 
-const apiPrefixSlug = "/api";
+const apiPrefixSlug = `/api`;
 
 export type ErrorResponse = {
   error: true;
@@ -107,7 +106,7 @@ export const getSessionInstanceDetails = async (schemaInstanceId: string) => {
   );
 };
 
-const getCurrentUser = async () => {
+export const getCurrentUser = async () => {
   return usePost<any>(`${apiPrefixSlug}/auth/currentUser`, "GET");
 };
 
@@ -117,6 +116,8 @@ export const useGetCurrentUserQuery = () =>
     getCurrentUser,
     {
       retry: false,
+      staleTime: Infinity,
+      cacheTime: Infinity,
     }
   );
 

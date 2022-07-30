@@ -142,22 +142,21 @@ export let workout_type: {
 export type workout_type = typeof workout_type[keyof typeof workout_type];
 
 export let body_part: {
-  ABS: 'ABS',
-  BICEPS: 'BICEPS',
-  BACK: 'BACK',
-  CARDIO: 'CARDIO',
-  CHEST: 'CHEST',
-  CORE: 'CORE',
-  FOREARMS: 'FOREARMS',
-  FULL_BODY: 'FULL_BODY',
-  LEGS: 'LEGS',
-  SHOULDERS: 'SHOULDERS',
-  TRAPS: 'TRAPS',
-  OTHERS: 'OTHERS'
+  ABS: "ABS";
+  BICEPS: "BICEPS";
+  BACK: "BACK";
+  CARDIO: "CARDIO";
+  CHEST: "CHEST";
+  CORE: "CORE";
+  FOREARMS: "FOREARMS";
+  FULL_BODY: "FULL_BODY";
+  LEGS: "LEGS";
+  SHOULDERS: "SHOULDERS";
+  TRAPS: "TRAPS";
+  OTHERS: "OTHERS";
 };
 
-export type body_part = (typeof body_part)[keyof typeof body_part]
-
+export type body_part = typeof body_part[keyof typeof body_part];
 
 export let intensity_levels: {
   VERY_HARD: "VERY_HARD";

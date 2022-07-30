@@ -45,25 +45,25 @@ export const FormSingleSelectField = ({
   options: { value: string; label: string }[];
   isInline?: boolean;
   onChange:
-  | ((
-    newValue: { value: string; label: string },
-    actionMeta: ActionMeta<any>
-  ) => void)
-  | undefined;
+    | ((
+        newValue: { value: string; label: string },
+        actionMeta: ActionMeta<any>
+      ) => void)
+    | undefined;
   value: string;
 }) => {
-
   const getValue = () => {
     if (value) {
-      return options.filter((option) => option.value===value);
+      return options.filter((option) => option.value === value);
     } else {
       return [];
     }
   };
   return (
     <label
-      className={`mb-4 input-group w-full text-sm ${isInline ? "flex-row" : "flex-col"
-        }`}
+      className={`mb-4 input-group w-full text-sm ${
+        isInline ? "flex-row" : "flex-col"
+      }`}
     >
       <div className="label w-full pb-1">{fieldLabel}</div>
       <Select

@@ -4,6 +4,7 @@ import { useGetCurrentUserQuery } from "../api";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { witNoAuthHOC } from "../hooks/withNoAuthHOC";
+import Image from "next/future/image";
 
 const Home: NextPage = () => {
   const { isError, isLoading, data } = useGetCurrentUserQuery();
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          <img
+          <Image
             src="https://unsplash.com/photos/JKUTrJ4vK00/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MXx8ZGFzaGJvYXJkfGVufDB8fHx8MTY1Njg0MDY0Nw&force=true"
             className="rounded-lg w-full flex-grow-0 h-96 object-cover mx-auto mt-5 mb-20"
           />

@@ -44,15 +44,15 @@ export const handleSocialSignInData = async (
 
   if (user) {
     // update async
-    const newUser=await prisma.user.update({
+    const newUser = await prisma.user.update({
       where: {
-        email: user.email
+        email: user.email,
       },
       data: {
         ...socialConnectionStatus,
-        last_token_generated_at: new Date()
-      }
-    })
+        last_token_generated_at: new Date(),
+      },
+    });
 
     // login user
     setAuthTokenAsCookie(res, newUser);
