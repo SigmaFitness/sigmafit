@@ -45,27 +45,27 @@ export const FormSingleSelectField = ({
   options: { value: string; label: string }[];
   isInline?: boolean;
   onChange:
-    | ((
-        newValue: { value: string; label: string },
-        actionMeta: ActionMeta<any>
-      ) => void)
-    | undefined;
+  | ((
+    newValue: { value: string; label: string },
+    actionMeta: ActionMeta<any>
+  ) => void)
+  | undefined;
   value: string;
 }) => {
+
   const getValue = () => {
     if (value) {
-      return options.filter((option) => value.indexOf(option.value) >= 0);
+      return options.filter((option) => option.value===value);
     } else {
       return [];
     }
   };
   return (
     <label
-      className={`mb-4 input-group w-full text-sm ${
-        isInline ? "flex-row" : "flex-col"
-      }`}
+      className={`mb-4 input-group w-full text-sm ${isInline ? "flex-row" : "flex-col"
+        }`}
     >
-      <div className="label  w-full pb-1">{fieldLabel}</div>
+      <div className="label w-full pb-1">{fieldLabel}</div>
       <Select
         components={{
           IndicatorSeparator: null,
@@ -74,31 +74,8 @@ export const FormSingleSelectField = ({
         onChange={onChange as any}
         isMulti={false}
         value={getValue()}
-        styles={{
-          option: (provided, state) => ({
-            ...provided,
-            background: "#fffcee",
-            padding: "0.625em",
-            paddingRight: "8px",
-            paddingLeft: "8px",
-            border: "1px solid black",
-            color: state.isSelected ? "red" : "blue",
-          }),
-          menuList: (provided, state) => ({
-            ...provided,
-            // background: 'red',
-            background: "#fffcee",
-            padding: 0,
-          }),
-          control: (provided, state) => ({
-            ...provided,
-            // none of react-select's styles are passed to <Control />
-            outline: "none",
-            borderRadius: "0",
-            border: "1px solid black",
-            borderColor: "black",
-          }),
-        }}
+        className="selectContainerWrapper"
+        classNamePrefix="react-select"
         options={options}
       />
     </label>

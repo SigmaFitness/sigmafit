@@ -31,27 +31,38 @@ export const handleSocialSignInData = async (
     is_twitter_connected,
   };
 
-  const data: Record<string, boolean> = {};
+  const socialConnectionStatus: Record<string, boolean> = {};
   Object.keys(tmpObj)
     .filter((e) => tmpObj[e])
-    .forEach((e) => (data[e] = true));
+    .forEach((e) => (socialConnectionStatus[e] = true));
 
-  const user = await prisma.user.update({
+  const user = await prisma.user.findUnique({
     where: {
       email,
     },
-    data,
   });
 
   if (user) {
+    // update async
+    const newUser=await prisma.user.update({
+      where: {
+        email: user.email
+      },
+      data: {
+        ...socialConnectionStatus,
+        last_token_generated_at: new Date()
+      }
+    })
+
     // login user
-    setAuthTokenAsCookie(res, user);
+    setAuthTokenAsCookie(res, newUser);
   } else {
     // register user
     const uuid = uuidv4();
 
     const newUser = await prisma.user.create({
       data: {
+        ...socialConnectionStatus,
         id: uuid,
         first_name,
         last_name,

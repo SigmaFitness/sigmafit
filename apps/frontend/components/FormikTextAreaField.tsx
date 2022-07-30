@@ -20,7 +20,7 @@ export const FormikTextAreaField = ({
         rows={4}
         autoComplete="off"
         placeholder={placeholder}
-        className="textarea textarea-primary"
+        className="textarea textarea-primary bg-slate-50"
       />
       <ErrorMessage className="text-red-500 text-xs mt-1" name={fieldId} />
     </label>

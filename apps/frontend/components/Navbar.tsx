@@ -16,14 +16,20 @@ export const Navbar = () => {
       {({ open }) => {
         if (typeof window !== "undefined") {
           // TODO: think of something more performant.
-          if (open) document.body.classList.add("overflow-hidden");
-          else document.body.classList.remove("overflow-hidden");
+          if (open){
+            document.body.classList.add("overflow-hidden");
+            document.body.classList.add("pt-16");
+          }
+          else{
+            document.body.classList.remove("overflow-hidden");
+            document.body.classList.remove("pt-16");
+          }
         }
         return (
           <div
             className={
               "navbar min-h-16 h-16 border-b z-50 transition-colors ease-in-out duration-200  " +
-              (open ? "bg-primary border-gray-700 top-0 left-0 w-full" : "")
+              (open ? "bg-primary border-gray-700 fixed top-0 left-0 w-full" : "")
             }
           >
             <div className="flex-1 h-full">

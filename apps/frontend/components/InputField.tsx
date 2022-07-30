@@ -25,7 +25,7 @@ export const FormInputField = ({
       id={fieldId}
       autoComplete="off"
       placeholder={placeholder}
-      className="input input-bordered px-2 h-10 border-black rounded-none  w-full "
+      className="input input-bordered px-2 h-10 border-black bg-slate-50 w-full"
     />
     <ErrorMessage className="text-red-500 text-xs mt-1" name={fieldId} />
   </label>
