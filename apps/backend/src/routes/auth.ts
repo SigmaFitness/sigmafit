@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { isAuthenticated, isAuthenticatedWithoutErr } from "../utils/authMiddlewares";
+import {
+  isAuthenticated,
+  isAuthenticatedWithoutErr,
+} from "../utils/authMiddlewares";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import axios from "axios";
@@ -89,7 +92,7 @@ router.get("/twitter/callback", async (req, res) => {
           last_name,
           email,
           picture,
-          is_twitter_connected: true
+          is_twitter_connected: true,
         });
       }
     );
@@ -171,7 +174,7 @@ router.get("/github/callback", async (req, res) => {
       last_name,
       email,
       picture,
-      is_github_connected: true
+      is_github_connected: true,
     });
   } catch (err) {
     console.error(err);
@@ -182,7 +185,10 @@ router.get("/github/callback", async (req, res) => {
 router.get("/google/start", async (req, res) => {
   try {
     const authUrl = googleOAuth2ClientInstance.generateAuthUrl({
-      scope: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+      ],
     });
     res.redirect(authUrl);
   } catch (err) {
@@ -215,13 +221,12 @@ router.get("/google/callback", async (req, res) => {
       last_name,
       email,
       picture,
-      is_google_connected: true
+      is_google_connected: true,
     });
   } catch (err) {
     console.error(err);
     res.redirect("/error");
   }
-
 });
 
 /**
@@ -230,9 +235,9 @@ router.get("/google/callback", async (req, res) => {
 router.get("/profile/", isAuthenticated, async (req, res) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: req.user.id
-    }
-  })
+      id: req.user.id,
+    },
+  });
   res.send(user);
 });
 
@@ -241,7 +246,7 @@ router.get("/profile/", isAuthenticated, async (req, res) => {
  */
 router.get("/currentUser/", isAuthenticatedWithoutErr, (req, res) => {
   res.send({
-    is_logged_in: (req.user ? true : false),
+    is_logged_in: req.user ? true : false,
     user: req.user,
   });
 });

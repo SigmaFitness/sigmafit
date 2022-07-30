@@ -316,7 +316,7 @@ const SigmaFitChartComp = ({
           },
         ],
       }}
-      style={{maxHeight: "300px"}}
+      style={{ maxHeight: "300px" }}
       options={{
         responsive: true,
         maintainAspectRatio: false,

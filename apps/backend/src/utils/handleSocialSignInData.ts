@@ -10,30 +10,37 @@ export const handleSocialSignInData = async (
     last_name: string;
     email: string;
     picture: string;
-    is_github_connected?: boolean,
-    is_google_connected?: boolean,
-    is_twitter_connected?: boolean,
+    is_github_connected?: boolean;
+    is_google_connected?: boolean;
+    is_twitter_connected?: boolean;
   }
 ) => {
-  const { email, first_name, last_name, picture,
+  const {
+    email,
+    first_name,
+    last_name,
+    picture,
     is_github_connected,
     is_google_connected,
-    is_twitter_connected } = userData;
+    is_twitter_connected,
+  } = userData;
 
   const tmpObj: Record<string, boolean> = {
     is_google_connected,
     is_github_connected,
-    is_twitter_connected
-  }
+    is_twitter_connected,
+  };
 
-  const data: Record<string, boolean> = {}
-  Object.keys(tmpObj).filter(e => tmpObj[e]).forEach(e => data[e] = true)
+  const data: Record<string, boolean> = {};
+  Object.keys(tmpObj)
+    .filter((e) => tmpObj[e])
+    .forEach((e) => (data[e] = true));
 
   const user = await prisma.user.update({
     where: {
       email,
     },
-    data
+    data,
   });
 
   if (user) {

@@ -1,7 +1,4 @@
-import {
-  ChevronRightIcon,
-  UserCircleIcon,
-} from "@heroicons/react/solid";
+import { ChevronRightIcon, UserCircleIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
@@ -73,7 +70,6 @@ export const Navbar = () => {
               leaveTo="translate-x-full -translate-y-full"
             >
               <Menu.Items
-
                 as="div"
                 className="z-50 px-6 text-center lg:text-lg font-medium text-white fixed left-0 bottom-0 top-16 w-screen bg-primary"
                 // style={{ height: "calc(100vh - 64px)" }}
@@ -85,10 +81,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/dash">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/dash"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/dash"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
                             <div className="flex justify-between w-full h-9 ">
                               <span className="flex gap-2 items-center">
@@ -103,10 +100,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/sessionSchema/top">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/sessionSchema/top"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/sessionSchema/top"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -121,10 +119,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/workout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/workout"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/workout"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -137,26 +136,32 @@ export const Navbar = () => {
                         </Link>
                       </Menu.Item>
                       <Menu.Item>
-                        <Link href='/profile'>
-                          <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/profile' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                        <Link href="/profile">
+                          <div
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/profile"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
+                          >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
                                 <UserCircleIcon className="w-7" />
                                 <span>Profile</span>
                               </span>
-                              <ChevronRightIcon className='text-red-500 w-7' />
+                              <ChevronRightIcon className="text-red-500 w-7" />
                             </div>
                           </div>
-
                         </Link>
                       </Menu.Item>
                       <Menu.Item>
                         <Link href="/insights">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/insights"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/insights"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <div className="flex gap-2 items-center">
@@ -174,12 +179,15 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/logout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/logout"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/auth/logout"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
-                            <div className="flex justify-between h-9">Logout</div>
+                            <div className="flex justify-between h-9">
+                              Logout
+                            </div>
                           </div>
                         </Link>
                       </Menu.Item>
@@ -221,15 +229,23 @@ export const Navbar = () => {
                             </Menu.Item> */}
 
                       <Menu.Item>
-                        <Link href='/pricing'>
-                          <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/pricing' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
+                        <Link href="/pricing">
+                          <div
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/pricing"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
+                          >
                             <div className="flex justify-between h-9">
-                              <div className='space-x-2'>
+                              <div className="space-x-2">
                                 <span>Pricing</span>
-                                <span className='badge badge-sm badge-warning'>Coming Soon</span>
+                                <span className="badge badge-sm badge-warning">
+                                  Coming Soon
+                                </span>
                               </div>
 
-                              <ChevronRightIcon className='text-red-500 w-7' />
+                              <ChevronRightIcon className="text-red-500 w-7" />
                             </div>
                           </div>
                         </Link>
@@ -237,10 +253,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/welcome">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/welcome"
-                              ? "text-yellow-400 hover:text-yellow-400 cursor-default"
-                              : ""
-                              }`}
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/auth/welcome"
+                                ? "text-yellow-400 hover:text-yellow-400 cursor-default"
+                                : ""
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               Sign In
@@ -255,35 +272,87 @@ export const Navbar = () => {
               </Menu.Items>
             </Transition>
           </div>
-        )
-
-      }
-      }
+        );
+      }}
     </Menu>
   );
 };
 
-
 const CustomMenuIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24"><path d="M3.5,6a1,1,0,1,0,1,1A1,1,0,0,0,3.5,6Zm4,2h14a1,1,0,0,0,0-2H7.5a1,1,0,0,0,0,2Zm0,3a1,1,0,1,0,1,1A1,1,0,0,0,7.5,11Zm4,5a1,1,0,1,0,1,1A1,1,0,0,0,11.5,16Zm10-5h-10a1,1,0,0,0,0,2h10a1,1,0,0,0,0-2Zm0,5h-6a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Z" /></svg>
-)
-
-
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 24 24"
+  >
+    <path d="M3.5,6a1,1,0,1,0,1,1A1,1,0,0,0,3.5,6Zm4,2h14a1,1,0,0,0,0-2H7.5a1,1,0,0,0,0,2Zm0,3a1,1,0,1,0,1,1A1,1,0,0,0,7.5,11Zm4,5a1,1,0,1,0,1,1A1,1,0,0,0,11.5,16Zm10-5h-10a1,1,0,0,0,0,2h10a1,1,0,0,0,0-2Zm0,5h-6a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Z" />
+  </svg>
+);
 
 const CustomXIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 32 32"><path fill="#fff" d="M10.05 23.95a1 1 0 0 0 1.414 0L17 18.414l5.536 5.536a1 1 0 0 0 1.414-1.414L18.414 17l5.536-5.536a1 1 0 0 0-1.414-1.414L17 15.586l-5.536-5.536a1 1 0 0 0-1.414 1.414L15.586 17l-5.536 5.536a1 1 0 0 0 0 1.414z" /></svg>
-)
-
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 32 32"
+  >
+    <path
+      fill="#fff"
+      d="M10.05 23.95a1 1 0 0 0 1.414 0L17 18.414l5.536 5.536a1 1 0 0 0 1.414-1.414L18.414 17l5.536-5.536a1 1 0 0 0-1.414-1.414L17 15.586l-5.536-5.536a1 1 0 0 0-1.414 1.414L15.586 17l-5.536 5.536a1 1 0 0 0 0 1.414z"
+    />
+  </svg>
+);
 
 const WorkoutIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 40 40" ><defs><linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%"><stop offset="0%" stop-color="#C1EC34" /><stop offset="100%" stop-color="#A2FC3C" /></linearGradient></defs><g fill="none" fill-rule="evenodd"><circle cx="20" cy="20" r="20" fill="currentColor" /><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15.299736,18.3881278 L16.0929506,13.3737601 L21.3533967,12.7493323 C22.0931205,13.0784758 22.4629824,13.2430475 22.4629824,13.2430475 C23.9906535,16.8619419 24.754489,18.6713891 24.754489,18.6713891 L29.007595,16.418353" /><polyline stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" points="12.273 31.274 16.575 26.556 18.551 20.146 20.497 20.554 25.308 24.69 19.719 28.446" /><path stroke="#000" stroke-width="4.5" d="M21.5899193,13.1733843 L19.4438056,20.6823994" /><circle cx="23" cy="8.75" r="2.25" fill="#000" /></g></svg>
-)
-
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 40 40"
+  >
+    <defs>
+      <linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%">
+        <stop offset="0%" stop-color="#C1EC34" />
+        <stop offset="100%" stop-color="#A2FC3C" />
+      </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+      <circle cx="20" cy="20" r="20" fill="currentColor" />
+      <path
+        stroke="#000"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.2"
+        d="M15.299736,18.3881278 L16.0929506,13.3737601 L21.3533967,12.7493323 C22.0931205,13.0784758 22.4629824,13.2430475 22.4629824,13.2430475 C23.9906535,16.8619419 24.754489,18.6713891 24.754489,18.6713891 L29.007595,16.418353"
+      />
+      <polyline
+        stroke="#000"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+        points="12.273 31.274 16.575 26.556 18.551 20.146 20.497 20.554 25.308 24.69 19.719 28.446"
+      />
+      <path
+        stroke="#000"
+        stroke-width="4.5"
+        d="M21.5899193,13.1733843 L19.4438056,20.6823994"
+      />
+      <circle cx="23" cy="8.75" r="2.25" fill="#000" />
+    </g>
+  </svg>
+);
 
 const TopWorkoutRoutinesIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 48 48">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 48 48"
+  >
     <g transform="translate(0 -1004.362)">
-      <circle cx={24} cy="1028.362" r={24} fill="currentColor" fillRule="evenodd" />
+      <circle
+        cx={24}
+        cy="1028.362"
+        r={24}
+        fill="currentColor"
+        fillRule="evenodd"
+      />
       <g transform="translate(254.09 -212.207)">
         <path
           fill="#000"
@@ -353,15 +422,31 @@ const TopWorkoutRoutinesIcon = ({ className }: { className: string }) => (
       </g>
     </g>
   </svg>
-
-)
-
+);
 
 const DashboardIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z" /><path fill="currentColor" d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zm0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zM13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1z" /></svg>
-)
-
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 24 24"
+  >
+    <path fill="none" d="M0 0h24v24H0V0z" />
+    <path
+      fill="currentColor"
+      d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zm0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zM13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1z"
+    />
+  </svg>
+);
 
 const AnalyticsIcon = ({ className }: { className: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24"><path fill="currentColor" d="M7,16a1.5,1.5,0,0,0,1.5-1.5.77.77,0,0,0,0-.15l2.79-2.79.23,0,.23,0,1.61,1.61s0,.05,0,.08a1.5,1.5,0,1,0,3,0v-.08L20,9.5h0A1.5,1.5,0,1,0,18.5,8a.77.77,0,0,0,0,.15l-3.61,3.61h-.16L13,10a1.49,1.49,0,0,0-3,0L7,13H7a1.5,1.5,0,0,0,0,3Zm13.5,4H3.5V3a1,1,0,0,0-2,0V21a1,1,0,0,0,1,1h18a1,1,0,0,0,0-2Z" /></svg>
-)
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="M7,16a1.5,1.5,0,0,0,1.5-1.5.77.77,0,0,0,0-.15l2.79-2.79.23,0,.23,0,1.61,1.61s0,.05,0,.08a1.5,1.5,0,1,0,3,0v-.08L20,9.5h0A1.5,1.5,0,1,0,18.5,8a.77.77,0,0,0,0,.15l-3.61,3.61h-.16L13,10a1.49,1.49,0,0,0-3,0L7,13H7a1.5,1.5,0,0,0,0,3Zm13.5,4H3.5V3a1,1,0,0,0-2,0V21a1,1,0,0,0,1,1h18a1,1,0,0,0,0-2Z"
+    />
+  </svg>
+);

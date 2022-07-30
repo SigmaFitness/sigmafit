@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 import { ErrorResponse, logOutUser } from "../../api";
 
 const LogOut = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery("logOutUser", logOutUser, {
     onSettled: (data, error: ErrorResponse | null) => {
       if (error) toast(error.message, { type: "error" });
       else toast(data?.message, { type: "success" });
 
-      queryClient.refetchQueries("getCurrentUser")
+      queryClient.refetchQueries("getCurrentUser");
 
       Router.push("/");
     },

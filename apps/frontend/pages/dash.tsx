@@ -1,7 +1,4 @@
-import {
-  EyeIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/solid";
+import { EyeIcon, InformationCircleIcon } from "@heroicons/react/solid";
 import {
   SessionInstanceAllActiveResponse,
   SessionInstanceStartResponse,

@@ -61,7 +61,6 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
           <Chart
             type="line"
             height={height}
-            
             data={{
               labels: timeSpentData.dataPoints.map((e) => {
                 const date = new Date(e.startTime);
@@ -73,7 +72,6 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
                   data: timeSpentData.dataPoints.map((e) => e.duration), // in minutes
                   cubicInterpolationMode: "monotone",
                   borderColor: "#2563eb",
-                 
                 },
               ],
             }}
@@ -107,8 +105,8 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
                     unit: "day",
                   },
                   title: {
-                    display: false
-                  }
+                    display: false,
+                  },
                 },
               },
             }}
