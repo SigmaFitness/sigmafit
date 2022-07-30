@@ -2,19 +2,20 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useGetCurrentUserQuery } from "../api";
 import { MetaHead } from "../components/Head";
+import { Logo } from "../components/Logo";
 import { Navbar } from "../components/Navbar";
+import { witNoAuthHOC } from "../hooks/withNoAuthHOC";
 
 const Home: NextPage = () => {
   const { isError, isLoading, data } = useGetCurrentUserQuery();
 
   return (
     <div>
-      {/* <div className="hero"> */}
-
       <MetaHead />
 
       <div className="landing-hero">
         <Navbar />
+        {/* <Logo className="w-36 px-4 py-4"/> */}
         <div className="hero-content  text-center lg:pt-20  flex-col lg:flex-row-reverse mt-20 mx-auto">
           <div className="max-w-4xl">
             <h1 className="mb-5 text-4xl font-black">
@@ -24,7 +25,7 @@ const Home: NextPage = () => {
               Track your progress at gym hassle free. And use our personalized
               insights to improve your fitness journey.
             </p>
-            {!isError && !isLoading ? (
+            {!isLoading && data?.is_logged_in ? (
               <Link href={"/dash"}>
                 <button className="btn btn-primary">Go to Dashboard</button>
               </Link>
@@ -46,4 +47,4 @@ const Home: NextPage = () => {
     </div>
   );
 };
-export default Home;
+export default witNoAuthHOC(Home);

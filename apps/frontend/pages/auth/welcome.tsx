@@ -9,10 +9,10 @@ const Welcome = () => {
   );
 
   return (
-    <div className="min-h-screen">
+    <div>
       <MetaHead />
 
-      <div className="form-container translate-y-1/2 absolute">
+      <div className="form-container mt-[20vh] absolute">
         <div className="flex justify-center my-4">
           <LogoWithoutBeta className={"w-44 text-black"} />
         </div>
@@ -31,7 +31,7 @@ const Welcome = () => {
         <div className="flex flex-col gap-4 my-6">
           <div
             onClick={() => (window.location.href = `/api/auth/google/start`)}
-            className="bg-white text-black hover:text-white btn rounded-md shadow-xl py-3 flex justify-center items-center gap-2"
+            className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 flex justify-center items-center gap-2"
           >
             <span>
               <GoogleIcon />
@@ -40,7 +40,7 @@ const Welcome = () => {
           </div>
           <div
             onClick={() => (window.location.href = `/api/auth/github/start`)}
-            className="bg-white text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
+            className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
           >
             <span>
               <GitHubIcon />
@@ -49,7 +49,7 @@ const Welcome = () => {
           </div>
           <div
             onClick={() => (window.location.href = `/api/auth/twitter/start`)}
-            className="bg-white text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
+            className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
           >
             <span>
               <TwitterIcon />

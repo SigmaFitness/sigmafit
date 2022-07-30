@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticated } from "../utils/authMiddlewares";
+import { isAuthenticated, isAuthenticatedWithoutErr } from "../utils/authMiddlewares";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import axios from "axios";
@@ -222,10 +222,12 @@ router.get("/google/callback", async (req, res) => {
 /**
  * Route to get the currently authenticated user
  */
-router.get("/currentUser/", isAuthenticated, (req, res) => {
+router.get("/currentUser/", isAuthenticatedWithoutErr, (req, res) => {
   // If I'm inside this route handler
   // it means that I'm authenticated
+
   res.send({
+    is_logged_in: (req.user?true: false),
     user: req.user,
   });
 });

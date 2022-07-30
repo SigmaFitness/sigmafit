@@ -8,6 +8,7 @@ import {
   SessionSchema_Top_Request,
   WorkoutListResponse,
 } from "@sigmafit/commons";
+import { user } from "@sigmafit/commons/dist/prismaGenTypes";
 
 const apiPrefixSlug = "/api";
 
@@ -111,7 +112,7 @@ const getCurrentUser = async () => {
 };
 
 export const useGetCurrentUserQuery = () =>
-  useQuery<any, ErrorResponse>("getCurrentUser", getCurrentUser, {
+  useQuery<{is_logged_in: true, user: user}, ErrorResponse>("getCurrentUser", getCurrentUser, {
     retry: false,
   });
 
