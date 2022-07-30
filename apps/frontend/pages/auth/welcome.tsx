@@ -1,13 +1,8 @@
-import Router from "next/router";
 import { MetaHead } from "../../components/Head";
 import { LogoWithoutBeta } from "../../components/Logo";
-import { useScript } from "../../hooks/useScript";
+import { witNoAuthHOC } from "../../hooks/withNoAuthHOC";
 
 const Welcome = () => {
-  const googleIdentityServiceScriptStatus = useScript(
-    "https://accounts.google.com/gsi/client"
-  );
-
   return (
     <div>
       <MetaHead />
@@ -66,7 +61,7 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default witNoAuthHOC(Welcome);
 
 const GitHubIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="w-6" viewBox="0 0 16 16">

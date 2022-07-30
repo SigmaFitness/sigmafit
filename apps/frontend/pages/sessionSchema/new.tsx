@@ -8,6 +8,7 @@ import SessionSchemaForm, {
   SessionSchemaFormValueType,
 } from "../../components/Forms/SessionSchemaForm";
 import { SessionSchemaCreateRequest } from "@sigmafit/commons";
+import { withAuthHOC } from "../../hooks/withAuthHOC";
 
 const AddSessionSchema = () => {
   const {
@@ -75,4 +76,4 @@ const AddSessionSchema = () => {
   );
 };
 
-export default AddSessionSchema;
+export default withAuthHOC(AddSessionSchema);

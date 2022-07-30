@@ -23,6 +23,7 @@ import {
 } from "../../api";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
+import { withAuthHOC } from "../../hooks/withAuthHOC";
 import { DescriptionText } from "./[id]/view";
 
 const TopSessionSchema = () => {
@@ -172,4 +173,4 @@ const TopSessionSchema = () => {
   );
 };
 
-export default TopSessionSchema;
+export default withAuthHOC(TopSessionSchema);

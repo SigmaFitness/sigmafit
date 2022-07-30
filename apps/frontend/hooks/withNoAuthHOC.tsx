@@ -8,7 +8,7 @@ export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
     const router = useRouter();
 
     if (isLoading) {
-      return <div className="alert justify-center my-96">Loading....</div>;
+      return null;
     } else if (isError) {
       return <div className="alert alert-error">Something went terribly wrong: {error.message}</div>
     } else {

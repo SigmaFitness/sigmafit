@@ -9,6 +9,7 @@ import SessionSchemaForm, {
   SessionSchemaFormValueType,
 } from "../../../components/Forms/SessionSchemaForm";
 import { SessionSchemaDetailsResponse } from "@sigmafit/commons";
+import { withAuthHOC } from "../../../hooks/withAuthHOC";
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now
 const SessionSchemaEdit = () => {
@@ -55,4 +56,4 @@ const SessionSchemaEdit = () => {
   );
 };
 
-export default SessionSchemaEdit;
+export default withAuthHOC(SessionSchemaEdit);

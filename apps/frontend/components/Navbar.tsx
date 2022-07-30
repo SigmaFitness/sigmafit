@@ -17,9 +17,11 @@ export const Navbar = () => {
   return (
     <Menu>
       {({ open }) => {
-        // TODO: think of something more performant.
-        if(open) document.body.classList.add("overflow-hidden");
-        else document.body.classList.remove("overflow-hidden");
+        if (typeof window !== "undefined") {
+          // TODO: think of something more performant.
+          if (open) document.body.classList.add("overflow-hidden");
+          else document.body.classList.remove("overflow-hidden");
+        }
         return (
           <div
             className={

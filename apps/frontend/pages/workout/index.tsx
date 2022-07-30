@@ -16,6 +16,7 @@ import {
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import { SigmaModal } from "../../components/SigmaModal";
+import { withAuthHOC } from "../../hooks/withAuthHOC";
 
 const Workouts = () => {
   const { data, isLoading } = useQuery<WorkoutListResponse, ErrorResponse>(
@@ -263,4 +264,4 @@ const RenderWorkouts = ({
   );
 };
 
-export default Workouts;
+export default withAuthHOC(Workouts);

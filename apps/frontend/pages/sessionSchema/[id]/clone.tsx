@@ -17,6 +17,7 @@ import {
   SessionSchemaCreateResponse,
   SessionSchemaDetailsResponse,
 } from "@sigmafit/commons";
+import { withAuthHOC } from "../../../hooks/withAuthHOC";
 
 const SessionSchemaClone = () => {
   const router = useRouter();
@@ -94,4 +95,4 @@ const SessionSchemaClone = () => {
   );
 };
 
-export default SessionSchemaClone;
+export default withAuthHOC(SessionSchemaClone);

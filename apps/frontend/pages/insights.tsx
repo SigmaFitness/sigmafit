@@ -42,6 +42,7 @@ import { DescriptionText } from "./sessionSchema/[id]/view";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { TimeSpentChart } from "../components/TimeSpentChart";
+import { withAuthHOC } from "../hooks/withAuthHOC";
 
 ChartJS.register(
   CategoryScale,
@@ -271,7 +272,7 @@ const Insights = () => {
   );
 };
 
-export default Insights;
+export default withAuthHOC(Insights);
 
 const LegendHelper = () => (
   // TODO:

@@ -9,11 +9,12 @@ export const withAuthHOC = (WrappedComponent: any): React.FC<any> => {
     const router = useRouter();
 
     if (isLoading) {
-      return <div className="alert justify-center my-96">Loading....</div>;
+      // return <div className="alert justify-center my-96">Loading....</div>;
+      return null;
     } else if (data?.is_logged_in) {
       return <WrappedComponent />;
     } else {
-      router.push("/auth/welcome");
+      router.push("/");
       return null;
     }
   };

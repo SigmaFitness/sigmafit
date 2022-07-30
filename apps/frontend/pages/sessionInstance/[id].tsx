@@ -28,6 +28,7 @@ import {
 } from "@sigmafit/commons";
 import { DescriptionText } from "../sessionSchema/[id]/view";
 import { Menu, Transition } from "@headlessui/react";
+import { withAuthHOC } from "../../hooks/withAuthHOC";
 
 const timeSince = (startDate: Date) => {
   const seconds = (Date.now() - startDate.getTime()) / 1000;
@@ -679,4 +680,4 @@ const Card = ({
   );
 };
 
-export default SessionInstance;
+export default withAuthHOC(SessionInstance);

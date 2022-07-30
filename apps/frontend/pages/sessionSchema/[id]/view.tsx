@@ -15,6 +15,7 @@ import SessionSchemaForm, {
 import { SessionSchemaDetailsResponse } from "@sigmafit/commons";
 import { DuplicateIcon, PencilAltIcon } from "@heroicons/react/solid";
 import Link from "next/link";
+import { withAuthHOC } from "../../../hooks/withAuthHOC";
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now
 const SessionSchemaEdit = () => {
@@ -63,7 +64,7 @@ const SessionSchemaEdit = () => {
   );
 };
 
-export default SessionSchemaEdit;
+export default withAuthHOC(SessionSchemaEdit);
 
 const SessionSchemaView = ({
   initialValues,
