@@ -32,11 +32,18 @@ enum workout_type {
 }
 
 enum body_part {
-  LEGS
-  SHOULDER
-  INNER_CHEST
-  OUTER_CHEST
   ABS
+  BICEPS
+  BACK
+  CARDIO
+  CHEST
+  CORE
+  FOREARMS
+  FULL_BODY
+  LEGS
+  SHOULDERS
+  TRAPS
+  OTHERS
 }
 
 enum intensity_levels {
