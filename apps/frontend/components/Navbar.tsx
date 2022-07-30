@@ -81,11 +81,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/dash">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/dash"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/dash"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between w-full h-9 ">
                               <span className="flex gap-2 items-center">
@@ -100,11 +99,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/sessionSchema/top">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/sessionSchema/top"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/sessionSchema/top"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -119,11 +117,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/workout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/workout"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/workout"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -138,11 +135,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/profile">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/profile"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/profile"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -157,11 +153,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/insights">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/insights"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/insights"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               <div className="flex gap-2 items-center">
@@ -179,11 +174,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/logout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/auth/logout"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/logout"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               Logout
@@ -231,11 +225,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/pricing">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/pricing"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/pricing"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               <div className="space-x-2">
@@ -253,11 +246,10 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/welcome">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
-                              route === "/auth/welcome"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/welcome"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex justify-between h-9">
                               Sign In
@@ -309,34 +301,35 @@ const WorkoutIcon = ({ className }: { className: string }) => (
   >
     <defs>
       <linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%">
-        <stop offset="0%" stop-color="#C1EC34" />
-        <stop offset="100%" stop-color="#A2FC3C" />
+        <stop offset="0%" stopColor="#C1EC34" />
+        <stop offset="100%" stopColor="#A2FC3C" />
       </linearGradient>
     </defs>
-    <g fill="none" fill-rule="evenodd">
-      <circle cx="20" cy="20" r="20" fill="currentColor" />
+    <g fill="none" fillRule="evenodd">
+      <circle cx={20} cy={20} r={20} fill="currentColor" />
       <path
         stroke="#000"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.2"
         d="M15.299736,18.3881278 L16.0929506,13.3737601 L21.3533967,12.7493323 C22.0931205,13.0784758 22.4629824,13.2430475 22.4629824,13.2430475 C23.9906535,16.8619419 24.754489,18.6713891 24.754489,18.6713891 L29.007595,16.418353"
       />
       <polyline
         stroke="#000"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.5"
         points="12.273 31.274 16.575 26.556 18.551 20.146 20.497 20.554 25.308 24.69 19.719 28.446"
       />
       <path
         stroke="#000"
-        stroke-width="4.5"
+        strokeWidth="4.5"
         d="M21.5899193,13.1733843 L19.4438056,20.6823994"
       />
-      <circle cx="23" cy="8.75" r="2.25" fill="#000" />
+      <circle cx={23} cy="8.75" r="2.25" fill="#000" />
     </g>
   </svg>
+
 );
 
 const TopWorkoutRoutinesIcon = ({ className }: { className: string }) => (
