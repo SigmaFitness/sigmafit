@@ -5,16 +5,16 @@ import { useGetCurrentUserQuery } from "../api";
 
 export const withAuthHOC = (WrappedComponent: any): React.FC<any> => {
   return () => {
-    const { isLoading, isError, error } = useGetCurrentUserQuery();
+    const { isLoading, isError, error, data } = useGetCurrentUserQuery();
     const router = useRouter();
 
     if (isLoading) {
       return <div className="alert justify-center my-96">Loading....</div>;
-    } else if (isError) {
-      if (error.status === 401) router.push("/auth/welcome");
-      return null;
-    } else {
+    } else if (data?.is_logged_in) {
       return <WrappedComponent />;
+    } else {
+      router.push("/auth/welcome");
+      return null;
     }
   };
 };

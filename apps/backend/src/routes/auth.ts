@@ -11,6 +11,7 @@ import {
 import { handleSocialSignInData } from "../utils/handleSocialSignInData";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { breakUserFullName } from "../utils/breakUserFullName";
+import { prisma } from "../db";
 
 const router = Router();
 
@@ -88,6 +89,7 @@ router.get("/twitter/callback", async (req, res) => {
           last_name,
           email,
           picture,
+          is_twitter_connected: true
         });
       }
     );
@@ -169,6 +171,7 @@ router.get("/github/callback", async (req, res) => {
       last_name,
       email,
       picture,
+      is_github_connected: true
     });
   } catch (err) {
     console.error(err);
@@ -179,7 +182,7 @@ router.get("/github/callback", async (req, res) => {
 router.get("/google/start", async (req, res) => {
   try {
     const authUrl = googleOAuth2ClientInstance.generateAuthUrl({
-      scope: "https://www.googleapis.com/auth/userinfo.profile",
+      scope: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
     });
     res.redirect(authUrl);
   } catch (err) {
@@ -212,28 +215,39 @@ router.get("/google/callback", async (req, res) => {
       last_name,
       email,
       picture,
+      is_google_connected: true
     });
   } catch (err) {
     console.error(err);
     res.redirect("/error");
   }
+
+});
+
+/**
+ * Route to get the profile
+ */
+router.get("/profile/", isAuthenticated, async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user.id
+    }
+  })
+  res.send(user);
 });
 
 /**
  * Route to get the currently authenticated user
  */
 router.get("/currentUser/", isAuthenticatedWithoutErr, (req, res) => {
-  // If I'm inside this route handler
-  // it means that I'm authenticated
-
   res.send({
-    is_logged_in: (req.user?true: false),
+    is_logged_in: (req.user ? true : false),
     user: req.user,
   });
 });
 
 /**
- * Route to get the currently authenticated user
+ * Route to logout the user
  */
 router.get("/logOut/", isAuthenticated, (req, res) => {
   // If I'm inside this route handler

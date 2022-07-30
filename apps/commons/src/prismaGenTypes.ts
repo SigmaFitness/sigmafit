@@ -12,6 +12,9 @@ export type user = {
   last_name: string;
   picture: string;
   email: string;
+  is_google_connected: boolean
+  is_github_connected: boolean
+  is_twitter_connected: boolean
   created_time: Date;
   last_token_generated_at: Date;
 };

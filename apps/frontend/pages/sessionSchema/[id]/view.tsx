@@ -237,7 +237,7 @@ export const DescriptionText = ({
   name: string;
   value: any;
   size?: "med" | "small";
-  type?: "justify-between" | "gap-2" | "gap-1";
+  type?: "justify-between" | "gap-2" | "gap-1" | "justify-around";
 }) => (
   <div className={"flex flex-col sm:flex-row sm:items-center " + type}>
     <div

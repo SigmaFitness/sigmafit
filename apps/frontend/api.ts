@@ -161,3 +161,8 @@ export const getWorkoutInsights = async (payload: Insights_Workout_Request) => {
 export const getTimeSpentInsights = async () => {
   return usePost<any>(`${apiPrefixSlug}/insights/timeSpent`, "POST");
 };
+
+
+export const getUserProfile = async () => {
+  return usePost<user>(`${apiPrefixSlug}/auth/profile`, "GET");
+};
