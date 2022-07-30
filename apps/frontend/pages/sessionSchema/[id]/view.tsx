@@ -256,21 +256,3 @@ export const DescriptionText = ({
     </div>
   </div>
 );
-
-// export const DescriptionTextLabel = ({ children, size = 'small' }: {
-//     children: any,
-//     size?: 'med' | 'small'
-// }) => {
-//     return (
-//         <div className={"uppercase font-bold  text-gray-500 " + (size === 'small' ? 'text-2xs' : 'text-xs')}>{children}</div>
-//     )
-// }
-
-// export const DescriptionTextValue = ({ children, size }: {
-//     children: any,
-//     size?: 'med' | 'small'
-// }) => {
-//     return (
-//         <div className={"text-gray-900 " + (size === 'small' ? 'text-sm' : 'text-base')}>{children}</div>
-//     )
-// }

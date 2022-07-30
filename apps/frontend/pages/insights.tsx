@@ -217,7 +217,7 @@ const Insights = () => {
                     "DISTANCE_AND_DURATION") && (
                   // Print duration
                   <>
-                    <h3>Duration</h3>
+                    <h3>Duration (in minutes)</h3>
                     <SigmaFitChartComp
                       labels={buildLabels(workout_insights.dataPoints)}
                       toolTipLabelText="Duration"

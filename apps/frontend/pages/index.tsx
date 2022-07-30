@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useGetCurrentUserQuery } from "../api";
 import { MetaHead } from "../components/Head";
-import { Logo } from "../components/Logo";
 import { Navbar } from "../components/Navbar";
 import { witNoAuthHOC } from "../hooks/withNoAuthHOC";
 

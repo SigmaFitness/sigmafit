@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { useGetCurrentUserQuery } from "../api";
+import { ErrorScreen } from "../components/ErrorScreen";
+import { Navbar } from "../components/Navbar";
 
 export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
   return () => {
@@ -11,9 +13,7 @@ export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
       return null;
     } else if (isError) {
       return (
-        <div className="alert alert-error">
-          Something went terribly wrong: {error.message}
-        </div>
+        <ErrorScreen message={error?.message} />
       );
     } else {
       if (data?.is_logged_in) {
@@ -26,3 +26,8 @@ export const witNoAuthHOC = (WrappedComponent: any): React.FC<any> => {
     }
   };
 };
+
+
+
+
+
