@@ -54,7 +54,7 @@ const Dash = () => {
       <MetaHead />
       <Navbar />
 
-      <div className="max-w-2xl mx-auto my-12 prose px-2 mb-auto">
+      <div className="max-w-2xl mx-auto my-12 prose px-2 mb-auto w-full">
         <h2>Analytics</h2>
 
         <h3>Session duration (in minutes)</h3>

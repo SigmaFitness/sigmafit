@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       <div className="landing-hero">
         <Navbar />
         {/* <Logo className="w-36 px-4 py-4"/> */}
-        <div className="hero-content  text-center lg:pt-10  flex-col lg:flex-row-reverse mt-5 mx-auto">
+        <div className="hero-content  text-center  flex-col lg:flex-row-reverse mt-10 mx-auto">
           <div className="max-w-xl">
             <h1 className="mb-5 text-4xl font-black">
               Workout tracking made easy.
