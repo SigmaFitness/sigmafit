@@ -2,11 +2,13 @@ import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import { user } from "@sigmafit/commons/dist/prismaGenTypes";
 import { useQuery } from "react-query";
 import { ErrorResponse, getUserProfile, useGetCurrentUserQuery } from "../api";
+import { Footer } from "../components/Footer";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { withAuthHOC } from "../hooks/withAuthHOC";
 import { DescriptionText } from "./sessionSchema/[id]/view";
-import Image from "next/image";
+
+
 const Profile = () => {
   const { data, isLoading } = useQuery<user, ErrorResponse>(
     "getUserProfile",
@@ -14,11 +16,11 @@ const Profile = () => {
   ); // no need to check for loading and all
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <MetaHead />
       <Navbar />
 
-      <div className="mt-10">
+      <div className="mt-10 mb-auto">
         {isLoading || !data ? (
           <div className="alert">Loading</div>
         ) : (
@@ -28,11 +30,11 @@ const Profile = () => {
             </div>
             <div className="relative">
               <div className="bg-gray-700 h-48 rounded-t-xl overflow-hidden">
-                <Image src="https://unsplash.com/photos/T_Qe4QlMIvQ/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MTZ8fHdhbGxwYXBlcnxlbnwwfHx8fDE2NTkxODMyODI&force=true&w=640" />
+                <img src="https://unsplash.com/photos/T_Qe4QlMIvQ/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MTZ8fHdhbGxwYXBlcnxlbnwwfHx8fDE2NTkxODMyODI&force=true&w=640" />
               </div>
               <div className="avatar absolute -bottom-5 left-5">
                 <div className="w-20 rounded-full">
-                  <Image src={data.picture} />
+                  <img src={data.picture} />
                 </div>
               </div>
             </div>
@@ -106,6 +108,10 @@ const Profile = () => {
           </div>
         )}
       </div>
+
+
+      <Footer />
+
     </div>
   );
 };

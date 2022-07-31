@@ -43,6 +43,7 @@ import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { TimeSpentChart } from "../components/TimeSpentChart";
 import { withAuthHOC } from "../hooks/withAuthHOC";
+import { Footer } from "../components/Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -95,7 +96,7 @@ const Insights = () => {
     const len = data.length;
 
     const res: Date[] = [];
-    for (let i = 0; i < len; ) {
+    for (let i = 0; i < len;) {
       let j = i + 1;
       while (j < len && data[j].date === data[i].date) j++;
       // [i...j-1]
@@ -112,15 +113,14 @@ const Insights = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen min-w-full flex flex-col">
       <MetaHead />
       <Navbar />
 
-      <div className="max-w-2xl mx-auto px-2 prose mt-5 mb-10">
+      <div className="max-w-2xl mx-auto px-2 prose mt-5 mb-auto w-full">
         <h2 className="mb-5">Training Insights</h2>
 
-        <h3>Session duration (in minutes)</h3>
-        <TimeSpentChart height={300} />
+
 
         <h3>Workout Insights</h3>
 
@@ -144,7 +144,6 @@ const Insights = () => {
 
             {!isWorkoutInsightsLoading && !isFetching && workout_insights && (
               <>
-                <LegendHelper />
 
                 <DescriptionText
                   name="Workout Type:"
@@ -176,8 +175,8 @@ const Insights = () => {
                         e.type === "NORMAL"
                           ? "circle"
                           : e.type === "DROPSET"
-                          ? "triangle"
-                          : "star"
+                            ? "triangle"
+                            : "star"
                       )}
                       getTooltipText={(dataIndex) =>
                         `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
@@ -188,56 +187,56 @@ const Insights = () => {
 
                 {(workout_insights.workout_type === "REPS" ||
                   workout_insights.workout_type === "WEIGHT_AND_REPS") && (
-                  // Print reps
-                  <>
-                    <h3>Reps </h3>
-                    <SigmaFitChartComp
-                      labels={buildLabels(workout_insights.dataPoints)}
-                      toolTipLabelText="Reps"
-                      yAxisTitle="Count"
-                      data={workout_insights.dataPoints.map((e) =>
-                        "reps" in e.setValue ? e.setValue.reps : 1000000
-                      )}
-                      pointStyle={workout_insights.dataPoints.map((e) =>
-                        e.type === "NORMAL"
-                          ? "circle"
-                          : e.type === "DROPSET"
-                          ? "triangle"
-                          : "star"
-                      )}
-                      getTooltipText={(dataIndex) =>
-                        `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
-                      }
-                    />
-                  </>
-                )}
+                    // Print reps
+                    <>
+                      <h3>Reps </h3>
+                      <SigmaFitChartComp
+                        labels={buildLabels(workout_insights.dataPoints)}
+                        toolTipLabelText="Reps"
+                        yAxisTitle="Count"
+                        data={workout_insights.dataPoints.map((e) =>
+                          "reps" in e.setValue ? e.setValue.reps : 1000000
+                        )}
+                        pointStyle={workout_insights.dataPoints.map((e) =>
+                          e.type === "NORMAL"
+                            ? "circle"
+                            : e.type === "DROPSET"
+                              ? "triangle"
+                              : "star"
+                        )}
+                        getTooltipText={(dataIndex) =>
+                          `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
+                        }
+                      />
+                    </>
+                  )}
 
                 {(workout_insights.workout_type === "DURATION" ||
                   workout_insights.workout_type ===
-                    "DISTANCE_AND_DURATION") && (
-                  // Print duration
-                  <>
-                    <h3>Duration (in minutes)</h3>
-                    <SigmaFitChartComp
-                      labels={buildLabels(workout_insights.dataPoints)}
-                      toolTipLabelText="Duration"
-                      yAxisTitle="Duration (in minutes)"
-                      data={workout_insights.dataPoints.map((e) =>
-                        "duration" in e.setValue ? e.setValue.duration : 1000000
-                      )}
-                      pointStyle={workout_insights.dataPoints.map((e) =>
-                        e.type === "NORMAL"
-                          ? "circle"
-                          : e.type === "DROPSET"
-                          ? "triangle"
-                          : "star"
-                      )}
-                      getTooltipText={(dataIndex) =>
-                        `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
-                      }
-                    />
-                  </>
-                )}
+                  "DISTANCE_AND_DURATION") && (
+                    // Print duration
+                    <>
+                      <h3>Duration (in minutes)</h3>
+                      <SigmaFitChartComp
+                        labels={buildLabels(workout_insights.dataPoints)}
+                        toolTipLabelText="Duration"
+                        yAxisTitle="Duration (in minutes)"
+                        data={workout_insights.dataPoints.map((e) =>
+                          "duration" in e.setValue ? e.setValue.duration : 1000000
+                        )}
+                        pointStyle={workout_insights.dataPoints.map((e) =>
+                          e.type === "NORMAL"
+                            ? "circle"
+                            : e.type === "DROPSET"
+                              ? "triangle"
+                              : "star"
+                        )}
+                        getTooltipText={(dataIndex) =>
+                          `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
+                        }
+                      />
+                    </>
+                  )}
 
                 {workout_insights.workout_type === "DISTANCE_AND_DURATION" && (
                   // Print distance
@@ -254,8 +253,8 @@ const Insights = () => {
                         e.type === "NORMAL"
                           ? "circle"
                           : e.type === "DROPSET"
-                          ? "triangle"
-                          : "star"
+                            ? "triangle"
+                            : "star"
                       )}
                       getTooltipText={(dataIndex) =>
                         `${workout_insights.dataPoints[dataIndex].date}, ${workout_insights.dataPoints[dataIndex].type}`
@@ -267,21 +266,19 @@ const Insights = () => {
             )}
           </>
         )}
+
+        <h3>Session duration (in minutes)</h3>
+        <TimeSpentChart height={300} />
+
       </div>
-    </>
+
+
+      <Footer />
+    </div>
   );
 };
 
 export default withAuthHOC(Insights);
-
-const LegendHelper = () => (
-  // TODO:
-  <div>
-    {/* <div><StarIcon className="w-6 inline-block" /> <span>Normal</span></div>
-                <div><StarIcon className="w-6 inline-block" /> <span>Superset</span></div>
-                <div>< className="w-6 inline-block" /> <span>Dropset</span></div> */}
-  </div>
-);
 
 const SigmaFitChartComp = ({
   labels,
@@ -316,7 +313,7 @@ const SigmaFitChartComp = ({
           },
         ],
       }}
-      style={{ maxHeight: "300px" }}
+      style={{ maxHeight: "200px" }}
       options={{
         responsive: true,
         maintainAspectRatio: false,
@@ -346,6 +343,9 @@ const SigmaFitChartComp = ({
               unit: "day",
             },
           },
+          y: {
+            beginAtZero: true,
+          }
         },
       }}
     />

@@ -29,7 +29,7 @@ export const isInstanceDataValid = async (
 
     if (workoutType === workout_type.WEIGHT_AND_REPS) {
       schema = schema.shape({
-        weight: yup.number().min(0).integer().required(),
+        weight: yup.number().min(0).required(),
       });
     }
   } else {

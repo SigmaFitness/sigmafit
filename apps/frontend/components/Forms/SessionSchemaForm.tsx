@@ -146,7 +146,7 @@ const SessionSchemaForm = ({
                                     setsArrayHelpers.remove(schemaBlockIndex)
                                   }
                                   moveHandleClassName="move-handle"
-                                  containerStyles="border border-black mb-2 p-2 shadow-lg  bg-base-200"
+                                  containerStyles="border border-gray-400 mb-2 p-2 shadow-lg  bg-base-200"
                                   uniqueIdPrefix={`schema_blocks.${schemaBlockIndex}`}
                                   workoutInstance={workoutInstance}
                                   workoutOptions={workoutOptions}

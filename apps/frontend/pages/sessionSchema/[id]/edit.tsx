@@ -10,6 +10,7 @@ import SessionSchemaForm, {
 } from "../../../components/Forms/SessionSchemaForm";
 import { SessionSchemaDetailsResponse } from "@sigmafit/commons";
 import { withAuthHOC } from "../../../hooks/withAuthHOC";
+import { Footer } from "../../../components/Footer";
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now
 const SessionSchemaEdit = () => {
@@ -37,20 +38,23 @@ const SessionSchemaEdit = () => {
   return (
     <div>
       <MetaHead />
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
 
-      <Navbar />
+        <div className="px-3 my-10 mb-auto">
+          {isLoading || !data ? (
+            <div className="alert alert-info max-w-2xl mx-auto">Loading...</div>
+          ) : (
+            <SessionSchemaForm
+              heading="Edit Workout Routine"
+              initialValues={data}
+              handleSubmit={handleSubmit}
+              waitingForServerResponse={false}
+            />
+          )}
+        </div>
 
-      <div className="px-3 my-10">
-        {isLoading || !data ? (
-          <div className="alert alert-info max-w-2xl mx-auto">Loading...</div>
-        ) : (
-          <SessionSchemaForm
-            heading="Edit Session Schema"
-            initialValues={data}
-            handleSubmit={handleSubmit}
-            waitingForServerResponse={false}
-          />
-        )}
+        <Footer/>
       </div>
     </div>
   );

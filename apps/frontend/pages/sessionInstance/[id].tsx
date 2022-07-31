@@ -3,7 +3,6 @@ import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import { Fragment, useEffect, useState } from "react";
 import { Field, FieldArray, Form, Formik, useFormikContext } from "formik";
-import Image from "next/future/image";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -29,6 +28,7 @@ import {
 import { DescriptionText } from "../sessionSchema/[id]/view";
 import { Menu, Transition } from "@headlessui/react";
 import { withAuthHOC } from "../../hooks/withAuthHOC";
+import { DropsetArrow } from "../../components/icons/DropsetArrow";
 
 const timeSince = (startDate: Date) => {
   const seconds = (Date.now() - startDate.getTime()) / 1000;
@@ -215,12 +215,12 @@ const SessionInstance: NextPage = () => {
       <div className="p-2">
         <Menu>
           {({ open }) => (
-            <div className=" mx-auto max-w-2xl w-full my-10 px-4">
+            <div className=" mx-auto max-w-2xl w-full my-5 px-4">
               {/* We are only supporting WEIGHT_AND_REPS for now! */}
               {workouts.length ? (
                 <>
                   <div className="ml-4">
-                    <div className="inline-block mr-2">Schema name: </div>
+                    <div className="inline-block mr-2">Training routine name: </div>
                     <div className="inline-block font-bold">
                       {data ? data.session_instance_details.schema_name : null}
                     </div>
@@ -303,6 +303,7 @@ const SessionInstance: NextPage = () => {
 
                   <Formik
                     initialValues={{
+                      fakeValue: workoutIndex, // it will ensure that form gets reinitialized
                       sets_data: workouts[workoutIndex]
                         .current_workout_instance_sets_data ?? [
                         getInitialSetValue(
@@ -387,15 +388,19 @@ const RenderFields = ({
       <>
         <Field
           type="number"
-          placeholder="Weight"
-          className="input input-primary w-full input-sm"
+          placeholder="Weight (kgs)"
+          className="input input-primary w-full input-sm h-7 text-xs font-medium"
           name={`${idPrefix}.weight`}
+          min="0.0"
+          step="0.5"
         />
         <Field
           type="number"
           placeholder="Reps"
-          className="input input-primary w-full input-sm"
+          className="input input-primary w-full input-sm h-7 text-xs font-medium"
           name={`${idPrefix}.reps`}
+          min="0.0"
+          step="0.5"
         />
       </>
     );
@@ -404,15 +409,19 @@ const RenderFields = ({
       <>
         <Field
           type="number"
-          placeholder="Distance (in KMs)"
-          className="input input-primary w-full input-sm"
+          placeholder="Distance (KMs)"
+          className="input input-primary w-full input-sm h-7 text-xs font-medium"
           name={`${idPrefix}.distance`}
+          min="0.0"
+          step="0.5"
         />
         <Field
           type="number"
-          placeholder="Duration (in Minutes)"
-          className="input input-primary w-full input-sm"
+          placeholder="Duration (Minutes)"
+          className="input input-primary w-full input-sm h-7 text-xs font-medium"
           name={`${idPrefix}.duration`}
+          min="0.0"
+          step="0.5"
         />
       </>
     );
@@ -420,9 +429,11 @@ const RenderFields = ({
     return (
       <Field
         type="number"
-        placeholder="Duration (in Minutes)"
-        className="input input-primary w-full input-sm"
+        placeholder="Duration (Minutes)"
+        className="input input-primary w-full input-sm h-7 text-xs font-medium"
         name={`${idPrefix}.duration`}
+        min="0.0"
+        step="0.5"
       />
     );
   } else if (workoutCategory === "REPS") {
@@ -430,8 +441,10 @@ const RenderFields = ({
       <Field
         type="number"
         placeholder="Reps"
-        className="input input-primary w-full input-sm"
+        className="input input-primary w-full input-sm h-7 text-xs font-medium"
         name={`${idPrefix}.reps`}
+        min="0.0"
+        step="0.5"
       />
     );
   } else {
@@ -507,9 +520,10 @@ const Card = ({
     <div className="z-10">
       <div className="card py-4 bg-gray-200  shadow-xl">
         <figure>
-          <Image
+          <img
+          // cannot use Next/image here, as the client can share the link
             src={workout_image_url}
-            className="select-none h-72 w-72 object-cover pointer-events-none mask mask-squircle"
+            className="select-none sm:h-64 sm:w-64 md:h-72 md:w-72 h-60 w-60 object-cover pointer-events-none mask mask-squircle"
             alt="Shoes"
           />
         </figure>
@@ -549,7 +563,7 @@ const Card = ({
                           className="col-span-6 mt-2"
                         >
                           <DescriptionText
-                            type="gap-2"
+                            type="gap-1"
                             name="Last session:"
                             value={
                               <>
@@ -573,7 +587,7 @@ const Card = ({
                           className="col-span-6 mt-2"
                         >
                           <DescriptionText
-                            type="gap-2"
+                            type="gap-1"
                             name="Target:"
                             value={default_target[setIndx] ?? "None"}
                           />
@@ -607,9 +621,7 @@ const Card = ({
                                               }
                                               className="col-start-1  col-span-1 mr-1 ml-2"
                                             >
-                                              <Image
-                                                src={require("../../public/assets/arrow.svg")}
-                                              />
+                                              <DropsetArrow className=""/>
                                             </div>
 
                                             <div

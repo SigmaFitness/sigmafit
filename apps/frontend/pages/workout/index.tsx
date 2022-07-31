@@ -1,10 +1,7 @@
-import { DocumentIcon, PencilAltIcon, XIcon } from "@heroicons/react/solid";
 import {
   WorkoutListResponse,
   Workout_Delete_Response,
 } from "@sigmafit/commons";
-import { workout } from "@sigmafit/commons/dist/prismaGenTypes";
-import Image from "next/future/image";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
@@ -15,8 +12,11 @@ import {
 } from "../../components/CreateNewOrEditWorkoutModal";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
-import { SigmaModal } from "../../components/SigmaModal";
 import { withAuthHOC } from "../../hooks/withAuthHOC";
+import { Footer } from "../../components/Footer";
+import { RenderWorkoutsList } from "../../components/RenderWorkoutsList";
+
+
 
 const Workouts = () => {
   const { data, isLoading } = useQuery<WorkoutListResponse, ErrorResponse>(
@@ -90,7 +90,7 @@ const Workouts = () => {
           <div className="my-4 alert alert-info">Loading workouts...</div>
         )}
         {data ? (
-          <RenderWorkouts
+          <RenderWorkoutsList
             handleDelete={(workout_id) => {
               if (
                 confirm(
@@ -120,7 +120,7 @@ const Workouts = () => {
 
         <h2>Public Workouts</h2>
 
-        {data ? <RenderWorkouts workouts={data.publicWorkouts} /> : null}
+        {data ? <RenderWorkoutsList workouts={data.publicWorkouts} /> : null}
       </div>
 
       <CreateNewOrEditWorkoutModal
@@ -129,138 +129,9 @@ const Workouts = () => {
         initialValues={workoutInitialData.initialValues}
         existingWorkoutId={workoutInitialData.existingWorkoutId}
       />
+      <Footer />
+
     </div>
-  );
-};
-
-const RenderWorkouts = ({
-  workouts,
-  handleDelete,
-  handleEdit,
-}: {
-  workouts: workout[];
-  handleDelete?: (workout_id: string) => void;
-  handleEdit?: (initialWorkoutValues: workout) => void;
-}) => {
-  const [isNotesModalWorkoutIndex, setIsNotesModalWorkoutIndex] = useState(-1); // -1 means closed
-
-  return (
-    <>
-      {workouts.length ? (
-        workouts.map((workout, index: number) => {
-          return (
-            <div
-              className="w-full relative my-4 transition rounded-md bg-base-200  py-2 px-2"
-              key={index}
-            >
-              <div className="flex flex-col items-center xs:flex-row py-3 gap-3 text-sm text-inherit px-2">
-                <div className="avatar">
-                  {/* hidden sm:block */}
-                  <div className="w-36 xs:w-24 rounded-full">
-                    <Image
-                      className="m-0 object-center"
-                      src={workout.workout_image_url}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div>
-                    <div className="inline-block font-bold mr-1">Name:</div>
-                    <div className="inline-block">
-                      {workout.name.replaceAll("_", " ")}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="inline-block font-bold mr-1">Category:</div>
-                    <div className="inline-block">
-                      {workout.category.replaceAll("_", " ")}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="inline-block font-bold mr-1">
-                      Target Body Part:
-                    </div>
-                    <div className="inline-block">
-                      {(workout.target_body_part ?? "NO_DATA").replaceAll(
-                        "_",
-                        " "
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="inline-block font-bold mr-1">Intensity</div>
-                    <div className="inline-block">
-                      {(workout.intensity ?? "NO_DATA").replaceAll("_", " ")}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-around gap-2 flex-col sm:absolute sm:right-2 sm:-top-1">
-                {handleDelete && (
-                  // TODO: shall we disable the btn once hit for sometime?
-                  <button
-                    onClick={() => handleDelete(workout.id)}
-                    className="btn btn-xs btn-secondary"
-                  >
-                    <XIcon className="w-4 mr-1" /> Delete
-                  </button>
-                )}
-
-                {handleEdit && (
-                  <button
-                    onClick={() => handleEdit(workout)}
-                    className="btn btn-xs btn-accent h-6"
-                  >
-                    <PencilAltIcon className="w-4 mr-1" /> Edit
-                  </button>
-                )}
-
-                <button
-                  onClick={() => setIsNotesModalWorkoutIndex(index)}
-                  className="btn btn-xs btn-primary h-6"
-                >
-                  <DocumentIcon className="w-4 mr-1" /> View Notes
-                </button>
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <div className="alert alert-info my-2">No workouts found</div>
-      )}
-
-      {isNotesModalWorkoutIndex !== -1 && workouts.length && (
-        <SigmaModal
-          isOpen={isNotesModalWorkoutIndex !== -1}
-          setIsOpen={() => setIsNotesModalWorkoutIndex(-1)}
-        >
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-4">
-              <div className="avatar ">
-                <div className="w-24 rounded-full">
-                  <Image
-                    className="m-0"
-                    src={workouts[isNotesModalWorkoutIndex].workout_image_url}
-                  />
-                </div>
-              </div>
-              <h2>{workouts[isNotesModalWorkoutIndex].name}</h2>
-            </div>
-
-            <div>
-              <h3>Notes &amp; Instructions</h3>
-              {workouts[isNotesModalWorkoutIndex].notes
-                ? workouts[isNotesModalWorkoutIndex].notes
-                : "No Data"}
-            </div>
-          </div>
-        </SigmaModal>
-      )}
-    </>
   );
 };
 

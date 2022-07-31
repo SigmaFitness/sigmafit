@@ -8,6 +8,8 @@ module.exports = {
     extend: {
       screens: {
         xs: "460px",
+        xss: "300px",
+
       },
     },
   },
@@ -31,8 +33,8 @@ module.exports = {
           "neutral-dark": "131517",
 
           "base-100": "#f9f7ef",
-          "base-200": "#fee2e2",
-          "base-300": "#f9dec9",
+          "base-200": "#FAC5FA",
+          // "base-300": "#FFB7FF",
 
           info: "#3ABFF8",
 

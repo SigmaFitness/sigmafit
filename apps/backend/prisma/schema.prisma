@@ -34,6 +34,7 @@ enum workout_type {
 enum body_part {
   ABS
   BICEPS
+  TRICEPS
   BACK
   CARDIO
   CHEST
@@ -41,6 +42,7 @@ enum body_part {
   FOREARMS
   FULL_BODY
   LEGS
+  CALFS
   SHOULDERS
   TRAPS
   OTHERS

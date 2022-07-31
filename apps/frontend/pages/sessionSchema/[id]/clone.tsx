@@ -18,6 +18,7 @@ import {
   SessionSchemaDetailsResponse,
 } from "@sigmafit/commons";
 import { withAuthHOC } from "../../../hooks/withAuthHOC";
+import { Footer } from "../../../components/Footer";
 
 const SessionSchemaClone = () => {
   const router = useRouter();
@@ -76,22 +77,27 @@ const SessionSchemaClone = () => {
   return (
     <div>
       <MetaHead />
+      <div className="flex flex-col min-h-screen">
 
-      <Navbar />
+        <Navbar />
 
-      <div className="px-3 my-10">
-        {isLoading || !data ? (
-          <div className="alert alert-info max-w-2xl mx-auto">Loading...</div>
-        ) : (
-          <SessionSchemaForm
-            heading="Clone Session Schema"
-            initialValues={data}
-            handleSubmit={handleSubmit}
-            waitingForServerResponse={false}
-          />
-        )}
+        <div className="px-3 my-10 mb-auto">
+          {isLoading || !data ? (
+            <div className="alert alert-info max-w-2xl mx-auto">Loading...</div>
+          ) : (
+            <SessionSchemaForm
+              heading="Clone Workout Routine"
+              initialValues={data}
+              handleSubmit={handleSubmit}
+              waitingForServerResponse={false}
+            />
+          )}
+        </div>
+        <Footer />
+
       </div>
     </div>
+
   );
 };
 

@@ -1,8 +1,9 @@
-import { XIcon, InformationCircleIcon } from "@heroicons/react/solid";
+import { XIcon, InformationCircleIcon, SupportIcon } from "@heroicons/react/solid";
 import { FormSingleSelectFormikField } from "../FormSingleSelectField";
 import { FormSingleSelectFieldWithCreatable } from "../FormSingleSelectFieldWithCreatable";
 import { MoveGrabberIcon } from "../icons/MoveGrabber";
 import { MultiCreateInput } from "../MultiCreateInput";
+import { BlockTools } from "./RenderSupersetBlockForm";
 import {
   create_session_schema__workout_schema__without_order,
   workout_category,
@@ -51,15 +52,10 @@ export const RenderWorkoutForm = ({
         "flex flex-col justify-start items-center pt-0 " + containerStyles
       }
     >
-      <div
-        className={
-          "cursor-move h-full w-full flex justify-center " + moveHandleClassName
-        }
-      >
-        <MoveGrabberIcon className="w-4 text-gray-500" />
-      </div>
-      <div className="flex-grow  w-full">
-        <div className="">
+      <BlockTools  moveHandleClassName={moveHandleClassName} removeInstance={handleRemoveInstance} />
+
+      <div className="flex-grow w-full">
+        <div className="-mb-2">
           <div className="flex items-center">
             <FormSingleSelectFieldWithCreatable
               fieldId={`${uniqueIdPrefix}.workout_id`}
@@ -69,32 +65,12 @@ export const RenderWorkoutForm = ({
                 setIsCreateNewWorkoutModalOpenAndPassInitValue
               }
             />
-            <button
-              className="ml-2  mt-3  btn-secondary btn btn-xs"
-              type="button"
-              onClick={handleRemoveInstance}
-            >
-              <XIcon className="w-4" />
-            </button>
           </div>
         </div>
 
         {workoutInstance ? (
           <>
-            <div className="border-black border px-2 py-1 mb-1">
-              <div className="text-xs">
-                <InformationCircleIcon className="w-4 inline-block mr-1" />
-                The selected workout is of{" "}
-                <span className="font-semibold text-2xs px-1">
-                  {workoutInstance.category}
-                </span>{" "}
-                category. Please enter the default target{" "}
-                <span className="font-semibold text-2xs px-1">
-                  {targetEntity}
-                </span>
-                .
-              </div>
-            </div>
+
 
             {/* DEFAULT TARGETS */}
 
@@ -103,6 +79,21 @@ export const RenderWorkoutForm = ({
               fieldId={`${uniqueIdPrefix}.default_target`}
               isInline={false}
             />
+
+            <div className="px-2 py-1 mb-1 text-gray-700">
+              <div className="text-xs">
+                <SupportIcon className="w-4 inline-block mr-1" />
+                The selected workout is of
+                <span className="font-semibold text-2xs px-1">
+                  {workoutInstance.category}
+                </span>
+                category. Please enter the target
+                <span className="font-semibold text-2xs px-1">
+                  {targetEntity}
+                </span>
+                .
+              </div>
+            </div>
           </>
         ) : null}
       </div>

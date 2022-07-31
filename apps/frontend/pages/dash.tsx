@@ -14,6 +14,7 @@ import {
   getAllSessionSchemaOwnedByUser,
   startANewSessionFromSchemaId,
 } from "../api";
+import { Footer } from "../components/Footer";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { TimeSpentChart } from "../components/TimeSpentChart";
@@ -49,11 +50,11 @@ const Dash = () => {
   const router = useRouter();
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <MetaHead />
       <Navbar />
 
-      <div className="max-w-2xl mx-auto my-12 prose px-2">
+      <div className="max-w-2xl mx-auto my-12 prose px-2 mb-auto">
         <h2>Analytics</h2>
 
         <h3>Session duration (in minutes)</h3>
@@ -64,37 +65,40 @@ const Dash = () => {
         <div className="my-3">
           {activeSessions ? (
             <>
-              <div className="alert my-2 alert-info py-2 text-xs">
-                <div>
-                  <InformationCircleIcon className="w-6" />
-                  Pro tip: Click on any one of these active session to continue
-                  from where you left...
-                </div>
-              </div>
-
-              <div>
-                {activeSessions.map((e, indx: number) => {
-                  const date = new Date(e.start_timestamp);
-                  const dateString = `${date.toLocaleTimeString()}, ${date.toDateString()}`;
-                  return (
-                    <div key={indx}>
-                      <div
-                        onClick={() => {
-                          router.push(`/sessionInstance/${e.id}`);
-                        }}
-                        className="p-4 flex flex-col gap-1 text-sm text-inherit py-2 px-4 transition rounded-md bg-black/[.09] hover:bg-black/[.19] cursor-pointer select-none my-3"
-                      >
-                        <div>
-                          <span className="font-bold mr-1">Session Name:</span>
-                          {e.session_schema.name}
-                        </div>
-
-                        <div>Started At: {dateString}</div>
-                      </div>
+              {!!activeSessions.length &&
+                <>
+                  <div className="alert my-2 alert-warning py-2 text-xs">
+                    <div>
+                      <InformationCircleIcon className="w-6" />
+                      Pro tip: Click on any one of these active session to continue
+                      from where you left...
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+
+                  <div>
+                    {activeSessions.map((e, indx: number) => {
+                      const date = new Date(e.start_timestamp);
+                      const dateString = `${date.toLocaleTimeString()}, ${date.toDateString()}`;
+                      return (
+                        <div key={indx}>
+                          <div
+                            onClick={() => {
+                              router.push(`/sessionInstance/${e.id}`);
+                            }}
+                            className="p-4 flex flex-col gap-1 text-sm text-inherit py-2 px-4 transition rounded-md bg-black/[.09] hover:bg-black/[.19] cursor-pointer select-none my-3"
+                          >
+                            <div>
+                              <span className="font-bold mr-1">Session Name:</span>
+                              {e.session_schema.name}
+                            </div>
+
+                            <div>Started At: {dateString}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>}
             </>
           ) : null}
 
@@ -105,8 +109,8 @@ const Dash = () => {
           ) : null}
 
           {activeSessions && activeSessions.length === 0 ? (
-            <div className="alert my-2 alert-info">
-              No Active sessions... 😢
+            <div className="alert my-2 alert-warning text-sm">
+              Currently no sessions are active...
             </div>
           ) : null}
         </div>
@@ -114,7 +118,7 @@ const Dash = () => {
         {/* A button to start a new session */}
 
         {/* Show sessions */}
-        <h2>Workout Routines</h2>
+        <h2>Your Workout Routines</h2>
 
         <div className="flex justify-between flex-col gap-2 sm:flex-row">
           <Link href="sessionSchema/top">
@@ -129,25 +133,25 @@ const Dash = () => {
         </div>
 
         {sessionSchema && sessionSchema.length === 0 ? (
-          <div className="alert my-2 alert-info">
+          <div className="alert my-2 alert-info text-sm">
             No schemas... Let&apos;s add a new one?
           </div>
         ) : null}
 
         {isSessionSchemaLoading ? (
           <div className="alert my-2 alert-info">
-            Loading Session Schemas...
+            Loading Workout Routines...
           </div>
         ) : null}
 
         {sessionSchema ? (
           <>
-            {/* <div className="alert my-2 alert-warning py-2 text-xs">
-                        <div>
-                            <InformationCircleIcon className="w-6" />
-                            Pro tip: Click on any one of the inActive session to start a new session...
-                        </div>
-                    </div> */}
+            {activeSessions && !!sessionSchema.length && activeSessions.length === 0 && <div className="alert my-2 alert-warning py-2 text-xs">
+              <div>
+                <InformationCircleIcon className="w-6" />
+                Pro tip: Click on any one of the following to start a new session...
+              </div>
+            </div>}
 
             {sessionSchema.map((e, indx: number) => {
               const date = new Date(e.last_attempted_at);
@@ -229,11 +233,12 @@ const Dash = () => {
           </>
         ) : null}
 
-        {/* A button to create new session */}
 
-        {/* A button to explore workouts */}
       </div>
-    </>
+
+      <Footer />
+
+    </div>
   );
 };
 

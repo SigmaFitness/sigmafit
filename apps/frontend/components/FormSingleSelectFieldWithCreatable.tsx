@@ -25,7 +25,7 @@ export const FormSingleSelectFieldWithCreatable = ({
 
   const getValue = () => {
     if (value) {
-      return options.filter((option) => value.indexOf(option.value) >= 0);
+      return options.filter((option) => value===option.value);
     } else {
       return [];
     }
@@ -57,31 +57,8 @@ export const FormSingleSelectFieldWithCreatable = ({
           }}
           isMulti={false}
           value={getValue()}
-          styles={{
-            option: (provided, state) => ({
-              ...provided,
-              background: "#fffcee",
-              padding: "0.625em",
-              paddingRight: "8px",
-              paddingLeft: "8px",
-              border: "1px solid black",
-              color: state.isSelected ? "red" : "blue",
-            }),
-            menuList: (provided, state) => ({
-              ...provided,
-              // background: 'red',
-              background: "#fffcee",
-              padding: 0,
-            }),
-            control: (provided, state) => ({
-              ...provided,
-              // none of react-select's styles are passed to <Control />
-              outline: "none",
-              borderRadius: "0",
-              border: "1px solid black",
-              borderColor: "black",
-            }),
-          }}
+          className="selectContainerWrapper"
+          classNamePrefix="react-select"
           options={options}
         />
 

@@ -21,6 +21,7 @@ import {
   getTopSessionSchema,
   voteASessionSchema,
 } from "../../api";
+import { Footer } from "../../components/Footer";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import { withAuthHOC } from "../../hooks/withAuthHOC";
@@ -73,9 +74,11 @@ const TopSessionSchema = () => {
                   {/* have a card to show top workouts */}
 
                   <div className="card-body">
-                    <div className="card-title uppercase text-lg font-extrabold">
-                      {e.name}
-                    </div>
+                    <Link href={`/sessionSchema/${e.id}/view`}>
+                      <div className="card-title underline text-blue-600 hover:text-blue-800 cursor-pointer uppercase text-lg font-extrabold">
+                        {e.name}
+                      </div>
+                    </Link>
                     <DescriptionText
                       name="number of superset workouts:"
                       value={e.number_of_superset_workouts}
@@ -94,10 +97,10 @@ const TopSessionSchema = () => {
                     />
                     <DescriptionText
                       name="Created By:"
-                      value={"@" + e.owner.first_name}
+                      value={"@" + e.owner.first_name.toLowerCase()}
                     />
 
-                    <div className="flex flex-row mx-2 justify-between sm:justify-around">
+                    <div className="flex flex-col gap-2 xs:flex-row mx-2 justify-between sm:justify-around">
                       <button
                         disabled={
                           waitingForServerResponseForVote &&
@@ -141,7 +144,7 @@ const TopSessionSchema = () => {
               );
             })}
 
-            <div className="flex justify-between mx-2">
+            <div className="flex flex-col gap-2 xss:flex-row justify-between mx-2">
               <button
                 disabled={currentPageIndex === 0}
                 className="btn btn-sm"
@@ -151,6 +154,7 @@ const TopSessionSchema = () => {
                 }}
               >
                 <ArrowLeftIcon className="w-6" />
+                Prev
               </button>
               <button
                 disabled={data.next_cursor === null}
@@ -160,6 +164,7 @@ const TopSessionSchema = () => {
                   setCurrentPageIndex((val) => val + 1);
                 }}
               >
+                Next
                 <ArrowRightIcon className="w-6" />
               </button>
             </div>
@@ -168,6 +173,8 @@ const TopSessionSchema = () => {
           <div className="alert alert-info">No data</div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };

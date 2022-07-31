@@ -16,6 +16,7 @@ import { SessionSchemaDetailsResponse } from "@sigmafit/commons";
 import { DuplicateIcon, PencilAltIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { withAuthHOC } from "../../../hooks/withAuthHOC";
+import { Footer } from "../../../components/Footer";
 
 // TODO: Currently we're using it as a way to show the data; editing is not allowed for now
 const SessionSchemaEdit = () => {
@@ -42,17 +43,17 @@ const SessionSchemaEdit = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <MetaHead />
 
       <Navbar />
 
-      <div className="px-3 my-10">
+      <div className="px-3 my-10 mb-auto">
         {isLoading || !data ? (
           <div className="alert alert-info max-w-2xl mx-auto">Loading...</div>
         ) : (
           <SessionSchemaView
-            heading="Edit Session Schema"
+            heading="Edit Workout Routine"
             initialValues={data}
             sessionSchemaId={id as string}
             handleSubmit={handleSubmit}
@@ -60,6 +61,8 @@ const SessionSchemaEdit = () => {
           />
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };
@@ -240,7 +243,7 @@ export const DescriptionText = ({
   size?: "med" | "small";
   type?: "justify-between" | "gap-2" | "gap-1" | "justify-around";
 }) => (
-  <div className={"flex flex-col sm:flex-row sm:items-center " + type}>
+  <div className={"flex flex-col xs:flex-row xs:items-center " + type}>
     <div
       className={
         "uppercase font-bold  text-gray-500 " +
