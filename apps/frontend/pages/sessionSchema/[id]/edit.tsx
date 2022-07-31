@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { ErrorResponse, getSessionSchemaDetails } from "../../../api";
 import { MetaHead } from "../../../components/Head";

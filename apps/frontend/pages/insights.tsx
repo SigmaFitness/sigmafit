@@ -38,7 +38,7 @@ import {
   FormSingleSelectFormikField,
 } from "../components/FormSingleSelectField";
 import { Formik } from "formik";
-import { DescriptionText } from "./sessionSchema/[id]/view";
+import { DescriptionText } from "../components/RenderWorkoutView";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { TimeSpentChart } from "../components/TimeSpentChart";

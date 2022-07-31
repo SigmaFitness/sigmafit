@@ -25,7 +25,7 @@ import { Footer } from "../../components/Footer";
 import { MetaHead } from "../../components/Head";
 import { Navbar } from "../../components/Navbar";
 import { withAuthHOC } from "../../hooks/withAuthHOC";
-import { DescriptionText } from "./[id]/view";
+import { DescriptionText } from "../../components/RenderWorkoutView";
 
 const TopSessionSchema = () => {
   const [cursorIdArr, setCursorIdArr] = useState<
@@ -56,11 +56,11 @@ const TopSessionSchema = () => {
   });
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <MetaHead />
 
       <Navbar />
-      <div className="my-10 max-w-2xl mx-auto px-2 prose">
+      <div className="my-10 max-w-2xl mx-auto px-2 prose w-full mb-auto">
         <h2>Top workout routines</h2>
 
         {isLoading || !data ? (

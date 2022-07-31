@@ -25,7 +25,7 @@ import {
   SessionInstanceStateResponse,
   SessionInstanceState_SetData,
 } from "@sigmafit/commons";
-import { DescriptionText } from "../sessionSchema/[id]/view";
+import { DescriptionText } from "../../components/RenderWorkoutView";
 import { Menu, Transition } from "@headlessui/react";
 import { withAuthHOC } from "../../hooks/withAuthHOC";
 import { DropsetArrow } from "../../components/icons/DropsetArrow";

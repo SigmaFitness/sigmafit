@@ -67,11 +67,11 @@ const Workouts = () => {
   });
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col w-full">
       <MetaHead title="Manage Workouts" />
       <Navbar />
 
-      <div className="my-10 prose max-w-2xl mx-auto px-2">
+      <div className="my-10 prose max-w-2xl mx-auto px-2 w-full mb-auto">
         <h2>My workouts</h2>
         <button
           className="btn btn-primary"

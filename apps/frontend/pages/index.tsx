@@ -58,35 +58,7 @@ const Home: NextPage = () => {
         </div>
 
 
-        {/* <div className="max-w-[90vw] mx-auto prose w-full">
-
-
-          <div className="grid sm:grid-cols-2 gap-4 items-center w-full border-b-2 my-3">
-            <div className="border-black h-full border rounded-xl bg-gradient-to-r from-green-400 to-blue-300 flex flex-col justify-center">
-              <div className="flex flex-col h-full items-start px-16 lg:px-28 py-10 text-white">
-                <h2 className="text-4xl font-bold mt-5 mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600">Available on all devices</h2>
-                <div className="text-xl">
-                  SigmaFit is a progressive web app. You can run it on any browser environment. It takes lesser resources and blazingly fast.
-                </div>
-              </div>
-
-            </div>
-
-            <div className="border-black h-full border rounded-xl bg-gradient-to-r from-green-400 to-blue-300 flex flex-col justify-center">
-              <div className="flex flex-col h-full items-start px-16 lg:px-28 py-10 text-white">
-                <h2 className="text-4xl font-bold mt-5 mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600">Open Source</h2>
-                <div className="text-xl">
-                  We believe in open source, are one of them. 🙂
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-
-        <div className="max-w-none mx-auto px-4 flex flex-col prose">
-
-
+        <div className="max-w-none mx-auto px-4 flex flex-col prose break-words">
 
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center w-full border-b-2 py-5 my-3">
             <div>
@@ -96,12 +68,12 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className="flex justify-end">
-              <PhoneMock imgUrl="/mocks/0.png" />
+              <PhoneMock imgUrl="/mocks/0.png" className="mt-0" />
             </div>
           </div>
 
 
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center border-b-2 py-5 my-3">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center w-full border-b-2 py-5 my-3">
             <div className="flex justify-start">
               <PhoneMock imgUrl="/mocks/6.png" />
             </div>
@@ -122,7 +94,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className="flex justify-end">
-              <PhoneMock imgUrl="/mocks/5.png" phoneTypeId="4" />
+              <PhoneMock imgUrl="/mocks/5.png" phoneTypeId="1" className="mt-[120px]" />
             </div>
           </div>
 

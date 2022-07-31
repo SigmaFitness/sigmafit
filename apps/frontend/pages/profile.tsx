@@ -6,7 +6,7 @@ import { Footer } from "../components/Footer";
 import { MetaHead } from "../components/Head";
 import { Navbar } from "../components/Navbar";
 import { withAuthHOC } from "../hooks/withAuthHOC";
-import { DescriptionText } from "./sessionSchema/[id]/view";
+import { DescriptionText } from "../components/RenderWorkoutView";
 
 
 const Profile = () => {

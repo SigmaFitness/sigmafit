@@ -158,8 +158,7 @@ router.get("/state/:sessionInstanceId", isAuthenticated, async (req, res) => {
       superset_schema_details[e.id] = e;
     });
 
-    // fetch all workoutOuts
-
+    // fetch all workouts
     const workouts = await prisma.$queryRaw`
             SELECT 
                 workout_schema.id as superset_or_classic_workout_schema_id,
@@ -233,7 +232,6 @@ router.get("/state/:sessionInstanceId", isAuthenticated, async (req, res) => {
                         AND tmp.session_schema_id = session_instance.session_schema_id
                 ) as prev_superset_workout_instance ON prev_superset_workout_instance.superset_workout_schema_id = superset_workout_schema.id
             INNER JOIN workout ON workout.id = superset_workout_schema.workout_id
-
             ORDER BY "order" -- it's applied on whole UNION
         `;
 
