@@ -25,4 +25,14 @@ Sigma is built using the following technologies.
 ![sigmafit-tech-stack](https://cdn.hashnode.com/res/hashnode/image/upload/v1659295075365/PXl2omKHj.png)
 
 
-## 🥹 Quick Demo: [Link](https://vimeo.com/735293152)
+## 🥹 Quick Demo Video: [Link](https://vimeo.com/735293152)
+
+
+## ⏭ What's Next
+1. In the next version, we shall allow people to join friend circles to track each other's progress. It will keep everyone motivated to do physical activity and stay healthy.
+2. In future, we shall also add offline support. (Currently, some functionalities can work offline 🤫, but there is no logic to fix the synchronization conflicts 😢). 
+
+
+<hr/>
+
+Powered by [Hashnode](https://hashnode.com/) and [Planetscale](https://planetscale.com/).

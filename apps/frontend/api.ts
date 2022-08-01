@@ -17,7 +17,7 @@ export type ErrorResponse = {
   status: number;
 };
 
-const usePost = async <T>(
+const makePostRequest = async <T>(
   url: string,
   method: "GET" | "POST",
   data?: any
@@ -40,7 +40,10 @@ const usePost = async <T>(
 
 // WORKOUT
 export const getAllWorkouts = async () => {
-  return usePost<WorkoutListResponse>(`${apiPrefixSlug}/workout/list`, "GET");
+  return makePostRequest<WorkoutListResponse>(
+    `${apiPrefixSlug}/workout/list`,
+    "GET"
+  );
 };
 
 export const addNewOrModifyWorkoutMutation = async (workoutData: any) => {
@@ -48,15 +51,19 @@ export const addNewOrModifyWorkoutMutation = async (workoutData: any) => {
   Object.keys(workoutData).forEach((e) => {
     if (workoutData[e]) newObj[e] = workoutData[e];
   });
-  return usePost<any>(`${apiPrefixSlug}/workout/addOrModify`, "POST", newObj);
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/workout/addOrModify`,
+    "POST",
+    newObj
+  );
 };
 
 export const getNewWorkoutAddFormOptions = async () => {
-  return usePost<any>(`${apiPrefixSlug}/workout/formOptions`, "GET");
+  return makePostRequest<any>(`${apiPrefixSlug}/workout/formOptions`, "GET");
 };
 
 export const deleteWorkout = async (workout_id: string) => {
-  return usePost<any>(`${apiPrefixSlug}/workout/delete`, "POST", {
+  return makePostRequest<any>(`${apiPrefixSlug}/workout/delete`, "POST", {
     id: workout_id,
   });
 };
@@ -65,27 +72,34 @@ export const deleteWorkout = async (workout_id: string) => {
  * Get all active sessions for the user
  */
 export const getAllActiveSessions = async () => {
-  return usePost<any>(`${apiPrefixSlug}/sessionInstance/allActive`, "GET");
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/sessionInstance/allActive`,
+    "GET"
+  );
 };
 
 /**
  * Get all schema owned by the user
  */
 export const getAllSessionSchemaOwnedByUser = async () => {
-  return usePost<any>(`${apiPrefixSlug}/sessionSchema/all`, "GET");
+  return makePostRequest<any>(`${apiPrefixSlug}/sessionSchema/all`, "GET");
 };
 
 /**
  * Start a new session from schema Id
  */
 export const startANewSessionFromSchemaId = async (sessionSchemaId: string) => {
-  return usePost<any>(`${apiPrefixSlug}/sessionInstance/start`, "POST", {
-    sessionSchemaId,
-  });
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/sessionInstance/start`,
+    "POST",
+    {
+      sessionSchemaId,
+    }
+  );
 };
 
 export const addNewSessionSchema = async (sessionSchema: any) => {
-  return usePost<any>(
+  return makePostRequest<any>(
     `${apiPrefixSlug}/sessionSchema/create`,
     "POST",
     sessionSchema
@@ -93,21 +107,21 @@ export const addNewSessionSchema = async (sessionSchema: any) => {
 };
 
 export const getSessionSchemaDetails = async (schemaId: string) => {
-  return usePost<any>(
+  return makePostRequest<any>(
     `${apiPrefixSlug}/sessionSchema/details/${schemaId}`,
     "GET"
   );
 };
 
 export const getSessionInstanceDetails = async (schemaInstanceId: string) => {
-  return usePost<any>(
+  return makePostRequest<any>(
     `${apiPrefixSlug}/sessionInstance/state/${schemaInstanceId}`,
     "GET"
   );
 };
 
 export const getCurrentUser = async () => {
-  return usePost<any>(`${apiPrefixSlug}/auth/currentUser`, "GET");
+  return makePostRequest<any>(`${apiPrefixSlug}/auth/currentUser`, "GET");
 };
 
 export const useGetCurrentUserQuery = () =>
@@ -122,11 +136,11 @@ export const useGetCurrentUserQuery = () =>
   );
 
 export const logOutUser = async () => {
-  return usePost<any>(`${apiPrefixSlug}/auth/logOut`, "GET");
+  return makePostRequest<any>(`${apiPrefixSlug}/auth/logOut`, "GET");
 };
 
 export const sessionInstanceAddOrModifyBlock = async (payload: any) => {
-  return usePost<any>(
+  return makePostRequest<any>(
     `${apiPrefixSlug}/sessionInstance/addOrModifyBlock`,
     "POST",
     payload
@@ -134,7 +148,7 @@ export const sessionInstanceAddOrModifyBlock = async (payload: any) => {
 };
 
 export const endSessionInstance = async (activeSessionInstanceId: any) => {
-  return usePost<any>(`${apiPrefixSlug}/sessionInstance/end`, "POST", {
+  return makePostRequest<any>(`${apiPrefixSlug}/sessionInstance/end`, "POST", {
     activeSessionInstanceId,
   });
 };
@@ -142,7 +156,7 @@ export const endSessionInstance = async (activeSessionInstanceId: any) => {
 export const changeStateOfSessionSchema = async (
   payload: SessionSchema_SubmitForReview_Request
 ) => {
-  return usePost<any>(
+  return makePostRequest<any>(
     `${apiPrefixSlug}/sessionSchema/submit_for_review`,
     "POST",
     payload
@@ -152,21 +166,33 @@ export const changeStateOfSessionSchema = async (
 export const getTopSessionSchema = async (
   pageState: SessionSchema_Top_Request
 ) => {
-  return usePost<any>(`${apiPrefixSlug}/sessionSchema/top`, "POST", pageState);
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/sessionSchema/top`,
+    "POST",
+    pageState
+  );
 };
 
 export const voteASessionSchema = async (payload: SessionSchemaVoteRequest) => {
-  return usePost<any>(`${apiPrefixSlug}/sessionSchema/vote/`, "POST", payload);
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/sessionSchema/vote/`,
+    "POST",
+    payload
+  );
 };
 
 export const getWorkoutInsights = async (payload: Insights_Workout_Request) => {
-  return usePost<any>(`${apiPrefixSlug}/insights/workout`, "POST", payload);
+  return makePostRequest<any>(
+    `${apiPrefixSlug}/insights/workout`,
+    "POST",
+    payload
+  );
 };
 
 export const getTimeSpentInsights = async () => {
-  return usePost<any>(`${apiPrefixSlug}/insights/timeSpent`, "POST");
+  return makePostRequest<any>(`${apiPrefixSlug}/insights/timeSpent`, "POST");
 };
 
 export const getUserProfile = async () => {
-  return usePost<user>(`${apiPrefixSlug}/auth/profile`, "GET");
+  return makePostRequest<user>(`${apiPrefixSlug}/auth/profile`, "GET");
 };

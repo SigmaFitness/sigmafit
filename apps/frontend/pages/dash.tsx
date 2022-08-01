@@ -65,13 +65,13 @@ const Dash = () => {
         <div className="my-3">
           {activeSessions ? (
             <>
-              {!!activeSessions.length &&
+              {!!activeSessions.length && (
                 <>
                   <div className="alert my-2 alert-warning py-2 text-xs">
                     <div>
                       <InformationCircleIcon className="w-6" />
-                      Pro tip: Click on any one of these active session to continue
-                      from where you left...
+                      Pro tip: Click on any one of these active session to
+                      continue from where you left...
                     </div>
                   </div>
 
@@ -88,7 +88,9 @@ const Dash = () => {
                             className="p-4 flex flex-col gap-1 text-sm text-inherit py-2 px-4 transition rounded-md bg-black/[.09] hover:bg-black/[.19] cursor-pointer select-none my-3"
                           >
                             <div>
-                              <span className="font-bold mr-1">Session Name:</span>
+                              <span className="font-bold mr-1">
+                                Session Name:
+                              </span>
                               {e.session_schema.name}
                             </div>
 
@@ -98,7 +100,8 @@ const Dash = () => {
                       );
                     })}
                   </div>
-                </>}
+                </>
+              )}
             </>
           ) : null}
 
@@ -146,12 +149,17 @@ const Dash = () => {
 
         {sessionSchema ? (
           <>
-            {activeSessions && !!sessionSchema.length && activeSessions.length === 0 && <div className="alert my-2 alert-warning py-2 text-xs">
-              <div>
-                <InformationCircleIcon className="w-6" />
-                Pro tip: Click on any one of the following to start a new session...
-              </div>
-            </div>}
+            {activeSessions &&
+              !!sessionSchema.length &&
+              activeSessions.length === 0 && (
+                <div className="alert my-2 alert-warning py-2 text-xs">
+                  <div>
+                    <InformationCircleIcon className="w-6" />
+                    Pro tip: Click on any one of the following to start a new
+                    session...
+                  </div>
+                </div>
+              )}
 
             {sessionSchema.map((e, indx: number) => {
               const date = new Date(e.last_attempted_at);
@@ -232,12 +240,9 @@ const Dash = () => {
             })}
           </>
         ) : null}
-
-
       </div>
 
       <Footer />
-
     </div>
   );
 };

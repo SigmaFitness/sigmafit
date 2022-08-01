@@ -8,7 +8,6 @@ import { Navbar } from "../components/Navbar";
 import { withAuthHOC } from "../hooks/withAuthHOC";
 import { DescriptionText } from "../components/RenderWorkoutView";
 
-
 const Profile = () => {
   const { data, isLoading } = useQuery<user, ErrorResponse>(
     "getUserProfile",
@@ -109,9 +108,7 @@ const Profile = () => {
         )}
       </div>
 
-
       <Footer />
-
     </div>
   );
 };

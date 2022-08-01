@@ -94,10 +94,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/dash">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/dash"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/dash"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between w-full h-9 ">
                               <span className="flex gap-2 items-center">
@@ -112,10 +113,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/sessionSchema/top">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/sessionSchema/top"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/sessionSchema/top"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -130,10 +132,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/workout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/workout"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/workout"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -148,10 +151,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/profile">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/profile"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/profile"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <span className="flex gap-2 items-center">
@@ -166,10 +170,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/insights">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/insights"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/insights"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               <div className="flex gap-2 items-center">
@@ -187,10 +192,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/logout">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/logout"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/auth/logout"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               Logout
@@ -201,46 +207,13 @@ export const Navbar = () => {
                     </>
                   ) : (
                     <>
-                      {/* <Menu.Item>
-                                <Link href='/about-us'>
-                                    <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/about-us' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
-                                        <div className="flex justify-between h-9">
-
-                                            About Us
-                                            <ChevronRightIcon className='text-red-500 w-7' />
-
-                                        </div>
-
-
-                                    </div>
-                                </Link>
-                            </Menu.Item> */}
-
-                      {/* <Menu.Item>
-                                <Link href='/about-us'>
-                                <div className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === '/about-us' ? 'text-yellow-400 hover:text-yellow-400 cursor-default' : ''}`}>
-                                    <div className="flex justify-between h-9">
-
-                                        <div className="space-x-2">
-                                            <span>Features</span>
-                                            <span className='badge badge-sm badge-warning'>Coming Soon</span>
-                                        </div>
-
-                                        <ChevronRightIcon className='text-red-500 w-7' />
-
-                                    </div>
-
-
-                                </div>
-                                </Link>
-                            </Menu.Item> */}
-
                       <>
                         <div
-                          className={`w-full max-w-lg cursor-not-allowed py-2 my-2 rounded-lg ${route === "/pricing"
+                          className={`w-full max-w-lg cursor-not-allowed py-2 my-2 rounded-lg ${
+                            route === "/pricing"
                               ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                               : ""
-                            }`}
+                          }`}
                         >
                           <div className="flex justify-between h-9">
                             <div className="space-x-2">
@@ -257,10 +230,11 @@ export const Navbar = () => {
                       <Menu.Item>
                         <Link href="/auth/welcome">
                           <div
-                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${route === "/auth/welcome"
+                            className={`w-full max-w-lg cursor-pointer py-2 my-2 hover:text-secondary rounded-lg ${
+                              route === "/auth/welcome"
                                 ? "text-yellow-400 hover:text-yellow-400 cursor-default"
                                 : ""
-                              }`}
+                            }`}
                           >
                             <div className="flex justify-between h-9">
                               Sign In
@@ -280,5 +254,3 @@ export const Navbar = () => {
     </Menu>
   );
 };
-
-

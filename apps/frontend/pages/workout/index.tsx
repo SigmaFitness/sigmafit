@@ -16,8 +16,6 @@ import { withAuthHOC } from "../../hooks/withAuthHOC";
 import { Footer } from "../../components/Footer";
 import { RenderWorkoutsList } from "../../components/RenderWorkoutsList";
 
-
-
 const Workouts = () => {
   const { data, isLoading } = useQuery<WorkoutListResponse, ErrorResponse>(
     "getAllWorkouts",
@@ -130,7 +128,6 @@ const Workouts = () => {
         existingWorkoutId={workoutInitialData.existingWorkoutId}
       />
       <Footer />
-
     </div>
   );
 };

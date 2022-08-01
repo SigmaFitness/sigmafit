@@ -2,10 +2,12 @@ import { DocumentIcon, PencilAltIcon, XIcon } from "@heroicons/react/solid";
 import { workout } from "@sigmafit/commons/dist/prismaGenTypes";
 import { useState } from "react";
 import { SigmaModal } from "./SigmaModal";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 export const RenderWorkoutsList = ({
-  workouts, handleDelete, handleEdit,
+  workouts,
+  handleDelete,
+  handleEdit,
 }: {
   workouts: workout[];
   handleDelete?: (workout_id: string) => void;
@@ -28,7 +30,8 @@ export const RenderWorkoutsList = ({
                   <div className="w-36 xs:w-24 rounded-full">
                     <img
                       className="m-0 object-center"
-                      src={workout.workout_image_url} />
+                      src={workout.workout_image_url}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -59,7 +62,9 @@ export const RenderWorkoutsList = ({
                   </div>
 
                   <div>
-                    <div className="inline-block font-bold mr-1">Intensity:</div>
+                    <div className="inline-block font-bold mr-1">
+                      Intensity:
+                    </div>
                     <div className="inline-block">
                       {(workout.intensity ?? "NO_DATA").replaceAll("_", " ")}
                     </div>
@@ -112,24 +117,27 @@ export const RenderWorkoutsList = ({
                 <div className="w-24 rounded-full">
                   <img
                     className="m-0"
-                    src={workouts[isNotesModalWorkoutIndex].workout_image_url} />
+                    src={workouts[isNotesModalWorkoutIndex].workout_image_url}
+                  />
                 </div>
               </div>
               <h2>{workouts[isNotesModalWorkoutIndex].name}</h2>
             </div>
 
             <div>
-              <h3 className="font-black text-blue-500 mb-4">Notes &amp; Instructions</h3>
+              <h3 className="font-black text-blue-500 mb-4">
+                Notes &amp; Instructions
+              </h3>
 
-              <ReactMarkdown>{workouts[isNotesModalWorkoutIndex].notes
-                ? workouts[isNotesModalWorkoutIndex].notes
-                : "No Data"}</ReactMarkdown>
-
+              <ReactMarkdown>
+                {workouts[isNotesModalWorkoutIndex].notes
+                  ? workouts[isNotesModalWorkoutIndex].notes
+                  : "No Data"}
+              </ReactMarkdown>
             </div>
           </div>
         </SigmaModal>
       )}
-
     </>
   );
 };

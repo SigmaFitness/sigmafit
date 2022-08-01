@@ -25,7 +25,7 @@ export const FormSingleSelectFieldWithCreatable = ({
 
   const getValue = () => {
     if (value) {
-      return options.filter((option) => value===option.value);
+      return options.filter((option) => value === option.value);
     } else {
       return [];
     }

@@ -1,5 +1,5 @@
 import { MetaHead } from "../../components/Head";
-import { LogoWithoutBeta } from "../../components/Logo";
+import { LogoWithoutBeta } from "../../components/LogoWithoutBeta";
 import { witNoAuthHOC } from "../../hooks/withNoAuthHOC";
 import { TwitterIcon } from "../../components/icons/TwitterIcon";
 import { GitHubIcon } from "../../components/icons/GitHubIcon";
@@ -28,9 +28,7 @@ const Welcome = () => {
 
         <div className="flex flex-col gap-4 my-6">
           <div
-            onClick={() =>
-              (window.location.href = `/api/auth/google/start`)
-            }
+            onClick={() => (window.location.href = `/api/auth/google/start`)}
             className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 flex justify-center items-center gap-2"
           >
             <span>
@@ -39,9 +37,7 @@ const Welcome = () => {
             <span>Continue with Google</span>
           </div>
           <div
-            onClick={() =>
-              (window.location.href = `/api/auth/github/start`)
-            }
+            onClick={() => (window.location.href = `/api/auth/github/start`)}
             className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
           >
             <span>
@@ -50,9 +46,7 @@ const Welcome = () => {
             <span>Continue with GitHub</span>
           </div>
           <div
-            onClick={() =>
-              (window.location.href = `/api/auth/twitter/start`)
-            }
+            onClick={() => (window.location.href = `/api/auth/twitter/start`)}
             className="bg-white h-fit text-black hover:text-white btn rounded-md shadow-xl py-3 hover:fill-white flex justify-center items-center gap-2"
           >
             <span>

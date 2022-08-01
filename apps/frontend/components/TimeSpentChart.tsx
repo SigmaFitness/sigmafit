@@ -64,7 +64,6 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
             data={{
               labels: timeSpentData.dataPoints.map((e) => {
                 const date = new Date(e.startTime);
-                // return `${date.getDay()+1}/${month[date.getMonth()]}`
                 return date;
               }),
               datasets: [
@@ -82,13 +81,15 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
                 tooltip: {
                   callbacks: {
                     title: function (this, tooltipItem) {
-                      return `Session Name: ${timeSpentData.dataPoints[tooltipItem[0].dataIndex]
-                        .session_name
-                        }`;
+                      return `Session Name: ${
+                        timeSpentData.dataPoints[tooltipItem[0].dataIndex]
+                          .session_name
+                      }`;
                     },
                     label(this, tooltipItem) {
-                      return `Session Length: ${timeSpentData.dataPoints[tooltipItem.dataIndex].duration
-                        } minutes`;
+                      return `Session Length: ${
+                        timeSpentData.dataPoints[tooltipItem.dataIndex].duration
+                      } minutes`;
                     },
                   },
                 },
@@ -109,7 +110,7 @@ export const TimeSpentChart = ({ height }: { height: number }) => {
                 },
                 y: {
                   beginAtZero: true,
-                }
+                },
               },
             }}
           />

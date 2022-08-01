@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import {
@@ -78,7 +77,6 @@ const SessionSchemaClone = () => {
     <div>
       <MetaHead />
       <div className="flex flex-col min-h-screen">
-
         <Navbar />
 
         <div className="px-3 my-10 mb-auto">
@@ -94,10 +92,8 @@ const SessionSchemaClone = () => {
           )}
         </div>
         <Footer />
-
       </div>
     </div>
-
   );
 };
 

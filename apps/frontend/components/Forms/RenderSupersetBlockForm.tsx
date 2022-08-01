@@ -40,7 +40,10 @@ export const RenderSupersetBlockForm = ({
   const { setFieldValue } = useFormikContext();
   return (
     <div className="border group border-gray-400 mb-2 p-2 shadow-lg bg-base-200 pt-0 flex flex-col justify-center">
-      <BlockTools moveHandleClassName="move-handle" removeInstance={removeInstance} />
+      <BlockTools
+        moveHandleClassName="move-handle"
+        removeInstance={removeInstance}
+      />
       <>
         <div className="flex items-center gap-2">
           <FormInputField
@@ -48,7 +51,6 @@ export const RenderSupersetBlockForm = ({
             fieldLabel="Superset Name"
             placeholder="BICEPS &amp; TRICEPS"
           />
-
         </div>
 
         <FieldArray
@@ -111,23 +113,32 @@ export const RenderSupersetBlockForm = ({
       </>
     </div>
   );
-
-
-
 };
 
-
-export const BlockTools = ({ moveHandleClassName, removeInstance }: { removeInstance: () => void, moveHandleClassName: string }) => {
-  return <div className="flex w-full justify-end items-center mt-2 gap-2">
-    <div className={"btn btn-xs text-2xs lowercase font-light shadow-lg text-xs cursor-move btn-info hover:btn-primary flex justify-center " + moveHandleClassName}>
-      <MoveGrabberIcon className="w-3" /> <span>Drag</span> 
+export const BlockTools = ({
+  moveHandleClassName,
+  removeInstance,
+}: {
+  removeInstance: () => void;
+  moveHandleClassName: string;
+}) => {
+  return (
+    <div className="flex w-full justify-end items-center mt-2 gap-2">
+      <div
+        className={
+          "btn btn-xs text-2xs lowercase font-light shadow-lg text-xs cursor-move btn-info hover:btn-primary flex justify-center " +
+          moveHandleClassName
+        }
+      >
+        <MoveGrabberIcon className="w-3" /> <span>Drag</span>
+      </div>
+      <button
+        type="button"
+        className="btn-secondary lowercase font-light items-center justify-center flex btn btn-xs"
+        onClick={removeInstance}
+      >
+        <XIcon className="w-3" /> <span>remove</span>
+      </button>
     </div>
-    <button
-      type="button"
-      className="btn-secondary lowercase font-light items-center justify-center flex btn btn-xs"
-      onClick={removeInstance}
-    >
-      <XIcon className="w-3" /> <span>remove</span>
-    </button>
-  </div>;
-}
+  );
+};

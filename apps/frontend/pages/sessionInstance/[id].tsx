@@ -220,7 +220,9 @@ const SessionInstance: NextPage = () => {
               {workouts.length ? (
                 <>
                   <div className="ml-4">
-                    <div className="inline-block mr-2">Training routine name: </div>
+                    <div className="inline-block mr-2">
+                      Training routine name:{" "}
+                    </div>
                     <div className="inline-block font-bold">
                       {data ? data.session_instance_details.schema_name : null}
                     </div>
@@ -521,7 +523,7 @@ const Card = ({
       <div className="card py-4 bg-gray-200  shadow-xl">
         <figure>
           <img
-          // cannot use Next/image here, as the client can share the link
+            // cannot use Next/image here, as the client can share the link
             src={workout_image_url}
             className="select-none sm:h-64 sm:w-64 md:h-72 md:w-72 h-60 w-60 object-cover pointer-events-none mask mask-squircle"
             alt="Shoes"
@@ -621,7 +623,7 @@ const Card = ({
                                               }
                                               className="col-start-1  col-span-1 mr-1 ml-2"
                                             >
-                                              <DropsetArrow className=""/>
+                                              <DropsetArrow className="" />
                                             </div>
 
                                             <div

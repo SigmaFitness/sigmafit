@@ -1,5 +1,6 @@
 export const RenderWorkoutView = ({
-  workoutName, target,
+  workoutName,
+  target,
 }: {
   workoutName: string;
   target: any[];
@@ -12,12 +13,16 @@ export const RenderWorkoutView = ({
         <span key={indx} className="badge mx-1 badge-sm">
           {e}
         </span>
-      ))} />
+      ))}
+    />
   </div>
 );
 
 export const DescriptionText = ({
-  name, value, size = "small", type = "justify-between",
+  name,
+  value,
+  size = "small",
+  type = "justify-between",
 }: {
   name: string;
   value: any;
@@ -26,8 +31,10 @@ export const DescriptionText = ({
 }) => (
   <div className={"flex flex-col xs:flex-row xs:items-center " + type}>
     <div
-      className={"uppercase font-bold  text-gray-500 " +
-        (size === "small" ? "text-2xs" : "text-xs")}
+      className={
+        "uppercase font-bold  text-gray-500 " +
+        (size === "small" ? "text-2xs" : "text-xs")
+      }
     >
       {name}
     </div>

@@ -7,7 +7,11 @@ import Link from "next/link";
 import { DescriptionText, RenderWorkoutView } from "./RenderWorkoutView";
 
 export const SessionSchemaView = ({
-  initialValues, handleSubmit, waitingForServerResponse, heading, sessionSchemaId,
+  initialValues,
+  handleSubmit,
+  waitingForServerResponse,
+  heading,
+  sessionSchemaId,
 }: {
   initialValues: SessionSchemaDetailsResponse;
   handleSubmit: (payload: SessionSchemaFormValueType) => void;
@@ -15,7 +19,6 @@ export const SessionSchemaView = ({
   heading: string;
   sessionSchemaId: string;
 }) => {
-  // const [isChecked, setIsChecked] = useState(initialValues.is_public)
   const { mutateAsync } = useMutation(
     "changeStateOfSessionSchema",
     changeStateOfSessionSchema
@@ -52,30 +55,38 @@ export const SessionSchemaView = ({
         <DescriptionText
           name="Name:"
           value={initialValues.session_name}
-          size="med" />
+          size="med"
+        />
         <DescriptionText
           name="number of superset workouts:"
           value={initialValues.number_of_superset_workouts}
-          size="med" />
+          size="med"
+        />
         <DescriptionText
           name="number of workouts:"
           value={initialValues.number_of_workouts}
-          size="med" />
+          size="med"
+        />
         <DescriptionText
           name="number of workouts in superset:"
           value={initialValues.number_of_workouts_in_superset}
-          size="med" />
+          size="med"
+        />
         <DescriptionText
           name="state:"
-          value={<div className="badge text-sm badge-warning">
-            {initialValues.state}
-          </div>}
-          size="med" />
+          value={
+            <div className="badge text-sm badge-warning">
+              {initialValues.state}
+            </div>
+          }
+          size="med"
+        />
         {initialValues.state === "PUBLIC" ? (
           <DescriptionText
             name="Liked By:"
             value={initialValues.votes_count}
-            size="med" />
+            size="med"
+          />
         ) : null}
       </div>
 
@@ -89,14 +100,17 @@ export const SessionSchemaView = ({
             className="toggle toggle-md toggle-secondary"
             checked={initialValues.state !== "PRIVATE"}
             onChange={(e) => {
-              if (confirm(
-                `Are you sure you want to make this workout routine public? You will lose the access to edit this workout routine! The review might take some time, and we'll send you an email once it's approved.`
-              )) {
+              if (
+                confirm(
+                  `Are you sure you want to make this workout routine public? You will lose the access to edit this workout routine! The review might take some time, and we'll send you an email once it's approved.`
+                )
+              ) {
                 mutateAsync({
                   schema_id: initialValues.id,
                 });
               }
-            }} />
+            }}
+          />
         </label>
       ) : null}
 
@@ -109,7 +123,8 @@ export const SessionSchemaView = ({
               // workout instance
               <RenderWorkoutView
                 target={e.default_target}
-                workoutName={e.workout.name} />
+                workoutName={e.workout.name}
+              />
             ) : (
               // superset schema instance
               <div className="my-2">
@@ -120,7 +135,8 @@ export const SessionSchemaView = ({
                     <RenderWorkoutView
                       key={index}
                       target={f.default_target}
-                      workoutName={f.workout.name} />
+                      workoutName={f.workout.name}
+                    />
                   ))}
                 </div>
               </div>

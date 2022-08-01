@@ -1,15 +1,10 @@
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
-import {
-  ErrorResponse,
-  getSessionSchemaDetails,
-} from "../../../api";
+import { ErrorResponse, getSessionSchemaDetails } from "../../../api";
 import { MetaHead } from "../../../components/Head";
 import { Navbar } from "../../../components/Navbar";
-import {
-  SessionSchemaFormValueType,
-} from "../../../components/Forms/SessionSchemaForm";
+import { SessionSchemaFormValueType } from "../../../components/Forms/SessionSchemaForm";
 import { SessionSchemaDetailsResponse } from "@sigmafit/commons";
 import { withAuthHOC } from "../../../hooks/withAuthHOC";
 import { Footer } from "../../../components/Footer";
@@ -65,8 +60,3 @@ const SessionSchemaEdit = () => {
 };
 
 export default withAuthHOC(SessionSchemaEdit);
-
-
-
-
-

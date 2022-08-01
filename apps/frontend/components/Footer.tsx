@@ -8,12 +8,16 @@ export const Footer = () => (
         {SigmaFitLogoHead()}
 
         <p className="font-medium text-base">
-          <span>Powered by</span> <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"><Link href='https://hashnode.com/'>Hashnode</Link></span> and <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"><Link href='https://planetscale.com/'>Planetscale</Link> </span>
+          <span>Powered by</span>{" "}
+          <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            <Link href="https://hashnode.com/">Hashnode</Link>
+          </span>{" "}
+          and{" "}
+          <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            <Link href="https://planetscale.com/">Planetscale</Link>{" "}
+          </span>
         </p>
       </div>
     </footer>
   </div>
 );
-
-
-

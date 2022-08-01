@@ -53,7 +53,7 @@ const SessionSchemaEdit = () => {
           )}
         </div>
 
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

@@ -2,7 +2,6 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ClipboardCopyIcon,
-  LinkIcon,
   ShareIcon,
   ThumbUpIcon,
 } from "@heroicons/react/solid";

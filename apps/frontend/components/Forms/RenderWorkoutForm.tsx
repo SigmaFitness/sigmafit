@@ -1,4 +1,8 @@
-import { XIcon, InformationCircleIcon, SupportIcon } from "@heroicons/react/solid";
+import {
+  XIcon,
+  InformationCircleIcon,
+  SupportIcon,
+} from "@heroicons/react/solid";
 import { FormSingleSelectFormikField } from "../FormSingleSelectField";
 import { FormSingleSelectFieldWithCreatable } from "../FormSingleSelectFieldWithCreatable";
 import { MoveGrabberIcon } from "../icons/MoveGrabber";
@@ -52,7 +56,10 @@ export const RenderWorkoutForm = ({
         "flex flex-col justify-start items-center pt-0 " + containerStyles
       }
     >
-      <BlockTools  moveHandleClassName={moveHandleClassName} removeInstance={handleRemoveInstance} />
+      <BlockTools
+        moveHandleClassName={moveHandleClassName}
+        removeInstance={handleRemoveInstance}
+      />
 
       <div className="flex-grow w-full">
         <div className="-mb-2">
@@ -70,8 +77,6 @@ export const RenderWorkoutForm = ({
 
         {workoutInstance ? (
           <>
-
-
             {/* DEFAULT TARGETS */}
 
             <MultiCreateInput
